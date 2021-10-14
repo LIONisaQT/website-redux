@@ -3,7 +3,8 @@ function Card({ title, role, tidbit, imageUrl }) {
 		<div className='Card'>
 			<img src={imageUrl} alt={title} />
 			<div className='CardText'>
-				<p className='CardTitle'>{title}<span className='CardRole'> - {role}</span></p>
+				<h3 className='CardTitle'>{title}</h3>
+				<p className='CardRole'>{role}</p>
 				<p><i>{tidbit}</i></p>
 			</div>
 		</div>

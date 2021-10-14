@@ -11,7 +11,9 @@ html {
   text-shadow: none;
 }
 
-h1 {
+h1,
+h2,
+h3 {
   margin: 0;
 }
 
@@ -25,6 +27,8 @@ img {
 
 .App {
   width: 100vw;
+
+  /* Remove this for standard scrolling */
   height: 100vh;
   overflow: auto;
   scroll-snap-points-y: repeat(100vh);
@@ -32,6 +36,7 @@ img {
 }
 
 .SectionWrapper {
+  /* Remove this for standard scrolling */
   scroll-snap-align: center;
   height: 100vh;
   display: flex;
@@ -53,10 +58,10 @@ img {
 .Card {
   position: relative;
   overflow: hidden;
-  width: 280px;
-  height: 360px;
+  width: 260px;
+  height: 380px;
 
-  padding: 40px 40px 30px;
+  padding: 40px 40px 10px;
   border-radius: 8px;
   background-color: var(--dark);
   filter: drop-shadow(0 4px 8px var(--darkest));
@@ -148,12 +153,8 @@ img {
 
 .CardTitle {
   color: var(--blue);
-  font-size: 1.2em;
-  font-weight: bold;
 }
 
 .CardRole {
-  color: white;
-  font-size: medium;
-  font-weight: normal;
+  margin: 0;
 }
