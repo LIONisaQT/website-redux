@@ -4,10 +4,12 @@ html {
   background: var(--darker);
   color: white;
   scroll-behavior: smooth;
+  font-size: medium;
 }
 
 ::selection {
   background: var(--highlight);
+  color: white;
   text-shadow: none;
 }
 
@@ -17,12 +19,24 @@ h3 {
   margin: 0;
 }
 
+a {
+  text-decoration: none;
+}
+
 p {
   margin: 12px 0;
 }
 
 img {
   user-select: none;
+}
+
+.PrimaryText {
+  color: var(--blue);
+}
+
+.HighlightText {
+  color: var(--highlight);
 }
 
 .App {

@@ -1,15 +1,16 @@
 import './App.css';
+import AboutMeSection from './Sections/AboutMeSection';
 import GridSection from './Sections/GridSection';
-import SimpleTextSection from './Sections/SimpleTextSection';
+import HeaderSection from './Sections/HeaderSection';
 
 function App() {
   return (
     <div className="App">
-      <SimpleTextSection />
+      <HeaderSection />
       <GridSection section='games' />
       <GridSection section='engineering' />
       <GridSection section='resume' />
-      <SimpleTextSection />
+      <AboutMeSection />
     </div>
   );
 }
