@@ -83,17 +83,32 @@ const engineeringProjects = [
 	},
 ]
 
+const resumes = [
+	{
+		'id': '301',
+		'name': 'Games',
+		'role': 'For game recruiters',
+		'tidbit': '"Most games are just colliders colliding with other colliders, right?"',
+		'image': shroommatesImage,
+	},
+	{
+		'id': '300',
+		'name': 'Engineering',
+		'role': 'For engineering recruiters',
+		'tidbit': '"LeetCode or have no abode."',
+		'image': shroommatesImage,
+	}
+]
+
 export function getData(section) {
 	switch (section) {
 		case 'games':
-			return new Promise(res => {
-				setTimeout(res, 100, gameProjects);
-			});
+			return new Promise((res) => setTimeout(res, 100, gameProjects));
 		case 'engineering':
-			return new Promise(res => {
-				setTimeout(res, 100, engineeringProjects);
-			});
+			return new Promise((res) => setTimeout(res, 100, engineeringProjects));
+		case 'resume':
+			return new Promise((res) => setTimeout(res, 100, resumes));
 		default:
-			break;
+			return new Promise((res => setTimeout(res, 0, [])));
 	}
 }

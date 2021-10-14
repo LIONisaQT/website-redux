@@ -8,6 +8,8 @@ function App() {
       <SimpleTextSection />
       <GridSection section='games' />
       <GridSection section='engineering' />
+      <GridSection section='resume' />
+      <SimpleTextSection />
     </div>
   );
 }
