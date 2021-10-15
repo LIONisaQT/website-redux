@@ -40,6 +40,10 @@ img {
   color: var(--highlight);
 }
 
+.DiscreteText {
+  color: var(--darker);
+}
+
 .Navbar {
   position: fixed;
   top: 0;
@@ -90,6 +94,7 @@ img {
   width: clamp(400px, 100%, 1200px);
   margin: auto;
   padding: 40px;
+  position: relative;
 }
 
 .GridSection {
@@ -134,8 +139,6 @@ img {
 
 .Card:hover {
   cursor: pointer;
-  /* transform: scale(102%);
-  transition: 0.2s ease; */
 }
 
 .Card:before {
@@ -201,4 +204,14 @@ img {
 
 .CardRole {
   margin: 0;
+}
+
+.BackgroundText {
+  position: absolute;
+  text-align: left;
+  top: -20%;
+  left: -5%;
+  /* transform: rotate(-90deg); */
+  font-size: 10em;
+  font-weight: bolder;
 }

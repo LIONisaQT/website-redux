@@ -10,8 +10,8 @@ function App() {
       <Navbar />
       <IntroSection />
       <GridSection id='games' section='games' />
-      <GridSection id='engineering' section='engineering' />
-      <GridSection id='resume' section='resume' />
+      <GridSection id='projects' section='projects' />
+      <GridSection id='resumes' section='resumes' />
       <AboutMeSection id='about' />
     </div>
   );

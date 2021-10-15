@@ -7,8 +7,8 @@ function Navbar() {
 				</div>
 				<div className='Navigation'>
 					<a href='#games'>Games</a>
-					<a href='#engineering'>Projects</a>
-					<a href='#resume'>Resumes</a>
+					<a href='#projects'>Projects</a>
+					<a href='#resumes'>Resumes</a>
 					<a href='#about'>About</a>
 				</div>
 			</div>

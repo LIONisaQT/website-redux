@@ -3,7 +3,7 @@ function IntroSection() {
 	return (
 		<section className='SectionWrapper IntroShadow'>
 			<div className='SectionElement'>
-				<h1>// SOFTWARE ENGINEER</h1>
+				<h1 className='PrimaryText'>SOFTWARE ENGINEER</h1>
 				<p>
 					My name is <span className='HighlightText'>Ryan</span>.
 				</p>

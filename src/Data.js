@@ -70,9 +70,9 @@ export function getData(section) {
 	switch (section) {
 		case 'games':
 			return new Promise((res) => setTimeout(res, 100, gameProjects));
-		case 'engineering':
+		case 'projects':
 			return new Promise((res) => setTimeout(res, 100, engineeringProjects));
-		case 'resume':
+		case 'resumes':
 			return new Promise((res) => setTimeout(res, 100, resumes));
 		default:
 			return new Promise((res => setTimeout(res, 0, [])));
