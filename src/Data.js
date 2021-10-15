@@ -1,85 +1,51 @@
-const shroommatesImage = 'https://raw.githubusercontent.com/LIONisaQT/LIONisaQT.github.io/master/static/img/0_shroommates/sm_banner.png';
+const magicMoversImage = 'https://ryanshee.s3.us-west-1.amazonaws.com/magic-movers/mm_title.jpg';
+const shroommatesImage = 'https://ryanshee.s3.us-west-1.amazonaws.com/shroommates/sm_banner.png';
+const foodNow2Image = 'https://ryanshee.s3.us-west-1.amazonaws.com/food-now-web/foodnow2.png';
+const chillMoodClubImage = 'https://ryanshee.s3.us-west-1.amazonaws.com/chill-mood-club/cmc.png';
+const foodNow1Image = 'https://ryanshee.s3.us-west-1.amazonaws.com/food-now-android/fn_banner.png';
+
+const gameResumeImage = 'https://ryanshee.s3.us-west-1.amazonaws.com/misc-images/pcmasterrace.png';
+const sweResumeImage = 'https://ryanshee.s3.us-west-1.amazonaws.com/misc-images/cs.jpg';
+const photo = 'https://ryanshee.s3.us-west-1.amazonaws.com/misc-images/portrait.JPG';
 
 const gameProjects = [
 	{
-		'id': '104',
+		'id': '101',
 		'name': 'Magic Movers',
 		'role': 'Game Engineer',
 		'tidbit': 'Global Game Jam 2019 entry',
-		'image': shroommatesImage,
-	},
-	{
-		'id': '103',
-		'name': 'Shroommates',
-		'role': 'Lead Developer',
-		'tidbit': '"Housing ain\'t cheap here, mate."',
-		'image': shroommatesImage,
-	},
-	{
-		'id': '102',
-		'name': 'Battlegrounds',
-		'role': 'Systems Designer',
-		'tidbit': '"Where are we dropping, boys?" -procrastinating student at 2AM',
-		'image': shroommatesImage,
-	},
-	{
-		'id': '101',
-		'name': 'World Power',
-		'role': 'System Designer',
-		'tidbit': '"Wait, this board game is starting to look a little too realistic."',
-		'image': shroommatesImage,
+		'image': magicMoversImage,
 	},
 	{
 		'id': '100',
-		'name': 'Snail Assalt',
-		'role': 'Game Engineer',
-		'tidbit': '"You misspelled assaul- oh I get it haha."',
+		'name': 'Shroommates',
+		'role': 'Lead Developer',
+		'tidbit': '"Housing ain\'t cheap here, mate."',
 		'image': shroommatesImage,
 	},
 ]
 
 const engineeringProjects = [
 	{
-		'id': '205',
+		'id': '202',
 		'name': 'Food Now! Web',
 		'role': 'Frontend Engineer',
 		'tidbit': '"This should\'ve been a web app ages ago."',
-		'image': shroommatesImage,
-	},
-	{
-		'id': '204',
-		'name': 'Chill Mood Club',
-		'role': 'Frontend Engineer',
-		'tidbit': 'Lo-fi & Chill',
-		'image': shroommatesImage,
-	},
-	{
-		'id': '203',
-		'name': 'Food Now!',
-		'role': 'Android Engineer',
-		'tidbit': '"Ew no I ate there a couple of days ago, choose another place." -person who no longer has friends',
-		'image': shroommatesImage,
-	},
-	{
-		'id': '202',
-		'name': 'Pick Up Boo',
-		'role': 'Android Engineer',
-		'tidbit': '"Why? Because Uber and Lyft cost money of course."',
-		'image': shroommatesImage,
+		'image': foodNow2Image,
 	},
 	{
 		'id': '201',
-		'name': 'Gotcho Book',
-		'role': 'Android Engineer',
-		'tidbit': 'Creative Entrepreneurship category, 2nd place',
-		'image': shroommatesImage,
+		'name': 'Chill Mood Club',
+		'role': 'Frontend Engineer',
+		'tidbit': 'Lo-fi & Chill',
+		'image': chillMoodClubImage,
 	},
 	{
 		'id': '200',
-		'name': 'Gotcho Back',
+		'name': 'Food Now!',
 		'role': 'Android Engineer',
-		'tidbit': 'Tech Cares category, 1st place',
-		'image': shroommatesImage,
+		'tidbit': '"Ew no I ate there a couple of days ago, choose another place."',
+		'image': foodNow1Image,
 	},
 ]
 
@@ -89,14 +55,14 @@ const resumes = [
 		'name': 'Games',
 		'role': 'For game recruiters',
 		'tidbit': '"Most games are just colliders colliding with other colliders, right?"',
-		'image': shroommatesImage,
+		'image': gameResumeImage,
 	},
 	{
 		'id': '300',
 		'name': 'Engineering',
 		'role': 'For engineering recruiters',
 		'tidbit': '"LeetCode or have no abode."',
-		'image': shroommatesImage,
+		'image': sweResumeImage,
 	}
 ]
 

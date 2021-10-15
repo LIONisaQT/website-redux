@@ -1,8 +1,9 @@
+/* eslint-disable react/jsx-no-comment-textnodes */
 function IntroSection() {
 	return (
-		<section className='SectionWrapper'>
+		<section className='SectionWrapper IntroShadow'>
 			<div className='SectionElement'>
-				<h1>Software Engineer</h1>
+				<h1>// SOFTWARE ENGINEER</h1>
 				<p>
 					My name is <span className='HighlightText'>Ryan</span>.
 				</p>

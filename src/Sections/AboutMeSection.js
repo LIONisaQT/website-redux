@@ -14,14 +14,15 @@ function AboutMeSection({ id }) {
 					<span className='HighlightText'> Unity</span>,
 					<span className='HighlightText'> React</span>, or
 					<span className='HighlightText'> Unreal</span>.
-					In addition, prototyping things just to see how they are implemented or seeing if I could use a certain
-					technology/programming paradigm is fun for me.
+					I also have experience with
+					<span className='HighlightText'> Cocos Creator</span>.
+					In addition to realizing ideas, prototyping things just to see how they are implemented or seeing if I could
+					learn to use a certain technology/programming paradigm is fun for me.
 				</p>
 				<p>
 					Other than programming, I also have experience
 					<span className='HighlightText'> instructing a class </span>
-					on game design and development for high school students with
-					<span className='HighlightText'> Mission Bit </span>.
+					on game design and development for high school students with Mission Bit.
 					I will destroy almost anyone who challenges me in Smash Bros there.
 					I
 					<span className='HighlightText'> lead my team </span>
@@ -33,24 +34,14 @@ function AboutMeSection({ id }) {
 				</p>
 				<p>
 					Some
-					<span className='HighlightText'> competitive multiplayer games </span>
-					I enjoy playing are
-					<span className='HighlightText'> Valorant</span>,
-					<span className='HighlightText'> Apex Legends</span>, and
-					<span className='HighlightText'> Guilty Gear -STRIVE-</span>.
-					Since I haven't had much time to sweat it out recently, I've recently been sitting back and enjoy more
-					<span className='HighlightText'> story-based games</span>,
-					such as
-					<span className='HighlightText'> The Witcher</span>,
-					<span className='HighlightText'> Death Stranding</span>,
-					<span className='HighlightText'> Danganronpa</span>,
-					<span className='HighlightText'> Yakuza</span>, and
-					<span className='HighlightText'> Deus Ex</span>.
-					That said, I also enjoy various other games such as
-					<span className='HighlightText'> XCOM</span>,
-					<span className='HighlightText'> The Legend of Zelda</span>,
-					<span className='HighlightText'> Metroid</span>, and
-					<span className='HighlightText'> League of Legends</span>.
+					<span className='HighlightText'> competitive multiplayer games I enjoy playing </span>
+					are Valorant, Apex Legends, and Guilty Gear -STRIVE-.
+					Since I haven't had much time to sweat it out recently, I've recently been sitting back and
+					<span className='HighlightText'> immersing myself in more story-based games</span>,
+					such as The Witcher, Death Stranding, Danganronpa, Yazuka, and Deus Ex.
+					That said, I also
+					<span className='HighlightText'> enjoy various other games</span>,
+					such as XCOM, The Legend of Zelda, Metroid, and League of Legends.
 					Of course, I can also play any
 					<span className='HighlightText'> Super Smash Bros </span>
 					game competently (1v1 me anytime).
