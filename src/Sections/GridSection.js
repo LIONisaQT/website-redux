@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Card from "../Card";
 import { getData } from "../Data";
 
-function GridSection({ section }) {
+function GridSection({ id, section }) {
 	const [data, setData] = useState(null);
 
 	useEffect(() => {
@@ -16,7 +16,7 @@ function GridSection({ section }) {
 	}, [data, section]);
 
 	return (
-		<section className='SectionWrapper'>
+		<section id={id} className='SectionWrapper'>
 			<div className='SectionElement'>
 				<div className='GridSection'>
 					{

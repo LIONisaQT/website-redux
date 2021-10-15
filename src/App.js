@@ -1,4 +1,5 @@
 import './App.css';
+import Navbar from './Navbar';
 import AboutMeSection from './Sections/AboutMeSection';
 import GridSection from './Sections/GridSection';
 import IntroSection from './Sections/IntroSection';
@@ -6,11 +7,12 @@ import IntroSection from './Sections/IntroSection';
 function App() {
   return (
     <div className="App">
+      <Navbar />
       <IntroSection />
-      <GridSection section='games' />
-      <GridSection section='engineering' />
-      <GridSection section='resume' />
-      <AboutMeSection />
+      <GridSection id='games' section='games' />
+      <GridSection id='engineering' section='engineering' />
+      <GridSection id='resume' section='resume' />
+      <AboutMeSection id='about' />
     </div>
   );
 }

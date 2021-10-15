@@ -1,6 +1,6 @@
-function AboutMeSection() {
+function AboutMeSection({ id }) {
 	return (
-		<section className='SectionWrapper'>
+		<section id={id} className='SectionWrapper'>
 			<div className='SectionElement'>
 				<h1 className='PrimaryText'>Hello!</h1>
 				<p>I am currently a
