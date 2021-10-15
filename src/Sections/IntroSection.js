@@ -1,4 +1,4 @@
-function HeaderSection() {
+function IntroSection() {
 	return (
 		<section className='SectionWrapper'>
 			<div className='SectionElement'>
@@ -19,4 +19,4 @@ function HeaderSection() {
 	)
 }
 
-export default HeaderSection;
+export default IntroSection;

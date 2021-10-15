@@ -1,12 +1,12 @@
 import './App.css';
 import AboutMeSection from './Sections/AboutMeSection';
 import GridSection from './Sections/GridSection';
-import HeaderSection from './Sections/HeaderSection';
+import IntroSection from './Sections/IntroSection';
 
 function App() {
   return (
     <div className="App">
-      <HeaderSection />
+      <IntroSection />
       <GridSection section='games' />
       <GridSection section='engineering' />
       <GridSection section='resume' />
