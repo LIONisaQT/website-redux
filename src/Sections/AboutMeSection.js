@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-comment-textnodes */
 function AboutMeSection({ id }) {
 	return (
 		<section id={id} className='SectionWrapper'>

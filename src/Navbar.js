@@ -3,7 +3,9 @@ function Navbar() {
 		<header className='Navbar'>
 			<div className='NavbarContent'>
 				<div>
-					<h1 className='Logo'>RYANSHEE</h1>
+					<h1 className='Logo'>
+						RYAN<span className='GrayText'>Z</span><span className='HighlightText'>SHEE</span>
+					</h1>
 				</div>
 				<div className='Navigation'>
 					<a href='#games'>Games</a>
