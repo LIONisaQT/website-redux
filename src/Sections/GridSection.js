@@ -24,7 +24,7 @@ function GridSection({ id, section }) {
 				</span>
 				<div className='GridSection'>
 					{
-						data && data.map(d => <Card key={d.id} title={d.name} role={d.role} tidbit={d.tidbit} imageUrl={d.image} />)
+						data && data.map(d => <Card key={d.id} id={d.id} title={d.name} role={d.role} tidbit={d.tidbit} imageUrl={d.image} />)
 					}
 				</div>
 			</div>

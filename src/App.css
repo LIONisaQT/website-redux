@@ -270,7 +270,7 @@ img {
 
 .Quote {
   font-style: italic;
-  padding: 0 100px;
+  padding: 20px 100px;
   font-size: 1.6em;
   color: var(--gray);
 }
