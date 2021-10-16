@@ -14,7 +14,7 @@ function Card({ id, title, role, tidbit, imageUrl }) {
 					if (res.id >= 300) {
 						openUrl(res.url);
 					} else {
-						openModal();
+						openModal(res);
 					}
 				})
 				.catch((err) => console.error(err));
@@ -22,7 +22,7 @@ function Card({ id, title, role, tidbit, imageUrl }) {
 			if (data.id >= 300) {
 				openUrl(data.url);
 			} else {
-				openModal();
+				openModal(data);
 			}
 		}
 	}
@@ -31,7 +31,8 @@ function Card({ id, title, role, tidbit, imageUrl }) {
 		window.open(url, '_blank');
 	}
 
-	const openModal = () => {
+	const openModal = (data) => {
+		console.log(data);
 		setShowModal(true);
 	}
 
@@ -40,7 +41,7 @@ function Card({ id, title, role, tidbit, imageUrl }) {
 	}
 
 	return (
-		<div className='Card' onClick={showModal ? hideModal : onClick}>
+		<div className='Card' onClick={showModal ? () => { } : onClick}>
 			<img src={imageUrl} alt={title} />
 			<div className='CardText'>
 				<h3 className='CardTitle'>{title}</h3>
@@ -54,7 +55,21 @@ function Card({ id, title, role, tidbit, imageUrl }) {
 				className='Modal'
 				overlayClassName='Overlay'>
 				<button className='ModalClose' onClick={hideModal}>&times;</button>
-				HELLO!
+				<section>
+					{title}
+					{role}
+					{data ? data.tech : ''}
+				</section>
+				<section>
+					{tidbit}
+				</section>
+				<section>
+					{data ? data.about : ''}
+				</section>
+				<section>
+					{data ? data.repo[1] : ''}
+					{data ? data.url[1] : ''}
+				</section>
 			</ReactModal>
 		</div>
 	)
