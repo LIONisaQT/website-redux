@@ -3,7 +3,7 @@ function AboutMeSection({ id }) {
 	return (
 		<section id={id} className='SectionWrapper'>
 			<div className='SectionElement'>
-				<h1 className='PrimaryText'>Hello!</h1>
+				<h1 className='PrimaryText'>HELLO!</h1>
 				<p>I am currently a
 					<span className='HighlightText'> software engineer </span>
 					on

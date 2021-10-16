@@ -44,7 +44,7 @@ const engineeringProjects = [
 		'id': '200',
 		'name': 'Food Now!',
 		'role': 'Android Engineer',
-		'tidbit': '"Ew no I ate there a couple of days ago, choose another place."',
+		'tidbit': '"Ew no I ate there a couple of days ago, pick another."',
 		'image': foodNow1Image,
 	},
 ]
@@ -54,7 +54,7 @@ const resumes = [
 		'id': '301',
 		'name': 'Games',
 		'role': 'For game recruiters',
-		'tidbit': '"Most games are just colliders colliding with other colliders, right?"',
+		'tidbit': '"What we\'re really here for."',
 		'image': gameResumeImage,
 	},
 	{
