@@ -1,8 +1,13 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
 function AboutMeSection({ id }) {
+	const photo = 'https://ryanshee.s3.us-west-1.amazonaws.com/misc-images/portrait.JPG';
+
 	return (
 		<section id={id} className='SectionWrapper'>
 			<div className='SectionElement'>
+				<div className='PhotoParent'>
+					<img className='AboutPhoto' src={photo} alt='me'></img>
+				</div>
 				<h1 className='PrimaryText'>HELLO!</h1>
 				<p>I am currently a
 					<span className='HighlightText'> software engineer </span>
@@ -17,16 +22,19 @@ function AboutMeSection({ id }) {
 					<span className='HighlightText'> Unreal</span>.
 					I also have experience with
 					<span className='HighlightText'> Cocos Creator</span>.
-					In addition to realizing ideas, prototyping things just to see how they are implemented or seeing if I could
-					learn to use a certain technology/programming paradigm is fun for me.
+					In addition to realizing ideas, I like prototyping things just to see how they are implemented, or challenging myself to use certain technologies/programming paradigms.
+					One thing that's always stuck with me is something another engineer told me early in my career:
 				</p>
+				<section className='Quote'>
+					"Instead of just saying 'Wouldn't it be cool if someone made this or that', how about being the person to actually make it?"
+				</section>
 				<p>
 					Other than programming, I also have experience
-					<span className='HighlightText'> instructing a class </span>
+					<span className='HighlightText'> instructing classes </span>
 					on game design and development for high school students with Mission Bit.
 					I will destroy almost anyone who challenges me in Smash Bros there.
 					I
-					<span className='HighlightText'> lead my team </span>
+					<span className='HighlightText'> led my team </span>
 					for both Food Now! projects, and was the
 					<span className='HighlightText'> lead developer </span>
 					on Shroommates—my senior game design studio project—
@@ -37,12 +45,12 @@ function AboutMeSection({ id }) {
 					Some
 					<span className='HighlightText'> competitive multiplayer games I enjoy playing </span>
 					are Valorant, Apex Legends, and Guilty Gear -STRIVE-.
-					Since I haven't had much time to sweat it out recently, I've recently been sitting back and
+					Since I haven't had much time to sweat it out recently, I've been sitting back and
 					<span className='HighlightText'> immersing myself in more story-based games</span>,
 					such as The Witcher, Death Stranding, Danganronpa, Yazuka, and Deus Ex.
 					That said, I also
-					<span className='HighlightText'> enjoy various other games</span>,
-					such as XCOM, The Legend of Zelda, Metroid, and League of Legends.
+					<span className='HighlightText'> enjoy relaxing with various other games</span>,
+					such as XCOM, The Legend of Zelda, Metroid, and Animal Crossing.
 					Of course, I can also play any
 					<span className='HighlightText'> Super Smash Bros </span>
 					game competently (1v1 me anytime).

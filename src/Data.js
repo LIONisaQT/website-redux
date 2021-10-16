@@ -6,7 +6,6 @@ const foodNow1Image = 'https://ryanshee.s3.us-west-1.amazonaws.com/food-now-andr
 
 const gameResumeImage = 'https://media.onlinecoursebay.com/2019/03/25011347/635992_a278_2.jpg';
 const sweResumeImage = 'https://ryanshee.s3.us-west-1.amazonaws.com/misc-images/cs.jpg';
-const photo = 'https://ryanshee.s3.us-west-1.amazonaws.com/misc-images/portrait.JPG';
 
 const gameProjects = [
 	{
