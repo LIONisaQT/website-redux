@@ -1,8 +1,10 @@
 import { useState } from "react";
+import ReactModal from "react-modal";
 import { getProjectDetail } from "./Data";
 
 function Card({ id, title, role, tidbit, imageUrl }) {
 	const [data, setData] = useState(null);
+	const [showModal, setShowModal] = useState(false);
 
 	const onClick = () => {
 		if (!data) {
@@ -11,13 +13,16 @@ function Card({ id, title, role, tidbit, imageUrl }) {
 					setData(res);
 					if (res.id >= 300) {
 						openUrl(res.url);
+					} else {
+						openModal();
 					}
-					console.table(res);
 				})
 				.catch((err) => console.error(err));
 		} else {
 			if (data.id >= 300) {
 				openUrl(data.url);
+			} else {
+				openModal();
 			}
 		}
 	}
@@ -26,14 +31,31 @@ function Card({ id, title, role, tidbit, imageUrl }) {
 		window.open(url, '_blank');
 	}
 
+	const openModal = () => {
+		setShowModal(true);
+	}
+
+	const hideModal = () => {
+		setShowModal(false);
+	}
+
 	return (
-		<div className='Card' onClick={onClick}>
+		<div className='Card' onClick={showModal ? hideModal : onClick}>
 			<img src={imageUrl} alt={title} />
 			<div className='CardText'>
 				<h3 className='CardTitle'>{title}</h3>
 				<p className='CardRole'>{role}</p>
 				<p><i>{tidbit}</i></p>
 			</div>
+			<ReactModal
+				isOpen={showModal}
+				appElement={document.getElementById('root') || undefined}
+				onRequestClose={hideModal}
+				className='Modal'
+				overlayClassName='Overlay'>
+				<button className='ModalClose' onClick={hideModal}>&times;</button>
+				HELLO!
+			</ReactModal>
 		</div>
 	)
 }

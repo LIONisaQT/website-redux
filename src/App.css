@@ -274,3 +274,30 @@ img {
   font-size: 1.6em;
   color: var(--gray);
 }
+
+
+.Modal {
+  background: var(--darker);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  outline: none;
+  border-radius: 16px;
+}
+
+.Overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.ModalClose {
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  border: none;
+}
