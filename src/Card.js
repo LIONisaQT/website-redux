@@ -58,17 +58,17 @@ function Card({ id, title, role, tidbit, imageUrl }) {
 				<section>
 					{title}
 					{role}
-					{data ? data.tech : ''}
+					{data?.tech ?? ''}
 				</section>
 				<section>
 					{tidbit}
 				</section>
 				<section>
-					{data ? data.about : ''}
+					{data?.about ?? ''}
 				</section>
 				<section>
-					{data ? data.repo[1] : ''}
-					{data ? data.url[1] : ''}
+					{data?.repo[1] ?? ''}
+					{data?.url[1] ?? ''}
 				</section>
 			</ReactModal>
 		</div>
