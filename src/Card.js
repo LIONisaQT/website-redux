@@ -1,29 +1,27 @@
-import { useState } from "react";
-import ReactModal from "react-modal";
+import { useEffect, useState } from "react";
 import { getProjectDetail } from "./Data";
+import Modal from "./Modal";
 
 function Card({ id, title, role, tidbit, imageUrl }) {
 	const [data, setData] = useState(null);
 	const [showModal, setShowModal] = useState(false);
 
-	const onClick = () => {
-		if (!data) {
-			getProjectDetail(id)
-				.then(res => {
-					setData(res);
-					if (res.id >= 300) {
-						openUrl(res.url);
-					} else {
-						openModal(res);
-					}
-				})
-				.catch((err) => console.error(err));
-		} else {
-			if (data.id >= 300) {
-				openUrl(data.url);
-			} else {
-				openModal(data);
+	useEffect(() => {
+		async function fetchDetails() {
+			if (!data) {
+				const details = await getProjectDetail(id);
+				setData(details);
 			}
+		}
+
+		fetchDetails();
+	}, [id, data])
+
+	const onClick = () => {
+		if (data.id >= 300) {
+			openUrl(data.url);
+		} else {
+			openModal(data);
 		}
 	}
 
@@ -32,7 +30,6 @@ function Card({ id, title, role, tidbit, imageUrl }) {
 	}
 
 	const openModal = (data) => {
-		console.log(data);
 		setShowModal(true);
 	}
 
@@ -48,29 +45,9 @@ function Card({ id, title, role, tidbit, imageUrl }) {
 				<p className='CardRole'>{role}</p>
 				<p><i>{tidbit}</i></p>
 			</div>
-			<ReactModal
-				isOpen={showModal}
-				appElement={document.getElementById('root') || undefined}
-				onRequestClose={hideModal}
-				className='Modal'
-				overlayClassName='Overlay'>
-				<button className='ModalClose' onClick={hideModal}>&times;</button>
-				<section>
-					{title}
-					{role}
-					{data?.tech ?? ''}
-				</section>
-				<section>
-					{tidbit}
-				</section>
-				<section>
-					{data?.about ?? ''}
-				</section>
-				<section>
-					{data?.repo[1] ?? ''}
-					{data?.url[1] ?? ''}
-				</section>
-			</ReactModal>
+			{
+				data && <Modal isOpen={showModal} simpleData={{ title, role, tidbit }} projectData={data} onHideModal={hideModal} />
+			}
 		</div>
 	)
 }

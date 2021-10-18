@@ -97,9 +97,10 @@ const engineeringProjectDetails = [
 			'https://github.com/LIONisaQT/food-now-2',
 		],
 		'url': [
-			'on the web (still under active development)',
+			'this link (still under active development)',
 			'https://get-food-now.web.app/'
 		],
+		'images': [],
 	},
 	{
 		'id': 201,
@@ -110,9 +111,10 @@ const engineeringProjectDetails = [
 			'https://github.com/LIONisaQT/chill-mood-club',
 		],
 		'url': [
-			'on the web',
+			'this link',
 			'https://chill-mood-club.web.app/'
 		],
+		'images': [],
 	},
 	{
 		'id': 200,
@@ -126,6 +128,7 @@ const engineeringProjectDetails = [
 			'Google Play',
 			'https://play.google.com/store/apps/details?id=io.github.lionisaqt.foodnow'
 		],
+		'images': [],
 	}
 ]
 
@@ -137,6 +140,8 @@ const resumes = [
 		'tidbit': '"What we\'re really here for."',
 		'image': gameResumeImage,
 		'url': 'https://ryanshee.s3.us-west-1.amazonaws.com/misc-images/shee-ryan_resume_g.pdf',
+		'repo': [],
+		'images': [],
 	},
 	{
 		'id': 300,
@@ -145,6 +150,8 @@ const resumes = [
 		'tidbit': '"LeetCode or have no abode."',
 		'image': sweResumeImage,
 		'url': 'https://ryanshee.s3.us-west-1.amazonaws.com/misc-images/shee-ryan_resume_w.pdf',
+		'repo': [],
+		'images': [],
 	}
 ]
 
