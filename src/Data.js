@@ -139,7 +139,7 @@ const resumes = [
 		'role': 'For game recruiters',
 		'tidbit': '"What we\'re really here for."',
 		'image': gameResumeImage,
-		'url': 'https://ryanshee.s3.us-west-1.amazonaws.com/misc-images/shee-ryan_resume_g.pdf',
+		'url': 'https://ryanshee.s3.us-west-1.amazonaws.com/resumes/shee-ryan_resume_g.pdf',
 		'repo': [],
 		'images': [],
 	},
@@ -149,7 +149,7 @@ const resumes = [
 		'role': 'For engineering recruiters',
 		'tidbit': '"LeetCode or have no abode."',
 		'image': sweResumeImage,
-		'url': 'https://ryanshee.s3.us-west-1.amazonaws.com/misc-images/shee-ryan_resume_w.pdf',
+		'url': 'https://ryanshee.s3.us-west-1.amazonaws.com/resumes/shee-ryan_resume_w.pdf',
 		'repo': [],
 		'images': [],
 	}
