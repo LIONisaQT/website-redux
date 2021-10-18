@@ -63,6 +63,9 @@ function AboutMeSection({ id }) {
 				<p>E-mail: <a className='PrimaryText Link' href='mailto:ryan@ryanshee.com'>ryan@ryanshee.com</a></p>
 				<p>LinkedIn: <a className='PrimaryText Link' href='https://www.linkedin.com/in/ryanzshee/' target='_blank' rel='noreferrer'>LinkedIn</a></p>
 				<p>GitHub: <a className='PrimaryText Link' href='https://github.com/LIONisaQT' target='_blank' rel='noreferrer'>GitHub</a></p>
+				<div className='Footer'>
+					&copy; {new Date().getFullYear()} Ryan Shee
+				</div>
 			</div>
 		</section>
 	)

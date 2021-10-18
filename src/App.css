@@ -109,6 +109,11 @@ img {
   position: relative;
 }
 
+.Footer {
+  margin-top: 120px;
+  text-align: center;
+}
+
 .IntroColumn {
   display: grid;
   grid-template-columns: 1fr 2fr;
