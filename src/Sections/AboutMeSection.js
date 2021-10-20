@@ -22,7 +22,7 @@ function AboutMeSection({ id }) {
 					<span className='HighlightText'> Unreal</span>.
 					I also have experience with
 					<span className='HighlightText'> Cocos Creator</span>.
-					In addition to realizing ideas, I like prototyping things just to see how they are implemented, or challenging myself to use certain technologies/programming paradigms.
+					In my free time, I like prototyping things just to see how they are implemented, or challenging myself to use new technologies/programming paradigms.
 					One thing that's always stuck with me is something another engineer told me early in my career:
 				</p>
 				<section className='Quote'>
@@ -31,7 +31,7 @@ function AboutMeSection({ id }) {
 				<p>
 					Other than programming, I also have experience
 					<span className='HighlightText'> instructing classes </span>
-					on game design and development for high school students with Mission Bit.
+					on game design and development for high school students through Mission Bit.
 					I will destroy almost anyone who challenges me in Smash Bros there.
 					I
 					<span className='HighlightText'> led my team </span>
@@ -51,12 +51,9 @@ function AboutMeSection({ id }) {
 					That said, I also
 					<span className='HighlightText'> enjoy relaxing with various other games</span>,
 					such as XCOM, The Legend of Zelda, Metroid, and Animal Crossing.
-					Of course, I can also play any
-					<span className='HighlightText'> Super Smash Bros </span>
-					game competently (1v1 me anytime).
 				</p>
 				<p>
-					Please hire me.
+					Thanks for visiting my site!
 				</p>
 				<br />
 				<h1 className='PrimaryText'>Contact</h1>

@@ -27,9 +27,6 @@ function IntroSection() {
 							<span className='HighlightText'> Unreal</span>.
 							You should definitely check out my projects and resumes.
 						</p>
-						<p>
-							Also please hire me.
-						</p>
 					</div>
 				</div>
 			</div>
