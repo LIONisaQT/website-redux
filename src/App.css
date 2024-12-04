@@ -1,6 +1,32 @@
+@import url(/src/assets/css/Colors.css);
+
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  --dot-size: 50px;
+
+  width: 100vw;
+  height: 100vh;
+  background: var(--darkest);
+  background-image: radial-gradient(var(--darker) 1%, transparent 8%);
+  background-position: 0 0, var(--dot-size) var(--dot-size);
+  background-size: var(--dot-size) var(--dot-size);
+}
+
+h1, h2 {
+  margin: 0;
+}
+
+#main {
+  display: flex;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.title {
+  color: var(--light);
+}
+
+.subtitle {
+  color: var(--dark);
 }
