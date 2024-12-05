@@ -39,3 +39,14 @@ h1, h2, p {
 .subtitle {
   color: var(--dark);
 }
+
+.buttons {
+  display: flex;
+  gap: 8px;
+}
+
+@media only screen and (max-width: 600px) {
+  .buttons {
+    flex-direction: column;
+  }
+}

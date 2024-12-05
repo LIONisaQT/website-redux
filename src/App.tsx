@@ -1,6 +1,7 @@
 import "./App.css";
 import FancyButton from "./assets/components/FancyButton/FancyButton";
 
+// TODO: Fill in links.
 function App() {
   return (
     <>
@@ -10,7 +11,9 @@ function App() {
           <h2 className="subtitle">I like making stuff.</h2>
         </section>
         <section className="buttons">
-          <FancyButton text="Resume" link="/" />
+          <FancyButton text="Resume" link="/" isNewTab={true} />
+          <FancyButton text="GitHub" link="/" isNewTab={true} />
+          <FancyButton text="LinkedIn" link="/" isNewTab={true} />
         </section>
       </div>
     </>
