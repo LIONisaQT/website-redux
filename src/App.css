@@ -11,16 +11,25 @@
   background-size: var(--dot-size) var(--dot-size);
 }
 
-h1, h2 {
+h1, h2, p {
   margin: 0;
+  color: var(--light);
 }
 
 #main {
-  display: flex;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 24px;
+}
+
+.header {
+  display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .title {
