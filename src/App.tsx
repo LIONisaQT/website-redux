@@ -59,9 +59,21 @@ function App() {
           </div>
         </section>
         <section className="buttons">
-          <FancyButton text="Resume" link="/" isNewTab={true} />
-          <FancyButton text="GitHub" link="/" isNewTab={true} />
-          <FancyButton text="LinkedIn" link="/" isNewTab={true} />
+          <FancyButton
+            text="Resume"
+            link="/public/shee-ryan_resume.pdf"
+            isNewTab={true}
+          />
+          <FancyButton
+            text="GitHub"
+            link="https://github.com/LIONisaQT"
+            isNewTab={true}
+          />
+          <FancyButton
+            text="LinkedIn"
+            link="https://www.linkedin.com/in/ryanzshee/"
+            isNewTab={true}
+          />
         </section>
       </div>
     </>
