@@ -74,6 +74,19 @@ p {
 }
 
 @media only screen and (max-width: 600px) {
+  #main {
+    gap: 32px;
+  }
+
+  .header {
+    gap: 8px;
+  }
+
+  .title {
+    font-size: 32pt;
+    ;
+  }
+
   .buttons {
     flex-direction: column;
   }

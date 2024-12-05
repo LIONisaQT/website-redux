@@ -1,15 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.scss";
 import FancyButton from "./assets/components/FancyButton/FancyButton";
 
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const originalTitle = "HEY, I'M RYAN.";
-const originalSubtitle = "I like making stuff.";
 
 // TODO: Fill in links.
 function App() {
   const [title, setTitle] = useState(originalTitle);
-  const [subtitle, setSubtitle] = useState(originalSubtitle);
+
+  useEffect(() => {
+    hackTitle(); // Run once on startup.
+  }, []);
 
   const hackTitle = () => {
     let text = title;
@@ -53,7 +55,7 @@ function App() {
             {title}
           </h1>
           <div className="subtitle">
-            <h2 className="typewriter">{subtitle}</h2>
+            <h2 className="typewriter">I like making stuff.</h2>
           </div>
         </section>
         <section className="buttons">
