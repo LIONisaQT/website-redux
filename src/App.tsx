@@ -1,11 +1,10 @@
 import { useState } from "react";
-import "./App.css";
+import "./App.scss";
 import FancyButton from "./assets/components/FancyButton/FancyButton";
 
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const originalTitle = "HEY, I'M RYAN.";
 const originalSubtitle = "I like making stuff.";
-const hoverSubtitle = "I might break stuff.";
 
 // TODO: Fill in links.
 function App() {
@@ -53,13 +52,9 @@ function App() {
           <h1 onMouseEnter={hackTitle} className="title">
             {title}
           </h1>
-          <h2
-            onMouseEnter={() => setSubtitle(hoverSubtitle)}
-            onMouseLeave={() => setSubtitle(originalSubtitle)}
-            className="subtitle"
-          >
-            {subtitle}
-          </h2>
+          <div className="subtitle">
+            <h2 className="typewriter">{subtitle}</h2>
+          </div>
         </section>
         <section className="buttons">
           <FancyButton text="Resume" link="/" isNewTab={true} />

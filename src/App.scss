@@ -11,7 +11,9 @@
   background-size: var(--dot-size) var(--dot-size);
 }
 
-h1, h2, p {
+h1,
+h2,
+p {
   margin: 0;
   color: var(--light);
   font-family: 'Space Mono', monospace;
@@ -39,6 +41,31 @@ h1, h2, p {
 
 .subtitle {
   color: var(--dark);
+}
+
+.typewriter {
+  color: var(--dark);
+  display: flex;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 4px solid;
+  animation: typing 1.5s steps(20) forwards, blink 1s step-end infinite;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
 }
 
 .buttons {
