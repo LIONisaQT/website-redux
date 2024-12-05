@@ -61,7 +61,7 @@ function App() {
         <section className="buttons">
           <FancyButton
             text="Resume"
-            link="/public/shee-ryan_resume.pdf"
+            link="https://ryanshee.s3.us-west-1.amazonaws.com/resumes/shee-ryan_resume.pdf"
             isNewTab={true}
           />
           <FancyButton
