@@ -4,7 +4,32 @@ import FancyButton from "./assets/components/FancyButton/FancyButton";
 
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const originalTitle = "HEY, I'M RYAN.";
+const subtitle = "I like making stuff.";
 const ignoredChars = [" ", ",", "'", "."];
+
+type buttonData = {
+  text: string;
+  link: string;
+  isNewTab: boolean;
+};
+
+const buttons: buttonData[] = [
+  {
+    text: "Resume",
+    link: "https://ryanshee.s3.us-west-1.amazonaws.com/resumes/shee-ryan_resume.pdf",
+    isNewTab: true,
+  },
+  {
+    text: "GitHub",
+    link: "https://github.com/LIONisaQT",
+    isNewTab: true,
+  },
+  {
+    text: "LinkedIn",
+    link: "https://www.linkedin.com/in/ryanzshee/",
+    isNewTab: true,
+  },
+];
 
 function App() {
   const [title, setTitle] = useState(originalTitle);
@@ -50,25 +75,18 @@ function App() {
             {title}
           </h1>
           <div className="subtitle">
-            <h2 className="typewriter">I like making stuff.</h2>
+            <h2 className="typewriter">{subtitle}</h2>
           </div>
         </section>
         <section className="buttons">
-          <FancyButton
-            text="Resume"
-            link="https://ryanshee.s3.us-west-1.amazonaws.com/resumes/shee-ryan_resume.pdf"
-            isNewTab={true}
-          />
-          <FancyButton
-            text="GitHub"
-            link="https://github.com/LIONisaQT"
-            isNewTab={true}
-          />
-          <FancyButton
-            text="LinkedIn"
-            link="https://www.linkedin.com/in/ryanzshee/"
-            isNewTab={true}
-          />
+          {buttons.map((button) => (
+            <FancyButton
+              key={button.text}
+              text={button.text}
+              link={button.link}
+              isNewTab={button.isNewTab}
+            />
+          ))}
         </section>
       </div>
     </>
