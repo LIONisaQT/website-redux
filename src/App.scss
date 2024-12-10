@@ -9,14 +9,8 @@
   background-image: radial-gradient(var(--darker) 1%, transparent 8%);
   background-position: 0 0, var(--dot-size) var(--dot-size);
   background-size: var(--dot-size) var(--dot-size);
-}
 
-h1,
-h2,
-p {
-  margin: 0;
   color: var(--light);
-  font-family: 'Space Mono', monospace;
 }
 
 #main {
@@ -35,11 +29,9 @@ p {
   text-align: center;
 }
 
-.title {
-  color: var(--light);
-}
-
 .subtitle {
+  margin: 0;
+  font-family: 'Space Mono', monospace;
   color: var(--dark);
 }
 
