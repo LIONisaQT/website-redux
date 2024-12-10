@@ -5,7 +5,6 @@ import FancyButton from "./assets/components/FancyButton/FancyButton";
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const originalTitle = "HEY, I'M RYAN.";
 
-// TODO: Fill in links.
 function App() {
   const [title, setTitle] = useState(originalTitle);
 
