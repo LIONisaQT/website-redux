@@ -1,6 +1,5 @@
 import "./FancyButton.scss";
 
-// TODO: Append new tab icon after button text.
 function FancyButton(props: { text: string; link: string; isNewTab: boolean }) {
   return (
     <>

@@ -2,15 +2,16 @@ import { useEffect, useState } from "react";
 import "./App.scss";
 import FancyButton from "./assets/components/FancyButton/FancyButton";
 
-const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const originalTitle = "HEY, I'M RYAN.";
+const ignoredChars = [" ", ",", "'", "."];
 
-// TODO: Fill in links.
 function App() {
   const [title, setTitle] = useState(originalTitle);
 
   useEffect(() => {
     hackTitle(); // Run once on startup.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const hackTitle = () => {
@@ -23,20 +24,14 @@ function App() {
     const interval = setInterval(() => {
       text = text
         .split("")
-        .map((letter, index) => {
-          if (
-            letter === " " ||
-            letter === "," ||
-            letter === "'" ||
-            letter === "."
-          )
-            return letter;
+        .map((char, index) => {
+          if (ignoredChars.includes(char)) return char;
 
           if (index < iterations) {
             return originalTitle[index];
           }
 
-          return letters[Math.floor(Math.random() * 26)];
+          return alphabet[Math.floor(Math.random() * 26)];
         })
         .join("");
 
