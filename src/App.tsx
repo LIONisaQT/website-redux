@@ -13,7 +13,7 @@ type buttonData = {
 const buttons: buttonData[] = [
   {
     text: "Resume",
-    link: "https://ryanshee.s3.us-west-1.amazonaws.com/resumes/shee-ryan_resume.pdf",
+    link: "/shee-ryan_resume.pdf",
     isNewTab: true,
   },
   {
