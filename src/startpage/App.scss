@@ -1,0 +1,22 @@
+@import url(/src/assets/css/Colors.css);
+
+#root {
+	--dot-size: 50px;
+
+	width: 100vw;
+	height: 100vh;
+	background: var(--darkest);
+	background-image: radial-gradient(var(--darker) 1%, transparent 8%);
+	background-position: 0 0, var(--dot-size) var(--dot-size);
+	background-size: var(--dot-size) var(--dot-size);
+	color: var(--light);
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+#main {
+	max-width: 1000px;
+	margin: 0 auto;
+}
