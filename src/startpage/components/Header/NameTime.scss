@@ -1,12 +1,46 @@
 .name-time {
 	display: flex;
-	gap: 20px;
+	align-items: end;
+	justify-content: center;
+	gap: 40px;
+	height: 100px;
 }
 
 .greetings {
 	display: flex;
+	flex-direction: column;
+
+	.greet {
+		font-size: 20pt;
+		font-weight: 400;
+		line-height: 60%;
+		padding-left: 2px;
+	}
+
+	.name {
+		font-size: 60pt;
+		font-weight: 700;
+		line-height: 100%;
+	}
+}
+
+.divider {
+	border-left: thick solid;
+	height: 100%;
 }
 
 .time {
 	display: flex;
+	align-items: baseline;
+	gap: 2px;
+
+	.numbers {
+		font-size: 60pt;
+		font-weight: 700;
+		line-height: 100%;
+	}
+
+	.ampm {
+		font-weight: 4S00;
+	}
 }
