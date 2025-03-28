@@ -1,11 +1,16 @@
-function BookmarkSection() {
+import "./BookmarkSection.scss";
+import { BookmarkCollection } from "./Bookmark.interface";
+
+function BookmarkSection(collection: BookmarkCollection) {
   return (
     <div className="bookmark-section">
-      <div>Bookmark title</div>
+      <div>{collection.name}</div>
       <ul>
-        <li>Bookmark 1</li>
-        <li>Bookmark 2</li>
-        <li>Bookmark 3</li>
+        {collection.bookmarks.map((bookmark) => (
+          <li>
+            <a href={bookmark.url}>{bookmark.name}</a>
+          </li>
+        ))}
       </ul>
     </div>
   );
