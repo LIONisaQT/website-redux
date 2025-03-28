@@ -1,10 +1,27 @@
 .bookmark-section {
 	min-width: 200px;
 
-	.collection-name {
-		color: var(--dark);
-		font-size: 18pt;
-		font-weight: 600;
+	.title-area {
+		display: flex;
+		flex-direction: row;
+		align-items: end;
+
+		.collection-name {
+			color: var(--purple);
+			font-size: 18pt;
+			font-weight: 600;
+		}
+
+		.edit-bookmark {
+			background: transparent;
+			color: transparent;
+			border: none;
+			padding: 8px 12px 6px;
+		}
+
+		&:hover>.edit-bookmark {
+			color: var(--dark);
+		}
 	}
 
 	ul {
