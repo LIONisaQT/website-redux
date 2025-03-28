@@ -1,5 +1,5 @@
-import "./BookmarkSection.scss";
 import { BookmarkCollection } from "./Bookmark.interface";
+import "./BookmarkSection.scss";
 
 function BookmarkSection(collection: BookmarkCollection) {
   return (
