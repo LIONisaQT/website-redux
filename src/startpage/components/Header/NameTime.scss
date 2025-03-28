@@ -1,0 +1,63 @@
+.name-time {
+	display: flex;
+	align-items: end;
+	justify-content: start;
+	gap: 40px;
+	height: 100px;
+}
+
+.greetings {
+	display: flex;
+	flex-direction: column;
+
+	.greet {
+		font-size: 20pt;
+		font-weight: 400;
+		line-height: 60%;
+		padding-left: 2px;
+		color: var(--pink);
+	}
+
+	.name {
+		font-size: 60pt;
+		font-weight: 700;
+		line-height: 100%;
+		color: var(--light);
+	}
+}
+
+.divider {
+	border-left: thick solid;
+	height: 100%;
+}
+
+.time {
+	display: flex;
+	align-items: baseline;
+	gap: 2px;
+
+	.numbers {
+		display: flex;
+		font-size: 80pt;
+		font-weight: 700;
+		line-height: 90%; // Forces text down a little bit
+
+		.hour {
+			color: var(--light);
+		}
+
+		.separator {
+			font-size: 48pt;
+			color: var(--dark);
+		}
+
+		.minute {
+			color: var(--cyan);
+		}
+	}
+
+	.ampm {
+		font-size: 16pt;
+		font-weight: 400;
+	}
+}

@@ -12,3 +12,7 @@
 	--red: #ff5555;
 	--yellow: #f1fa8c;
 }
+
+::selection {
+	color: var(--purple);
+}
