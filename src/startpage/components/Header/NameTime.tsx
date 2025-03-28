@@ -2,13 +2,28 @@ import { useEffect, useState } from "react";
 import "./NameTime.scss";
 
 function NameTime() {
-  const [time, setTime] = useState<string>();
+  const [greeting, setGreeting] = useState<string>("Hello,");
+  const [hour, setHour] = useState<string>();
+  const [minute, setMinute] = useState<string>();
+  const [ampm, setAmpm] = useState<string>();
 
   const updateTime = () => {
     const date = new Date();
-    const hour = date.getHours() % 12;
-    const minute = date.getMinutes();
-    setTime(`${hour}:${minute}`);
+
+    setGreeting(
+      date.getHours() < 12
+        ? "おはよう、"
+        : date.getHours() > 19
+        ? "今晩は、"
+        : "こんにちは、"
+    );
+
+    setHour(("0" + (date.getHours() % 12)).slice(-2));
+    setMinute(("0" + date.getMinutes()).slice(-2));
+
+    const ampm =
+      date.getHours() >= 12 && date.getHours() !== 24 ? "午後" : "午前";
+    setAmpm(ampm);
   };
 
   useEffect(() => {
@@ -23,13 +38,17 @@ function NameTime() {
   return (
     <div className="name-time">
       <section className="greetings">
-        <div className="greet">Hello,</div>
+        <div className="greet">{greeting}</div>
         <div className="name">Ryan</div>
       </section>
       <div className="divider" />
       <section className="time">
-        <div className="numbers">{time}</div>
-        <div className="ampm">PM</div>
+        <div className="numbers">
+          <span className="hour">{hour}</span>
+          <span className="separator">:</span>
+          <span className="minute">{minute}</span>
+        </div>
+        <div className="ampm">{ampm}</div>
       </section>
     </div>
   );

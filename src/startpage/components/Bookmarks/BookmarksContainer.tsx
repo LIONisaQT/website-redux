@@ -5,7 +5,7 @@ import BookmarkSection from "./BookmarkSection";
 // TODO: Move to localStorage
 const defaultBookmarks: BookmarkCollection[] = [
   {
-    name: "Google 🛜",
+    name: "Google",
     bookmarks: [
       {
         name: "ryan@ryanshee.com",
@@ -26,7 +26,7 @@ const defaultBookmarks: BookmarkCollection[] = [
     ],
   },
   {
-    name: "Entertainment 🎮",
+    name: "Entertainment",
     bookmarks: [
       {
         name: "Reddit",
@@ -47,7 +47,7 @@ const defaultBookmarks: BookmarkCollection[] = [
     ],
   },
   {
-    name: "Work 🧑‍💻",
+    name: "Work ",
     bookmarks: [
       {
         name: "GitHub",
@@ -68,7 +68,7 @@ const defaultBookmarks: BookmarkCollection[] = [
     ],
   },
   {
-    name: "Utility ⚙️",
+    name: "Utility",
     bookmarks: [
       {
         name: "Jisho",

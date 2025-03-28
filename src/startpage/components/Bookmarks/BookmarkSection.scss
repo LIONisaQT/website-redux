@@ -1,17 +1,27 @@
 .bookmark-section {
-	min-width: 150px;
+	min-width: 200px;
+
+	.collection-name {
+		color: var(--dark);
+		font-size: 18pt;
+		font-weight: 600;
+	}
 
 	ul {
 		padding: 0;
 		margin: 0;
-		margin-top: 10px;
+		margin-top: 8px;
 	}
 
 	li {
 		list-style: none;
 
 		a {
-			color: var(--cyan);
+			color: var(--light);
+		}
+
+		a:hover {
+			color: var(--orange);
 		}
 	}
 }
