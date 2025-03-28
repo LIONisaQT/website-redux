@@ -1,4 +1,4 @@
-import { BookmarkCollection } from "./Bookmark.interface";
+import { BookmarkCollection } from "./custom-bookmark.interface";
 import "./BookmarksContainer.scss";
 import BookmarkSection from "./BookmarkSection";
 
