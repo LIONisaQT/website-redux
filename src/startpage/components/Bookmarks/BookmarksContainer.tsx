@@ -68,7 +68,7 @@ const defaultBookmarks: BookmarkCollection[] = [
     ],
   },
   {
-    name: "Utility 🧑‍💻",
+    name: "Utility ⚙️",
     bookmarks: [
       {
         name: "Jisho",
