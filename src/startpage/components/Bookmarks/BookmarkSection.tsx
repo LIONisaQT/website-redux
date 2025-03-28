@@ -21,7 +21,7 @@ function BookmarkSection({ collection, callback }: Props) {
       </div>
       <ul>
         {collection.bookmarks.map((bookmark) => (
-          <li>
+          <li key={bookmark.name}>
             <a href={bookmark.url} target="_self">
               {bookmark.name}
             </a>

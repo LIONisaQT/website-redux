@@ -24,7 +24,11 @@ function BookmarksContainer() {
   return (
     <div className="bookmarks-container">
       {defaultBookmarks.map((collection) => (
-        <BookmarkSection collection={collection} callback={toggleEditor} />
+        <BookmarkSection
+          collection={collection}
+          callback={toggleEditor}
+          key={collection.name}
+        />
       ))}
       <BookmarkEditor visible={editorOn} collection={currentCollection} />
     </div>

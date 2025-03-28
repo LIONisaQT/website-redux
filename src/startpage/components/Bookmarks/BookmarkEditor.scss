@@ -1,0 +1,15 @@
+.editor-container {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background: rgb(0, 0, 0, 0.4);
+	display: flex;
+
+	.bookmark-editor {
+		margin: auto;
+		width: 800px;
+		background: var(--darker);
+	}
+}
