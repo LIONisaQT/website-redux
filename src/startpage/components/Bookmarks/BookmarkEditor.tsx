@@ -1,6 +1,7 @@
 import "./BookmarkEditor.scss";
 import { useEffect, useState } from "react";
 import { BookmarkCollection } from "./custom-bookmark.interface";
+import BookmarkEditorSection from "./BookmarkEditorSection";
 
 interface Props {
   visible: boolean;
@@ -17,14 +18,29 @@ function BookmarkEditor({ visible, collection }: Props) {
   return (
     isOn && (
       <div className="editor-container">
-        <div className="bookmark-editor">
+        <form action="" className="bookmark-editor">
+          <h1 className="modal-title">Modify bookmark collection</h1>
           <section className="title-section">
-            <div>{collection?.name}</div>
+            <label htmlFor="title">Name</label>
+            <input
+              type="text"
+              name="title"
+              id="title-input"
+              defaultValue={collection ? collection.name : "Collection name"}
+              placeholder="Collection name (required)"
+              required
+            ></input>
           </section>
-          {collection?.bookmarks.map((bookmark) => (
-            <section key={bookmark.name}>{bookmark.name}</section>
-          ))}
-        </div>
+          <section className="bookmarks-section">
+            {collection?.bookmarks.map((bookmark) => (
+              <BookmarkEditorSection bookmark={bookmark} key={bookmark.name} />
+            ))}
+          </section>
+          <section className="buttons">
+            <button className="save-button">Save</button>
+            <button className="cancel-button">Cancel</button>
+          </section>
+        </form>
       </div>
     )
   );

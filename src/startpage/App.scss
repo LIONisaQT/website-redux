@@ -22,3 +22,18 @@
 	gap: 40px;
 	max-width: 1000px;
 }
+
+label {
+	color: var(--light);
+	filter: opacity(50%);
+	font-size: smaller;
+}
+
+input {
+	background: transparent;
+	color: var(--light);
+	border: none;
+	border-bottom: 2px solid var(--dark);
+	outline: none;
+	padding: 4px 8px;
+}

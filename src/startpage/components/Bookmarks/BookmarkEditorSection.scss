@@ -1,0 +1,12 @@
+.editor-section {
+	display: flex;
+	flex-direction: row;
+	gap: 8px;
+
+	.label-input {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		width: 50%;
+	}
+}
