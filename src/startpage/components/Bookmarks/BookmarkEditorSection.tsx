@@ -15,6 +15,7 @@ function BookmarkEditorSection({ bookmark }: Props) {
           name="bookmark-name"
           defaultValue={bookmark.name}
           placeholder="Bookmark label (required)"
+          required
         />
       </div>
       <div className="label-input">
@@ -23,6 +24,7 @@ function BookmarkEditorSection({ bookmark }: Props) {
           type="text"
           defaultValue={bookmark.url}
           placeholder="Bookmark URL (required)"
+          required
         />
       </div>
     </section>
