@@ -12,13 +12,24 @@ function BookmarksContainer() {
   const [currentCollection, setCollection] = useState<BookmarkCollection>();
 
   useEffect(() => {
-    console.log(editorOn);
+    console.log(`Editor open: ${editorOn}`);
     console.log(currentCollection);
   }, [editorOn, currentCollection]);
 
-  const toggleEditor = (collection?: BookmarkCollection) => {
+  const toggleEditorActions = (
+    collection?: BookmarkCollection,
+    wasSaved?: boolean
+  ) => {
     setEditorOn(!editorOn);
     setCollection(collection);
+
+    if (wasSaved) {
+      saveCollection();
+    }
+  };
+
+  const saveCollection = () => {
+    console.log(`${currentCollection?.name} saved`);
   };
 
   return (
@@ -26,11 +37,17 @@ function BookmarksContainer() {
       {defaultBookmarks.map((collection) => (
         <BookmarkSection
           collection={collection}
-          callback={toggleEditor}
+          editClickCallback={toggleEditorActions}
           key={collection.name}
         />
       ))}
-      <BookmarkEditor visible={editorOn} collection={currentCollection} />
+      <BookmarkEditor
+        visible={editorOn}
+        collection={currentCollection}
+        closeCallback={(wasSaved: boolean, collection?: BookmarkCollection) =>
+          toggleEditorActions(collection, wasSaved)
+        }
+      />
     </div>
   );
 }

@@ -3,19 +3,18 @@ import "./BookmarkSection.scss";
 
 interface Props {
   collection: BookmarkCollection;
-  callback: (collection: BookmarkCollection) => void;
+  editClickCallback: (collection: BookmarkCollection) => void;
 }
 
-function BookmarkSection({ collection, callback }: Props) {
-  const getData = () => {
-    callback(collection);
-  };
-
+function BookmarkSection({ collection, editClickCallback }: Props) {
   return (
     <div className="bookmark-section">
       <div className="title-area">
         <div className="collection-name">{collection.name}</div>
-        <button className="edit-bookmark" onClick={getData}>
+        <button
+          className="edit-bookmark"
+          onClick={() => editClickCallback(collection)}
+        >
           edit
         </button>
       </div>
