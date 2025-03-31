@@ -1,20 +1,15 @@
-import {
-  BookmarkCollection,
-  defaultBookmarks,
-} from "./custom-bookmark.interface";
+import { BookmarkCollection } from "./custom-bookmark.interface";
 import "./BookmarksContainer.scss";
 import BookmarkSection from "./BookmarkSection";
 import BookmarkEditor from "./BookmarkEditor";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useLiveQuery } from "dexie-react-hooks";
+import { db } from "./db";
 
 function BookmarksContainer() {
   const [editorOn, setEditorOn] = useState(false);
   const [currentCollection, setCollection] = useState<BookmarkCollection>();
-
-  useEffect(() => {
-    console.log(`Editor open: ${editorOn}`);
-    console.log(currentCollection);
-  }, [editorOn, currentCollection]);
+  const bookmarks = useLiveQuery(() => db.bookmarks.toArray());
 
   const toggleEditorActions = (
     collection?: BookmarkCollection,
@@ -34,7 +29,7 @@ function BookmarksContainer() {
 
   return (
     <div className="bookmarks-container">
-      {defaultBookmarks.map((collection) => (
+      {bookmarks?.map((collection) => (
         <BookmarkSection
           collection={collection}
           editClickCallback={toggleEditorActions}
