@@ -37,19 +37,7 @@
 		flex-direction: row;
 		gap: 12px;
 
-		button {
-			border: none;
-		}
-
-		.save-button {
-			background: var(--light);
-			color: var(--darkest);
-
-			&:hover {
-				filter: brightness(80%);
-			}
-		}
-
+		// TODO: Make this a global thing
 		.cancel-button {
 			background: transparent;
 			color: var(--light);

@@ -37,3 +37,13 @@ input {
 	outline: none;
 	padding: 4px 8px;
 }
+
+button {
+	border: none;
+	background: var(--light);
+	color: var(--darkest);
+
+	&:hover {
+		filter: brightness(80%);
+	}
+}
