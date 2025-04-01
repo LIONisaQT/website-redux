@@ -1,14 +1,24 @@
 import "./BookmarkEditor.scss";
 import { BookmarkCollection } from "./custom-bookmark.interface";
 import BookmarkEditorSection from "./BookmarkEditorSection";
+import { useState } from "react";
 
 interface Props {
   visible: boolean;
   collection?: BookmarkCollection;
   closeCallback: (wasSaved: boolean, collection?: BookmarkCollection) => void;
+  addCallback: (name: string, url: string) => void;
 }
 
-function BookmarkEditor({ visible, collection, closeCallback }: Props) {
+function BookmarkEditor({
+  visible,
+  collection,
+  closeCallback,
+  addCallback,
+}: Props) {
+  const [newName, setNewName] = useState("");
+  const [newUrl, setNewUrl] = useState("");
+
   return (
     visible && (
       <div className="editor-container">
@@ -40,6 +50,7 @@ function BookmarkEditor({ visible, collection, closeCallback }: Props) {
                 <input
                   type="text"
                   name="bookmark-name"
+                  onChange={(e) => setNewName(e.target.value)}
                   placeholder="Bookmark label (required)"
                   required
                 />
@@ -48,11 +59,17 @@ function BookmarkEditor({ visible, collection, closeCallback }: Props) {
                 <label htmlFor="bookmark-url">URL</label>
                 <input
                   type="text"
+                  onChange={(e) => setNewUrl(e.target.value)}
                   placeholder="Bookmark URL (required)"
                   required
                 />
               </div>
-              <button>➕</button>
+              <button
+                type="button"
+                onClick={() => addCallback(newName, newUrl)}
+              >
+                ➕
+              </button>
             </div>
           </section>
           <section className="buttons">

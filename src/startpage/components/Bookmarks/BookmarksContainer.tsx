@@ -27,6 +27,10 @@ function BookmarksContainer() {
     console.log(`${currentCollection?.name} saved`);
   };
 
+  const addBookmark = (name: string, url: string) => {
+    console.log("Add bookmark", name, url);
+  };
+
   return (
     <div className="bookmarks-container">
       {bookmarks?.map((collection) => (
@@ -42,6 +46,7 @@ function BookmarksContainer() {
         closeCallback={(wasSaved: boolean, collection?: BookmarkCollection) =>
           toggleEditorActions(collection, wasSaved)
         }
+        addCallback={addBookmark}
       />
     </div>
   );
