@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./NameTime.scss";
 
+// TODO: Allow for updating name
 function NameTime() {
   const [greeting, setGreeting] = useState<string>("Hello,");
   const [hour, setHour] = useState<string>();
