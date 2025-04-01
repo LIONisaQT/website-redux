@@ -13,7 +13,7 @@ function NameTime() {
     setGreeting(
       date.getHours() < 12
         ? "おはよう、"
-        : date.getHours() > 19
+        : date.getHours() > 17
         ? "今晩は、"
         : "こんにちは、"
     );
