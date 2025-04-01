@@ -48,6 +48,11 @@ function App() {
             />
           ))}
         </section>
+        <section>
+          <a className="blurb" href="/startpage/" target="_">
+            Check out my startpage!
+          </a>
+        </section>
       </div>
     </>
   );

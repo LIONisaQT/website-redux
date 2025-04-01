@@ -1,0 +1,74 @@
+.editor-container {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background: rgb(0, 0, 0, 0.4);
+	display: flex;
+
+	.bookmark-editor {
+		margin: auto;
+		width: 800px;
+		background: var(--darker);
+		padding: 60px 56px;
+		display: flex;
+		flex-direction: column;
+		gap: 40px;
+
+		.modal-title {
+			margin: 0;
+		}
+
+		#title-input {
+			width: 100%;
+			font-size: 20pt;
+		}
+	}
+
+	.bookmarks-section {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	.add-bookmark {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+
+		h3 {
+			margin: 0;
+		}
+
+		.add-input {
+			display: flex;
+			flex-direction: row;
+			gap: 8px;
+
+			.label-input {
+				display: flex;
+				flex-direction: column;
+				width: 100%;
+			}
+		}
+	}
+
+	.buttons {
+		display: flex;
+		flex-direction: row;
+		gap: 12px;
+
+		// TODO: Make this a global thing
+		.cancel-button {
+			background: transparent;
+			color: var(--light);
+			filter: brightness(75%);
+
+			&:hover {
+				color: var(--red);
+				filter: brightness(100%);
+			}
+		}
+	}
+}

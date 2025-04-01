@@ -1,0 +1,49 @@
+@import url(/src/assets/css/Colors.css);
+
+#root {
+	--dot-size: 50px;
+
+	width: 100vw;
+	height: 100vh;
+	background: var(--darkest);
+	background-image: radial-gradient(var(--darker) 1%, transparent 8%);
+	background-position: 0 0, var(--dot-size) var(--dot-size);
+	background-size: var(--dot-size) var(--dot-size);
+	color: var(--light);
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+#main {
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
+	max-width: 1000px;
+}
+
+label {
+	color: var(--light);
+	filter: opacity(50%);
+	font-size: smaller;
+}
+
+input {
+	background: transparent;
+	color: var(--light);
+	border: none;
+	border-bottom: 2px solid var(--dark);
+	outline: none;
+	padding: 4px 8px;
+}
+
+button {
+	border: none;
+	background: var(--light);
+	color: var(--darkest);
+
+	&:hover {
+		filter: brightness(80%);
+	}
+}
