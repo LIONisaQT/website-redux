@@ -8,31 +8,26 @@ export interface Bookmark {
   url: string;
 }
 
-// TODO: Read this and move to localStorage on first launch
 export const defaultBookmarks: BookmarkCollection[] = [
   {
-    name: "Google",
+    name: "0: Comms",
     bookmarks: [
       {
-        name: "ryan@ryanshee.com",
-        url: "https://mail.google.com/mail/u/1/",
-      },
-      {
-        name: "ryan.shee@gmail.com",
+        name: "Gmail",
         url: "https://mail.google.com/mail/u/0/",
       },
       {
-        name: "Drive",
-        url: "https://drive.google.com",
+        name: "Facebook Messenger",
+        url: "https://www.messenger.com",
       },
       {
-        name: "Photos",
-        url: "https://photos.google.com/u/0/",
+        name: "Google Messages",
+        url: "https://messages.google.com/web/u/1/conversations",
       },
     ],
   },
   {
-    name: "Entertainment",
+    name: "1: Entertainment",
     bookmarks: [
       {
         name: "Reddit",
@@ -53,7 +48,7 @@ export const defaultBookmarks: BookmarkCollection[] = [
     ],
   },
   {
-    name: "Work ",
+    name: "2: Study",
     bookmarks: [
       {
         name: "GitHub",
@@ -74,8 +69,16 @@ export const defaultBookmarks: BookmarkCollection[] = [
     ],
   },
   {
-    name: "Utility",
+    name: "3: Utility",
     bookmarks: [
+      {
+        name: "Drive",
+        url: "https://drive.google.com",
+      },
+      {
+        name: "Photos",
+        url: "https://photos.google.com/u/0/",
+      },
       {
         name: "Jisho",
         url: "https://jisho.org",
