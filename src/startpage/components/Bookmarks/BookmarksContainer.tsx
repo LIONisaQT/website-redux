@@ -13,18 +13,21 @@ function BookmarksContainer() {
 
   const toggleEditorActions = (
     collection?: BookmarkCollection,
-    wasSaved?: boolean
+    wasSaved?: boolean,
+    newTitle?: string
   ) => {
     setEditorOn(!editorOn);
     setCollection(collection);
 
-    if (wasSaved) {
-      saveCollection();
+    if (wasSaved && newTitle) {
+      saveCollection(newTitle);
     }
   };
 
-  const saveCollection = () => {
-    console.log(`${currentCollection?.name} saved`);
+  // TODO: Maybe use ID instead of bookmark name as key? Collections get rendered alphanumerically.
+  const saveCollection = (name: string) => {
+    db.bookmarks.update(currentCollection!.name, { name: name });
+    // .then((updated) => console.log(updated));
   };
 
   const addBookmark = (name: string, url: string) => {
@@ -70,9 +73,11 @@ function BookmarksContainer() {
       <BookmarkEditor
         visible={editorOn}
         collection={currentCollection}
-        closeCallback={(wasSaved: boolean, collection?: BookmarkCollection) =>
-          toggleEditorActions(collection, wasSaved)
-        }
+        closeCallback={(
+          wasSaved: boolean,
+          collection?: BookmarkCollection,
+          newTitle?: string
+        ) => toggleEditorActions(collection, wasSaved, newTitle)}
         addCallback={addBookmark}
         deleteCallback={deleteBookmark}
       />

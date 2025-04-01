@@ -6,7 +6,11 @@ import { useState } from "react";
 interface Props {
   visible: boolean;
   collection?: BookmarkCollection;
-  closeCallback: (wasSaved: boolean, collection?: BookmarkCollection) => void;
+  closeCallback: (
+    wasSaved: boolean,
+    collection?: BookmarkCollection,
+    newTitle?: string
+  ) => void;
   addCallback: (name: string, url: string) => void;
   deleteCallback: (name: string) => void;
 }
@@ -18,6 +22,7 @@ function BookmarkEditor({
   addCallback,
   deleteCallback,
 }: Props) {
+  const [newTitle, setTitle] = useState(collection?.name);
   const [newName, setNewName] = useState("");
   const [newUrl, setNewUrl] = useState("");
 
@@ -34,6 +39,7 @@ function BookmarkEditor({
               id="title-input"
               defaultValue={collection ? collection.name : "Collection name"}
               placeholder="Collection name (required)"
+              onChange={(e) => setTitle(e.target.value)}
               required
             ></input>
           </section>
@@ -81,7 +87,7 @@ function BookmarkEditor({
           <section className="buttons">
             <button
               className="save-button"
-              onClick={() => closeCallback(true, collection)}
+              onClick={() => closeCallback(true, collection, newTitle)}
             >
               Save
             </button>
