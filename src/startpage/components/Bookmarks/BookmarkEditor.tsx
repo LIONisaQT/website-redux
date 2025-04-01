@@ -30,6 +30,31 @@ function BookmarkEditor({ visible, collection, closeCallback }: Props) {
               <BookmarkEditorSection bookmark={bookmark} key={bookmark.name} />
             ))}
           </section>
+          <section className="add-bookmark">
+            <div className="add-title">
+              <h3>Add new</h3>
+            </div>
+            <div className="add-input">
+              <div className="label-input">
+                <label htmlFor="bookmark-name">Label</label>
+                <input
+                  type="text"
+                  name="bookmark-name"
+                  placeholder="Bookmark label (required)"
+                  required
+                />
+              </div>
+              <div className="label-input">
+                <label htmlFor="bookmark-url">URL</label>
+                <input
+                  type="text"
+                  placeholder="Bookmark URL (required)"
+                  required
+                />
+              </div>
+              <button>➕</button>
+            </div>
+          </section>
           <section className="buttons">
             <button
               className="save-button"

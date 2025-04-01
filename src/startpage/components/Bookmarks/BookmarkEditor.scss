@@ -32,6 +32,28 @@
 		gap: 20px;
 	}
 
+	.add-bookmark {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+
+		h3 {
+			margin: 0;
+		}
+
+		.add-input {
+			display: flex;
+			flex-direction: row;
+			gap: 8px;
+
+			.label-input {
+				display: flex;
+				flex-direction: column;
+				width: 100%;
+			}
+		}
+	}
+
 	.buttons {
 		display: flex;
 		flex-direction: row;

@@ -27,6 +27,7 @@ function BookmarkEditorSection({ bookmark }: Props) {
           required
         />
       </div>
+      <button>🗑️</button>
     </section>
   );
 }
