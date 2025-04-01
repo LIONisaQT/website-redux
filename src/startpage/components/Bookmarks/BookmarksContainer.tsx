@@ -28,11 +28,34 @@ function BookmarksContainer() {
   };
 
   const addBookmark = (name: string, url: string) => {
-    console.log("Add bookmark", name, url);
+    currentCollection!.bookmarks.push({ name, url });
+
+    db.bookmarks.update(currentCollection!.name, {
+      bookmarks: currentCollection!.bookmarks,
+    });
+    // .then((updated) => {
+    //   console.log(updated);
+    // });
   };
 
   const deleteBookmark = (name: string) => {
-    console.log("Delete bookmark", name);
+    const filtered = currentCollection!.bookmarks.filter(
+      (bookmark) => bookmark.name !== name
+    );
+
+    const updated: BookmarkCollection = {
+      name: currentCollection!.name,
+      bookmarks: filtered,
+    };
+
+    setCollection(updated);
+
+    db.bookmarks.update(currentCollection!.name, {
+      bookmarks: filtered,
+    });
+    // .then((updated) => {
+    //   console.log(updated);
+    // });
   };
 
   return (
