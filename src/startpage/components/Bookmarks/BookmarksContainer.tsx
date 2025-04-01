@@ -31,6 +31,10 @@ function BookmarksContainer() {
     console.log("Add bookmark", name, url);
   };
 
+  const deleteBookmark = (name: string) => {
+    console.log("Delete bookmark", name);
+  };
+
   return (
     <div className="bookmarks-container">
       {bookmarks?.map((collection) => (
@@ -47,6 +51,7 @@ function BookmarksContainer() {
           toggleEditorActions(collection, wasSaved)
         }
         addCallback={addBookmark}
+        deleteCallback={deleteBookmark}
       />
     </div>
   );

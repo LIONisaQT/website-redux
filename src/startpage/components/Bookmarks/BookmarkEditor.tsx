@@ -8,6 +8,7 @@ interface Props {
   collection?: BookmarkCollection;
   closeCallback: (wasSaved: boolean, collection?: BookmarkCollection) => void;
   addCallback: (name: string, url: string) => void;
+  deleteCallback: (name: string) => void;
 }
 
 function BookmarkEditor({
@@ -15,6 +16,7 @@ function BookmarkEditor({
   collection,
   closeCallback,
   addCallback,
+  deleteCallback,
 }: Props) {
   const [newName, setNewName] = useState("");
   const [newUrl, setNewUrl] = useState("");
@@ -37,7 +39,11 @@ function BookmarkEditor({
           </section>
           <section className="bookmarks-section">
             {collection?.bookmarks.map((bookmark) => (
-              <BookmarkEditorSection bookmark={bookmark} key={bookmark.name} />
+              <BookmarkEditorSection
+                bookmark={bookmark}
+                deleteCallback={deleteCallback}
+                key={bookmark.name}
+              />
             ))}
           </section>
           <section className="add-bookmark">
