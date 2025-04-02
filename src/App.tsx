@@ -49,7 +49,7 @@ function App() {
           ))}
         </section>
         <section>
-          <a className="blurb" href="/startpage/" target="_">
+          <a className="blurb" href="/startpage/">
             Check out my startpage!
           </a>
         </section>
