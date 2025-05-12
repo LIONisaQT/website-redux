@@ -24,8 +24,3 @@
 	font-family: "Oswald", sans-serif;
 	color: #272932;
 }
-
-/* Don't display last card's peek element */
-.waste-card > * > * > * > * > * > * {
-	display: none;
-}

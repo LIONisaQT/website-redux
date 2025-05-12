@@ -23,8 +23,3 @@
 .tableau-pile > *:not(:first-child) {
 	margin-top: -105px;
 }
-
-/* Don't display last card's peek element */
-.tableau-pile > :last-child > * > * > * > * > * {
-	display: none;
-}

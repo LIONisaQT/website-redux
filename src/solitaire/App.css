@@ -8,17 +8,13 @@
 .top-area {
 	display: flex;
 	flex-direction: row;
+	justify-content: space-between;
 	padding-bottom: 8px;
-}
-
-.foundations {
-	width: 60%;
 }
 
 .stock {
 	display: flex;
 	flex-direction: row-reverse;
-	width: 40%;
 }
 
 .tableau {

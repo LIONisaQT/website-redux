@@ -3,7 +3,7 @@ import "./PlayingCard.css";
 import {
 	getRankAsString,
 	getSuitColor,
-	getSuitEmoji,
+	getSuitSvgs,
 	type Card,
 } from "../logic/card";
 
@@ -12,6 +12,7 @@ interface CardProps {
 	origin: Card[];
 	onClick: (card: Card, origin: Card[]) => void;
 	zIndex?: number;
+	showPeek?: boolean;
 }
 
 const PlayingCard: React.FC<CardProps> = ({
@@ -19,6 +20,7 @@ const PlayingCard: React.FC<CardProps> = ({
 	origin,
 	onClick,
 	zIndex,
+	showPeek = false,
 }) => {
 	const [animationActive, setAnimationActive] = useState(false);
 
@@ -45,12 +47,16 @@ const PlayingCard: React.FC<CardProps> = ({
 							className="card-front-design"
 							style={{ color: getSuitColor(suit) }}
 						>
-							<div className="card-peek">
-								<p className="card-rank-small">{getRankAsString(rank)}</p>
-								<p className="card-suit-small">{getSuitEmoji(suit)}</p>
+							{showPeek && (
+								<div className="card-peek">
+									<p className="card-rank-small">{getRankAsString(rank)}</p>
+									<img src={getSuitSvgs(suit)} className="card-suit-small" />
+								</div>
+							)}
+							<div className="card-face-main">
+								<p className="card-rank">{getRankAsString(rank)}</p>
+								<img src={getSuitSvgs(suit)} className="card-suit" />
 							</div>
-							<p className="card-rank">{getRankAsString(rank)}</p>
-							<p className="card-suit">{getSuitEmoji(suit)}</p>
 						</div>
 					)}
 				</div>

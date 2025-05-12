@@ -4,8 +4,7 @@
 	align-items: center;
 	width: 100%;
 	height: 100%;
-	/* TODO: Find out why cards aren't aligned with tableau */
-	gap: 10px;
+	gap: 8px;
 }
 
 .foundation-pile {
@@ -22,10 +21,5 @@
 
 /* Don't double up on borders */
 .foundation-pile:has(div) {
-	border: 2px solid transparent;
-}
-
-/* Don't display last card's peek element */
-.foundation-pile > * > * > * > * > * > * {
-	display: none;
+	border: 0px;
 }

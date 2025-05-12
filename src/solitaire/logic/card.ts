@@ -1,3 +1,15 @@
+import SpadeSvg from "../assets/suits/spade.svg";
+import HeartSvg from "../assets/suits/heart.svg";
+import ClubSvg from "../assets/suits/club.svg";
+import DiamondSvg from "../assets/suits/diamond.svg";
+
+export const SuitSVGs = {
+	Spade: SpadeSvg,
+	Heart: HeartSvg,
+	Club: ClubSvg,
+	Diamond: DiamondSvg,
+};
+
 export class Card {
 	public suit: string;
 	public rank: string;
@@ -138,16 +150,16 @@ export function isSameCard(card1: Card, card2: Card): boolean {
 	return card1.suit === card2.suit && card1.rank === card2.rank;
 }
 
-export function getSuitEmoji(suit: string): string {
+export function getSuitSvgs(suit: string): string {
 	switch (suit) {
 		case "Spades":
-			return "♠";
+			return SpadeSvg;
 		case "Hearts":
-			return "♥";
+			return HeartSvg;
 		case "Clubs":
-			return "♣";
+			return ClubSvg;
 		case "Diamonds":
-			return "♦";
+			return DiamondSvg;
 		default:
 			throw new Error(`Invalid suit: ${suit}`);
 	}

@@ -20,12 +20,24 @@ const FloatingActionButton: React.FC<FabProps> = ({
 			</button>
 			<ul className={`fab-menu-items ${isOpen ? "visible" : "invisible"}`}>
 				<li className="menu-item">
-					<button className="menu-item-button" onClick={fullScreenClicked}>
+					<button
+						className="menu-item-button"
+						onClick={() => {
+							setOpen(false);
+							fullScreenClicked();
+						}}
+					>
 						<span>⛶</span>
 					</button>
 				</li>
 				<li className="menu-item">
-					<button className="menu-item-button" onClick={restartClicked}>
+					<button
+						className="menu-item-button"
+						onClick={() => {
+							setOpen(false);
+							restartClicked();
+						}}
+					>
 						<span>↻</span>
 					</button>
 				</li>

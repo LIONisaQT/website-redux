@@ -16,7 +16,7 @@ const TableauPile: React.FC<TableauPileProps> = ({ cards, onClick }) => {
 					<p className="empty-text">X</p>
 				</div>
 			)}
-			{cards.map((card) => (
+			{cards.map((card, index) => (
 				<PlayingCard
 					key={`${card.rank}-${card.suit}`}
 					card={{
@@ -26,7 +26,8 @@ const TableauPile: React.FC<TableauPileProps> = ({ cards, onClick }) => {
 					}}
 					origin={cards}
 					onClick={onClick}
-					zIndex={cards.indexOf(card)}
+					zIndex={index}
+					showPeek={index !== cards.length - 1}
 				/>
 			))}
 		</div>
