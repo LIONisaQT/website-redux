@@ -1,0 +1,12 @@
+.stock-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.stock-pile {
+	display: flex;
+	flex-direction: row-reverse;
+	gap: 8px;
+}

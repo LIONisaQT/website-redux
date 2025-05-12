@@ -1,0 +1,19 @@
+.empty-pile {
+	width: 100px;
+	height: 140px;
+	border: 2px solid black;
+	border-radius: 8px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.tableau-pile {
+	display: flex;
+	flex-direction: column;
+}
+
+.tableau-pile > *:not(:first-child) {
+	margin-top: -120px;
+}
