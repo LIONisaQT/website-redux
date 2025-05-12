@@ -20,10 +20,24 @@ export class Solitaire {
 
 	constructor() {
 		this.deck = new Deck();
+		this.initializeGame();
+	}
+
+	private initializeGame() {
 		this.deck.shuffle();
+
+		this.tableau = [];
+		this.stock = [];
+		this.waste = [];
+		this.foundations = [[], [], [], []];
 
 		this.initializeTableau();
 		this.initializeStock();
+	}
+
+	public restartGame() {
+		this.deck.restartDeck();
+		this.initializeGame();
 	}
 
 	private initializeTableau() {

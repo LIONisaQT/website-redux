@@ -1,23 +1,28 @@
+.play-area {
+	width: calc(100vw - 16px);
+	height: calc(100vh - 16px);
+	background: green;
+	padding: 8px;
+}
+
 .top-area {
-  height: 20%;
-  display: flex;
-  flex-direction: row;
-  padding-bottom: 8px;
+	display: flex;
+	flex-direction: row;
+	padding-bottom: 8px;
 }
 
 .foundations {
-  width: 60%;
-} 
+	width: 60%;
+}
 
 .stock {
-  display: flex;
-  flex-direction: row-reverse;
-  width: 40%;
+	display: flex;
+	flex-direction: row-reverse;
+	width: 40%;
 }
 
 .tableau {
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  gap: 8px;
+	display: flex;
+	flex-direction: row;
+	gap: 8px;
 }

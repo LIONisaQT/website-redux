@@ -55,6 +55,11 @@ export class Deck {
 	public getCards(): Card[] {
 		return this.cards;
 	}
+
+	public restartDeck() {
+		this.cards = [];
+		this.initializeDeck();
+	}
 }
 
 export function isSimilarSuit(card1: Card, card2: Card): boolean {
