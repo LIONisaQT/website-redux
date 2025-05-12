@@ -154,5 +154,5 @@ export function getSuitEmoji(suit: string): string {
 }
 
 export function getSuitColor(suit: string): string {
-	return suit === "Hearts" || suit === "Diamonds" ? "red" : "black";
+	return suit === "Hearts" || suit === "Diamonds" ? "#F05D5E" : "#272932";
 }

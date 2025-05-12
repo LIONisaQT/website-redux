@@ -1,7 +1,7 @@
 .play-area {
 	width: calc(100vw - 16px);
 	height: calc(100vh - 16px);
-	background: green;
+	background: #0f7173;
 	padding: 8px;
 }
 
