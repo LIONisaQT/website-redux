@@ -70,7 +70,7 @@
 }
 
 .card-suit {
-	font-size: 60pt;
+	font-size: 40pt;
 }
 
 .card-suit-small {
@@ -91,9 +91,7 @@
 .playing-card:has(.face-up):hover ~ .playing-card > .card-inner > .card-front {
 	background-color: rgba(255, 255, 255, 0.5);
 	transform: translateY(60px);
-	transition:
-		background-color 0.2s,
-		transform 0.2s;
+	transition: background-color 0.2s, transform 0.2s;
 }
 
 .animate {
