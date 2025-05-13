@@ -5,10 +5,10 @@
 	-moz-osx-font-smoothing: grayscale;
 
 	font-family: sans-serif;
+	background: #0f7173;
 }
 
 body {
-	overflow: hidden;
 	margin: 0;
 }
 
