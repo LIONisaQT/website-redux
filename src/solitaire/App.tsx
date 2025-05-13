@@ -15,7 +15,7 @@ import useSound from "use-sound";
 import Modal from "./assets/modal/Modal";
 
 function App() {
-	const [isDevMode, setDevMode] = useState(true);
+	const [isDevMode, setDevMode] = useState(false);
 	const [fabClickCount, setFabClickCount] = useState(0);
 
 	useEffect(() => {
