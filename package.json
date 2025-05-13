@@ -13,7 +13,10 @@
     "dexie": "^4.0.11",
     "dexie-react-hooks": "^1.1.7",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-full-screen": "^1.1.1",
+    "use-sound": "^5.0.0",
+    "vite-plugin-svgr": "^4.3.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",

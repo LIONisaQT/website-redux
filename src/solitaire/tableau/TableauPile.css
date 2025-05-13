@@ -1,0 +1,25 @@
+.empty-pile {
+	width: 100px;
+	height: 140px;
+	border: 2px solid #272932;
+	border-radius: 8px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.empty-text {
+	font-size: 52pt;
+	color: #f05d5e;
+	font-family: "Oswald", sans-serif;
+}
+
+.tableau-pile {
+	display: flex;
+	flex-direction: column;
+}
+
+.tableau-pile > *:not(:first-child) {
+	margin-top: -105px;
+}

@@ -1,0 +1,25 @@
+.foundations {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+	gap: 8px;
+}
+
+.foundation-pile {
+	width: 100px;
+	height: 140px;
+	box-sizing: border-box;
+	border: 2px solid #272932;
+	border-radius: 8px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+/* Don't double up on borders */
+.foundation-pile:has(div) {
+	border: 0px;
+}
