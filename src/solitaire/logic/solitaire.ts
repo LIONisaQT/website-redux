@@ -91,6 +91,8 @@ export class Solitaire {
 	}
 
 	private doBestFoundationMove(card: Card, origin: Card[]): boolean {
+		if (!isSameCard(card, origin[origin.length - 1])) return false;
+
 		const foundationIndex = convertSuitToIndex(card);
 		const foundation = this.foundations[foundationIndex];
 		const topFoundationCard = foundation[foundation.length - 1];
