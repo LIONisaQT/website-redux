@@ -1,0 +1,3 @@
+[submodule "src/solitaire"]
+	path = src/solitaire
+	url = https://github.com/LIONisaQT/solitaire-src
