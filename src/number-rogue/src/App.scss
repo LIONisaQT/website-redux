@@ -1,0 +1,31 @@
+.game-container {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+
+	.seed {
+		display: flex;
+		align-items: center;
+		gap: 4px;
+	}
+
+	.seed-input {
+		background: #444;
+		color: #eee;
+		border: none;
+		font-size: 14pt;
+		border-radius: 4px;
+		padding: 4px 8px;
+		margin-bottom: 2px;
+
+		:focus {
+			outline: none;
+		}
+	}
+
+	.reseed-button {
+		:hover {
+			cursor: pointer;
+		}
+	}
+}

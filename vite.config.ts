@@ -15,6 +15,7 @@ export default defineConfig({
 				main: resolve(__dirname, "index.html"),
 				startpage: resolve(__dirname, "startpage/index.html"),
 				solitaire: resolve(__dirname, "solitaire/index.html"),
+				"number-rogue": resolve(__dirname, "number-rogue/index.html"),
 			},
 		},
 	},

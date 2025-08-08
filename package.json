@@ -16,6 +16,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-full-screen": "^1.1.1",
+    "seedrandom": "^3.0.5",
     "use-sound": "^5.0.0",
     "vite-plugin-svgr": "^4.3.0"
   },
@@ -23,6 +24,7 @@
     "@eslint/js": "^9.15.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
+    "@types/seedrandom": "^3.0.8",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "eslint": "^9.15.0",
     "eslint-plugin-react-hooks": "^5.0.0",
