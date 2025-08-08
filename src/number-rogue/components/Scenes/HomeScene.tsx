@@ -1,4 +1,6 @@
+import React from "react";
 import { SceneType } from "../../util/scene-management";
+import "./HomeScene.scss";
 
 interface HomeSceneProps {
 	setScene: React.Dispatch<React.SetStateAction<SceneType>>;
@@ -7,10 +9,12 @@ interface HomeSceneProps {
 function HomeScene({ setScene }: HomeSceneProps) {
 	return (
 		<div className="home">
-			<h1>Calculate It</h1>
-			<button onClick={() => setScene(SceneType.Game)}>Go</button>
+			<h1 className="title">Calculate It</h1>
+			<button className="start-button" onClick={() => setScene(SceneType.Game)}>
+				Nerd out
+			</button>
 		</div>
 	);
 }
 
-export default HomeScene;
+export default React.memo(HomeScene);

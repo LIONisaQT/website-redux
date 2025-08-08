@@ -1,4 +1,4 @@
-import type { CalcButtonDetails } from "../calculator";
+import type { CalcButtonDetails } from "./calculator-config";
 import "./CalculatorButton.scss";
 
 interface ButtonProps {

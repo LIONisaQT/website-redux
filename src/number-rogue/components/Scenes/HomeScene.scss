@@ -1,0 +1,22 @@
+.home {
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 40px;
+
+	.title {
+		font-size: 64pt;
+	}
+
+	.start-button {
+		width: 200px;
+	}
+
+	@media (max-width: 600px) and (orientation: portrait) {
+		.title {
+			font-size: 40pt;
+		}
+	}
+}

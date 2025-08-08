@@ -11,6 +11,7 @@ import {
 import { generateRandomSeed } from "../../util/seed-gen";
 import seedrandom from "seedrandom";
 import confetti from "canvas-confetti";
+import React from "react";
 
 interface GameSceneProps {
 	canCheat: boolean;
@@ -225,4 +226,4 @@ function GameScene({ canCheat }: GameSceneProps) {
 	);
 }
 
-export default GameScene;
+export default React.memo(GameScene);
