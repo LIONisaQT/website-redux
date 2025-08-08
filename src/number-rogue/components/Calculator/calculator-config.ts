@@ -156,6 +156,6 @@ export const defaultButtons: Record<string, CalcButton> = Object.fromEntries(
 );
 
 export const extraButtons: Record<string, CalcButton> = {
-	swapTarget: { uses: Infinity, details: buttonList["swapTarget"] },
-	battery: { uses: Infinity, details: buttonList["battery"] },
+	// swapTarget: { uses: Infinity, details: buttonList["swapTarget"] },
+	// battery: { uses: Infinity, details: buttonList["battery"] },
 };
