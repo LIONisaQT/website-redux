@@ -6,9 +6,11 @@
 		height: 60px;
 		border-radius: 4px;
 		border: none;
-		font-size: 28pt;
+		font-size: clamp(0.75rem, 16vw, 1.6rem);
 		filter: brightness(1) saturate(1);
 		transition: filter 0.2s ease;
+		overflow-x: none;
+		text-wrap: nowrap;
 
 		&:hover {
 			cursor: pointer;
@@ -24,6 +26,10 @@
 		}
 	}
 
+	.target-operator {
+		background: brown;
+	}
+
 	.operator {
 		background: orangered;
 	}
@@ -34,5 +40,26 @@
 		right: 2px;
 		color: yellow;
 		text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.6), 1px -1px 0 rgba(0, 0, 0, 0.6), -1px 1px 0 rgba(0, 0, 0, 0.6), 1px 1px 0 rgba(0, 0, 0, 0.6);
+
+		&.just-increased {
+			animation: bump 0.5s ease forwards;
+		}
+	}
+}
+
+@keyframes bump {
+	0% {
+		transform: scale(1);
+		box-shadow: none;
+	}
+
+	50% {
+		transform: scale(1.15);
+		box-shadow: 0 0 8px 3px gold;
+	}
+
+	100% {
+		transform: scale(1);
+		box-shadow: none;
 	}
 }

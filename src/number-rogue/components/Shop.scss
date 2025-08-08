@@ -3,6 +3,11 @@
 	flex-direction: column;
 	gap: 10px;
 
+	.cheats {
+		display: flex;
+		flex-direction: column;
+	}
+
 	.shop-items {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);

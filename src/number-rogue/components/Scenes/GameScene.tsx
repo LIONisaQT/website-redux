@@ -1,6 +1,6 @@
 import "./GameScene.scss";
 import { useState, useRef, useCallback, useEffect } from "react";
-import { getShallowCopy } from "../../util/util-methods";
+import { getShallowCopy, swapDigits } from "../../util/util-methods";
 import Shop, { type ShopHandle } from "../Shop";
 import Calculator from "../Calculator/Calculator";
 import {
@@ -45,7 +45,7 @@ function GameScene({ canCheat }: GameSceneProps) {
 	const [shopOpen, setShopOpen] = useState(false);
 
 	const [money, setMoney] = useState(0); // TODO: Kinda magic number; have default per level
-	const [prize] = useState(22); // TODO: Magic number
+	const [prize] = useState(10); // TODO: Magic number
 
 	const getRng = useCallback(
 		(max: number = 100) => {
@@ -81,7 +81,6 @@ function GameScene({ canCheat }: GameSceneProps) {
 			setSavedExtras(getShallowCopy(extras));
 
 			if (reseeded) {
-				console.log("this is reseeded");
 				setDefaults({ ...defaultButtons });
 				setExtras({ ...extraButtons });
 				setMoney(0);
@@ -140,6 +139,16 @@ function GameScene({ canCheat }: GameSceneProps) {
 		shopRef.current?.generateShop();
 	}, [shopOpen]);
 
+	const modifyTarget = (type: string) => {
+		switch (type) {
+			case "swapTarget":
+				setTarget(swapDigits(target));
+				break;
+			default:
+				break;
+		}
+	};
+
 	return (
 		<div className="game">
 			<section className="info">
@@ -190,9 +199,6 @@ function GameScene({ canCheat }: GameSceneProps) {
 				{canCheat && (
 					<section className="cheats">
 						<h2>Cheats</h2>
-						<button onClick={() => setMoney((money) => money + 5)}>
-							Add $
-						</button>
 						<button onClick={() => setShopOpen(!shopOpen)}>Toggle shop</button>
 					</section>
 				)}
@@ -207,10 +213,12 @@ function GameScene({ canCheat }: GameSceneProps) {
 				refreshKey={refreshKey}
 				getRng={getRng}
 				enableButtons={shopOpen}
+				modifyTarget={modifyTarget}
 			/>
 			{shopOpen && (
 				<Shop
 					ref={shopRef}
+					canCheat={canCheat}
 					getRng={getRng}
 					shopSize={6} // TODO: Magic number
 					defaults={defaults}

@@ -2,6 +2,7 @@ import { forwardRef, useCallback, useImperativeHandle, useState } from "react";
 import "./Shop.scss";
 import {
 	buttonList,
+	getKeyByName,
 	shopList,
 	type CalcButton,
 	type CalcButtonDetails,
@@ -14,6 +15,7 @@ export type ShopHandle = {
 };
 
 interface ShopProps {
+	canCheat: boolean;
 	getRng: (max: number) => number;
 	shopSize: number;
 	defaults: Record<string, CalcButton>;
@@ -25,9 +27,14 @@ interface ShopProps {
 	onNextRoundClicked: () => void;
 }
 
+interface ShopItem extends CalcButtonDetails {
+	price: number;
+}
+
 const Shop = forwardRef<ShopHandle, ShopProps>(
 	(
 		{
+			canCheat,
 			getRng,
 			shopSize,
 			defaults,
@@ -40,14 +47,15 @@ const Shop = forwardRef<ShopHandle, ShopProps>(
 		},
 		ref
 	) => {
-		const [shopItems, setShopItems] = useState<CalcButtonDetails[]>([]);
+		const [shopItems, setShopItems] = useState<ShopItem[]>([]);
 
 		const generateShop = useCallback(() => {
 			const shopItems = [];
 			for (let i = 0; i < shopSize; i++) {
 				const keys = Object.keys(shopList);
 				const randomKey = keys[getRng(keys.length)];
-				const newItem = buttonList[randomKey];
+				const newItem = buttonList[randomKey] as ShopItem;
+				newItem.price = getRng(4) + 4;
 				shopItems.push(newItem);
 			}
 			setShopItems(shopItems);
@@ -61,7 +69,11 @@ const Shop = forwardRef<ShopHandle, ShopProps>(
 			generateShop,
 		}));
 
-		const purchaseButton = (button: string) => {
+		const purchaseButton = (button: string, price: number) => {
+			if (money < price) return;
+
+			setMoney((money) => money - price);
+
 			if (button in defaults) {
 				setDefaults(getUpdatedUses(button, defaults, 2));
 			} else if (button in extras) {
@@ -76,8 +88,8 @@ const Shop = forwardRef<ShopHandle, ShopProps>(
 				setExtras(newExtras);
 			}
 
-			const index = shopItems.findIndex((item) =>
-				item.label ? item.label === button : item.name === button
+			const index = shopItems.findIndex(
+				(item) => getKeyByName(item.name) === button
 			);
 			if (index >= 0) {
 				shopItems.splice(index, 1);
@@ -95,18 +107,31 @@ const Shop = forwardRef<ShopHandle, ShopProps>(
 						You can only buy one of each item.
 					</p>
 				</section>
+				{canCheat && (
+					<section className="cheats">
+						<h2>Cheats</h2>
+						<button onClick={() => setMoney((money) => money + 5)}>
+							Add $
+						</button>
+					</section>
+				)}
 				<section className="shop-items">
-					{shopItems.map((item, index) => {
-						const price = getRng(4) + 4; // TODO: Magic number
+					{shopItems.map((details, index) => {
+						const listName = getKeyByName(details.name);
 						return (
-							<div key={`${index}:${item.name}`} className="shop-item">
+							<div key={`${index}:${listName}`} className="shop-item">
 								<CalculatorButton
-									button={item}
-									disabled={money < price}
-									onClick={() => purchaseButton(item.label ?? item.name)}
+									button={listName!}
+									details={details}
+									disabled={money < details.price}
+									onClick={() => purchaseButton(listName!, details.price)}
 								/>
-								<div className={`price-tag ${money < price ? "disabled" : ""}`}>
-									<p>${price}</p>
+								<div
+									className={`price-tag ${
+										money < details.price ? "disabled" : ""
+									}`}
+								>
+									<p>${details.price}</p>
 								</div>
 							</div>
 						);

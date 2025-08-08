@@ -1,162 +1,161 @@
-export const calcOrder = [
-	"7",
-	"8",
-	"9",
-	"+",
-	"4",
-	"5",
-	"6",
-	"-",
-	"1",
-	"2",
-	"3",
-	"*",
-	"🔋",
-	"0",
-	"=",
-	"/",
-];
+export type CalcButtonDetails = {
+	name: string;
+	label?: string;
+	description?: string;
+	defaultUses: number;
+	affectsTarget?: boolean;
+};
 
 export type CalcButton = {
 	uses: number;
 	details: CalcButtonDetails;
 };
 
-export type CalcButtonDetails = {
-	name: string;
-	label?: string;
-	description?: string;
-};
+const numNames = [
+	"Zero",
+	"One",
+	"Two",
+	"Three",
+	"Four",
+	"Five",
+	"Six",
+	"Seven",
+	"Eight",
+	"Nine",
+];
 
+// All buttons
 export const buttonList: Record<string, CalcButtonDetails> = {
-	"0": { name: "0", description: "Zero" },
-	"1": { name: "1", description: "One" },
-	"2": { name: "2", description: "Two" },
-	"3": { name: "3", description: "Three" },
-	"4": { name: "4", description: "Four" },
-	"5": { name: "5", description: "Five" },
-	"6": { name: "6", description: "Six" },
-	"7": { name: "7", description: "Seven" },
-	"8": { name: "8", description: "Eight" },
-	"9": { name: "9", description: "Nine" },
-	"+": { name: "Plus", label: "+", description: "Adds two numbers together." },
+	// Numbers
+	...Object.fromEntries(
+		Array.from({ length: 10 }, (_, n) => [
+			String(n),
+			{
+				name: String(n),
+				description: numNames[n],
+				defaultUses: 2,
+			},
+		])
+	),
+
+	// Basic operators
+	"+": {
+		name: "Plus",
+		label: "+",
+		description: "Adds two numbers together.",
+		defaultUses: 2,
+	},
 	"-": {
 		name: "Minus",
 		label: "-",
 		description: "Subtracts second number from the first.",
+		defaultUses: 2,
 	},
-	"*": { name: "Multiply", label: "*", description: "Multiplys two numbers." },
+	"*": {
+		name: "Multiply",
+		label: "*",
+		description: "Multiplies two numbers.",
+		defaultUses: 2,
+	},
 	"/": {
 		name: "Divide",
 		label: "/",
 		description: "Divides first number by the second. Floors result.",
+		defaultUses: 2,
 	},
-	"=": {
+
+	// Always-available
+	equals: {
 		name: "Equals",
 		label: "=",
 		description: "Evaluates.",
+		defaultUses: Infinity,
 	},
-	"^": {
-		name: "Power",
-		label: "^",
-		description: "Raises number by power of exponent.",
-	},
-	"🔄": {
-		name: "Swap",
-		label: "🔄",
-		description: "Reverses direction of target (69 -> 96).",
-	},
-	"🔋": {
+	battery: {
 		name: "Battery",
 		label: "🔋",
 		description: "Adds one use to a random button.",
+		defaultUses: 5,
 	},
-};
 
-export const shopList: Record<string, CalcButtonDetails> = {
-	"0": { name: "0", description: "Zero" },
-	"1": { name: "1", description: "One" },
-	"2": { name: "2", description: "Two" },
-	"3": { name: "3", description: "Three" },
-	"4": { name: "4", description: "Four" },
-	"5": { name: "5", description: "Five" },
-	"6": { name: "6", description: "Six" },
-	"7": { name: "7", description: "Seven" },
-	"8": { name: "8", description: "Eight" },
-	"9": { name: "9", description: "Nine" },
-	"+": { name: "Plus", label: "+", description: "Adds two numbers together." },
-	"-": {
-		name: "Minus",
-		label: "-",
-		description: "Subtracts second number from the first.",
-	},
-	"*": { name: "Multiply", label: "*", description: "Multiplys two numbers." },
-	"/": {
-		name: "Divide",
-		label: "/",
-		description: "Divides first number by the second. Floors result.",
-	},
-	"^": {
+	// Special
+	power: {
 		name: "Power",
 		label: "^",
 		description: "Raises number by power of exponent.",
+		defaultUses: 1,
+		affectsTarget: false,
 	},
-	"🔄": {
-		name: "Swap",
+	swapTarget: {
+		name: "Swap target",
+		label: "🔄🎯",
+		description: "Reverses direction of the target (69 -> 96).",
+		defaultUses: 1,
+		affectsTarget: true,
+	},
+	swapCurrent: {
+		name: "Swap current",
 		label: "🔄",
-		description: "Reverses direction of target (69 -> 96).",
+		description: "Reverses direction of the current number (69 -> 96).",
+		defaultUses: 1,
+		affectsTarget: false,
 	},
-	"🔋": {
-		name: "Battery",
-		label: "🔋",
-		description: "Adds one use to a random button.",
+	random: {
+		name: "Rand",
+		label: "🎲",
+		description:
+			"Replaces current number with a random number between 0 and 100.",
+		defaultUses: 1,
+		affectsTarget: false,
+	},
+	increment: {
+		name: "Increment",
+		label: "x++",
+		description: "Increases current number by 1.",
+		defaultUses: 1,
+		affectsTarget: false,
+	},
+	prepend1: {
+		name: "Prepend 1",
+		label: "1X",
+		description: "Prepends 1 to the current number.",
+		defaultUses: 1,
+		affectsTarget: false,
 	},
 };
 
-export const defaultButtons: Record<string, CalcButton> = {
-	"0": { uses: 2, details: buttonList["0"] },
-	"1": { uses: 2, details: buttonList["1"] },
-	"2": { uses: 2, details: buttonList["2"] },
-	"3": { uses: 2, details: buttonList["3"] },
-	"4": { uses: 2, details: buttonList["4"] },
-	"5": { uses: 2, details: buttonList["5"] },
-	"6": { uses: 2, details: buttonList["6"] },
-	"7": { uses: 2, details: buttonList["7"] },
-	"8": { uses: 2, details: buttonList["8"] },
-	"9": { uses: 2, details: buttonList["9"] },
-	"+": {
-		uses: 2,
-		details: buttonList["+"],
-	},
-	"-": {
-		uses: 2,
-		details: buttonList["-"],
-	},
-	"*": {
-		uses: 2,
-		details: buttonList["*"],
-	},
-	"/": {
-		uses: 2,
-		details: buttonList["/"],
-	},
-	"=": {
-		uses: Infinity,
-		details: buttonList["="],
-	},
-	"🔋": {
-		uses: 5,
-		details: buttonList["🔋"],
-	},
-};
+export function getKeyByName(name: string): string | undefined {
+	return Object.entries(buttonList).find(
+		([, details]) => details.name === name
+	)?.[0];
+}
+
+const calcLayout = [
+	["7", "8", "9", "+"],
+	["4", "5", "6", "-"],
+	["1", "2", "3", "*"],
+	["battery", "0", "equals", "/"],
+] as const;
+
+export const calcOrder = calcLayout.flat();
+
+const excludedFromShop = ["equals", "battery"];
+
+export const shopList: Record<string, CalcButtonDetails> = Object.fromEntries(
+	Object.entries(buttonList).filter(([key]) => !excludedFromShop.includes(key))
+);
+
+export const defaultButtons: Record<string, CalcButton> = Object.fromEntries(
+	calcOrder.map((key) => [
+		key,
+		{
+			uses: buttonList[key].defaultUses,
+			details: buttonList[key],
+		},
+	])
+);
 
 export const extraButtons: Record<string, CalcButton> = {
-	// "🔋": {
-	// 	uses: Infinity,
-	// 	details: buttonList["🔋"],
-	// },
-	// "🔄": {
-	// 	uses: Infinity,
-	// 	details: buttonList["🔄"],
-	// },
+	swapTarget: { uses: Infinity, details: buttonList["swapTarget"] },
+	battery: { uses: Infinity, details: buttonList["battery"] },
 };

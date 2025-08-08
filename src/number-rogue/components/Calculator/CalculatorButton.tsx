@@ -1,40 +1,63 @@
+import { useEffect, useState } from "react";
 import type { CalcButtonDetails } from "./calculator-config";
 import "./CalculatorButton.scss";
 
 interface ButtonProps {
-	button: CalcButtonDetails;
+	button: string;
+	details: CalcButtonDetails;
 	uses?: number;
 	disabled?: boolean;
 	onClick: (value: string) => void;
+	justIncreased?: boolean;
 }
 
 function CalculatorButton({
 	button,
+	details,
 	uses = Infinity,
 	disabled,
 	onClick,
+	justIncreased,
 }: ButtonProps) {
+	const [animate, setAnimate] = useState(false);
+
 	const buttonClicked = () => {
 		if (uses === Infinity) {
-			onClick(button.label ?? button.name);
+			onClick(button);
 		} else {
 			if (uses <= 0) return;
-			onClick(button.label ?? button.name);
+			onClick(button);
 		}
 	};
+
+	useEffect(() => {
+		if (!justIncreased) return;
+		setAnimate(true);
+	}, [justIncreased]);
 
 	return (
 		<div className="button-container">
 			<button
 				className={`calculator-button ${
-					!isNaN(Number(button.label ?? button.name)) ? "number" : "operator"
+					!isNaN(Number(button))
+						? "number"
+						: details.affectsTarget
+						? "target-operator"
+						: "operator"
 				}`}
 				disabled={disabled || uses <= 0}
 				onClick={buttonClicked}
 			>
-				{button.label ?? button.name}
+				{details.label ?? details.name}
 			</button>
-			{uses !== Infinity && <p className="uses">{uses}</p>}
+			{uses !== Infinity && (
+				<p
+					onAnimationEnd={() => setAnimate(false)}
+					className={`uses ${animate ? "just-increased" : ""}`}
+				>
+					{uses}
+				</p>
+			)}
 		</div>
 	);
 }

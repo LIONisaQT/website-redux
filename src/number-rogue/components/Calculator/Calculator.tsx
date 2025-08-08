@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
 import CalculatorButton from "./CalculatorButton";
 import "./Calculator.scss";
-import {
-	getRandomButton,
-	getUpdatedUses,
-	swapDigits,
-} from "../../util/util-methods";
+import { getUpdatedUses, swapDigits } from "../../util/util-methods";
 import { type CalcButton, calcOrder } from "./calculator-config";
 
 interface CalculatorProps {
@@ -18,6 +14,7 @@ interface CalculatorProps {
 	refreshKey: React.SetStateAction<number>;
 	getRng: (max: number) => number;
 	enableButtons: boolean;
+	modifyTarget: (type: string) => void;
 }
 
 function Calculator({
@@ -30,12 +27,15 @@ function Calculator({
 	refreshKey,
 	getRng,
 	enableButtons,
+	modifyTarget,
 }: CalculatorProps) {
 	const [num1, setNum1] = useState(0);
 	const [num2, setNum2] = useState("");
 	const [display, setDisplay] = useState("");
 	const [currentOp, setCurrentOp] = useState("");
 	const [opOnly, setOpOnly] = useState(true);
+
+	const [justIncreased, setJustIncreased] = useState("");
 
 	useEffect(() => {
 		setDisplay(initialNum);
@@ -60,17 +60,25 @@ function Calculator({
 
 	const operationClicked = (value: string) => {
 		switch (value) {
-			case "=":
+			case "equals":
 				if (num2 === "") return;
 				evaluate();
 				break;
-			case "🔋": {
-				let randomKey = getRandomButton(getRng, { ...defaults, ...extras });
+			case "battery": {
+				const combined = { ...defaults, ...extras };
 
-				// Exclude some buttons from getting battery'd.
-				while (randomKey === "=" || randomKey === "🔋") {
-					randomKey = getRandomButton(getRng, { ...defaults, ...extras });
+				const eligibleKeys = Object.keys(combined).filter((key) => {
+					const isExcluded = key === "battery" || key === "equals";
+					const hasInfiniteUses = combined[key].uses === Infinity;
+					return !isExcluded && !hasInfiniteUses;
+				});
+
+				if (eligibleKeys.length === 0) {
+					break;
 				}
+
+				const randomIndex = Math.floor(getRng(eligibleKeys.length));
+				const randomKey = eligibleKeys[randomIndex];
 
 				if (randomKey in defaults) {
 					setDefaults((prev) => getUpdatedUses(randomKey, prev, 1));
@@ -78,15 +86,33 @@ function Calculator({
 					setExtras(getUpdatedUses(randomKey, extras, 1));
 				}
 
+				setJustIncreased(randomKey);
+
 				break;
 			}
-			case "🔄": {
+			case "swapTarget":
+				modifyTarget(value);
+				onEval(num1);
+				break;
+			case "swapCurrent": {
 				const newNum = swapDigits(Number(display));
 				setDisplay(newNum.toString());
 				setNum1(newNum);
 				onEval(newNum);
 				break;
 			}
+			case "random": {
+				const newNum = getRng(100);
+				setDisplay(newNum.toString());
+				setNum1(newNum);
+				onEval(newNum);
+				break;
+			}
+			case "1X":
+				setDisplay(1 + display);
+				setNum1(Number(1 + display));
+				onEval(Number(1 + display));
+				break;
 			default:
 				setDisplay(num1 + value);
 				setCurrentOp(value);
@@ -97,24 +123,29 @@ function Calculator({
 
 	const evaluate = () => {
 		let result: number;
+		const n2 = Number(num2);
 		switch (currentOp) {
 			case "+":
-				result = num1 + Number(num2);
+				result = num1 + n2;
 				break;
 			case "-":
-				result = num1 - Number(num2);
+				result = num1 - n2;
 				break;
-			case "x":
-				result = num1 * Number(num2);
+			case "*":
+				result = num1 * n2;
 				break;
 			case "/":
 				if (num2 === "0") {
 					alert("Can't divide by 0.");
 					return;
 				}
-				result = Math.floor(num1 / Number(num2));
+				result = Math.floor(num1 / n2);
+				break;
+			case "power":
+				result = Math.pow(num1, n2);
 				break;
 			default:
+				alert(`This operation (${currentOp}) hasn't been implemented yet.`);
 				result = 0;
 				break;
 		}
@@ -134,10 +165,12 @@ function Calculator({
 					{calcOrder.map((key) => (
 						<CalculatorButton
 							key={key}
-							button={defaults[key].details}
+							button={key}
+							details={defaults[key].details}
 							uses={defaults[key].uses}
 							disabled={(!isNaN(Number(key)) && opOnly) || enableButtons}
 							onClick={onClick}
+							justIncreased={justIncreased === key}
 						/>
 					))}
 				</div>
@@ -147,10 +180,12 @@ function Calculator({
 							Object.entries(extras).map(([key, value]) => (
 								<CalculatorButton
 									key={key}
-									button={extras[key].details}
+									button={key}
+									details={extras[key].details}
 									uses={value.uses}
 									disabled={(!isNaN(Number(key)) && opOnly) || enableButtons}
 									onClick={onClick}
+									justIncreased={justIncreased === key}
 								/>
 							))}
 					</div>
