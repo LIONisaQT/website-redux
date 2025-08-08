@@ -7,24 +7,25 @@
 		border-radius: 4px;
 		border: none;
 		font-size: 28pt;
-		filter: brightness(1);
+		filter: brightness(1) saturate(1);
+		transition: filter 0.2s ease;
 
 		&:hover {
 			cursor: pointer;
-			filter: brightness(1.2);
+			filter: brightness(2);
 		}
 
 		&:disabled {
-			filter: brightness(0.9);
+			filter: saturate(0.5);
 
 			&:hover {
-				cursor: default;
+				cursor: not-allowed;
 			}
 		}
 	}
 
 	.operator {
-		background: darkred;
+		background: orangered;
 	}
 
 	.uses {

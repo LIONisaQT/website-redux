@@ -4,8 +4,10 @@
 	gap: 10px;
 
 	.shop-items {
-		display: flex;
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
 		gap: 10px;
+		width: 100%;
 
 		.shop-item {
 			display: flex;
@@ -14,13 +16,20 @@
 			gap: 4px;
 			color: white;
 
-			&:hover {
-				cursor: pointer;
+			.price-tag {
+				color: lime;
 			}
 
 			.disabled {
 				color: red;
 			}
 		}
+	}
+
+	.buttons {
+		display: flex;
+		justify-content: center;
+		flex-direction: row;
+		gap: 60px;
 	}
 }

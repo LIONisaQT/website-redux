@@ -5,9 +5,9 @@ import {
 	shopList,
 	type CalcButton,
 	type CalcButtonDetails,
-} from "../calculator";
-import CalculatorButton from "./CalculatorButton";
-import { getUpdatedUses } from "../util/button-utils";
+} from "./Calculator/calculator-config";
+import CalculatorButton from "./Calculator/CalculatorButton";
+import { getUpdatedUses } from "../util/util-methods";
 
 export type ShopHandle = {
 	generateShop: () => void;
@@ -99,15 +99,11 @@ const Shop = forwardRef<ShopHandle, ShopProps>(
 					{shopItems.map((item, index) => {
 						const price = getRng(4) + 4; // TODO: Magic number
 						return (
-							<div
-								key={`${index}:${item.name}`}
-								className="shop-item"
-								onClick={() => purchaseButton(item.label ?? item.name)}
-							>
+							<div key={`${index}:${item.name}`} className="shop-item">
 								<CalculatorButton
 									button={item}
 									disabled={money < price}
-									onClick={() => {}}
+									onClick={() => purchaseButton(item.label ?? item.name)}
 								/>
 								<div className={`price-tag ${money < price ? "disabled" : ""}`}>
 									<p>${price}</p>

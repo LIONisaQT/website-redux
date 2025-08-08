@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import CalculatorButton from "./CalculatorButton";
-import { calcOrder, type CalcButton } from "../calculator";
 import "./Calculator.scss";
 import {
 	getRandomButton,
 	getUpdatedUses,
 	swapDigits,
-} from "../util/button-utils";
+} from "../../util/util-methods";
+import { type CalcButton, calcOrder } from "./calculator-config";
 
 interface CalculatorProps {
 	initialNum: string;
@@ -18,7 +18,6 @@ interface CalculatorProps {
 	refreshKey: React.SetStateAction<number>;
 	getRng: (max: number) => number;
 	enableButtons: boolean;
-	updateCurrentNum: React.Dispatch<React.SetStateAction<number>>;
 }
 
 function Calculator({
@@ -31,7 +30,6 @@ function Calculator({
 	refreshKey,
 	getRng,
 	enableButtons,
-	updateCurrentNum,
 }: CalculatorProps) {
 	const [num1, setNum1] = useState(0);
 	const [num2, setNum2] = useState("");
@@ -86,7 +84,6 @@ function Calculator({
 				const newNum = swapDigits(Number(display));
 				setDisplay(newNum.toString());
 				setNum1(newNum);
-				updateCurrentNum(newNum);
 				onEval(newNum);
 				break;
 			}

@@ -1,4 +1,4 @@
-import type { CalcButton } from "../calculator";
+import type { CalcButton } from "../components/Calculator/calculator-config";
 
 export function getUpdatedUses(
 	button: string,
@@ -21,4 +21,10 @@ export function getRandomButton(
 export function swapDigits(num: number) {
 	const swapped = num.toString().split("").reverse().join("");
 	return parseInt(swapped, 10);
+}
+
+export function getShallowCopy(source: Record<string, CalcButton>) {
+	return Object.fromEntries(
+		Object.entries(source).map(([k, v]) => [k, { ...v }])
+	);
 }
