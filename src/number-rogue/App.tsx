@@ -12,7 +12,7 @@ function App() {
 	const scene = useMemo(() => {
 		switch (currentScene) {
 			case SceneType.Game:
-				return <GameScene canCheat={canCheat} />;
+				return <GameScene canCheat={canCheat} setScene={setScene} />;
 			case SceneType.Home:
 			default:
 				return <HomeScene setScene={setScene} />;

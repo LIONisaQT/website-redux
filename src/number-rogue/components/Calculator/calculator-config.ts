@@ -87,22 +87,30 @@ export const buttonList: Record<string, CalcButtonDetails> = {
 		affectsTarget: false,
 	},
 	swapTarget: {
-		name: "Swap target",
+		name: "Swap Target",
 		label: "🔄🎯",
 		description: "Reverses direction of the target (69 -> 96).",
 		defaultUses: 1,
 		affectsTarget: true,
 	},
 	swapCurrent: {
-		name: "Swap current",
+		name: "Swap Current",
 		label: "🔄",
 		description: "Reverses direction of the current number (69 -> 96).",
 		defaultUses: 1,
 		affectsTarget: false,
 	},
-	random: {
-		name: "Rand",
+	randomCurrent: {
+		name: "Randomize Current",
 		label: "🎲",
+		description:
+			"Replaces current number with a random number between 0 and 100.",
+		defaultUses: 1,
+		affectsTarget: false,
+	},
+	randomTarget: {
+		name: "Randomize Target",
+		label: "🎲🎯",
 		description:
 			"Replaces current number with a random number between 0 and 100.",
 		defaultUses: 1,

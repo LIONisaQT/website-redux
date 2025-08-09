@@ -2,7 +2,7 @@ import "./GameScene.scss";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { getShallowCopy, swapDigits } from "../../util/util-methods";
 import Shop, { type ShopHandle } from "../Shop";
-import Calculator from "../Calculator/Calculator";
+import Calculator, { type CalculatorHandle } from "../Calculator/Calculator";
 import {
 	type CalcButton,
 	defaultButtons,
@@ -12,12 +12,14 @@ import { generateRandomSeed } from "../../util/seed-gen";
 import seedrandom from "seedrandom";
 import confetti from "canvas-confetti";
 import React from "react";
+import { SceneType } from "../../util/scene-management";
 
 interface GameSceneProps {
 	canCheat: boolean;
+	setScene: React.Dispatch<React.SetStateAction<SceneType>>;
 }
 
-function GameScene({ canCheat }: GameSceneProps) {
+function GameScene({ canCheat, setScene }: GameSceneProps) {
 	const hasStarted = useRef(false);
 	const [refreshKey, setRefreshKey] = useState(0);
 
@@ -29,6 +31,8 @@ function GameScene({ canCheat }: GameSceneProps) {
 
 	const [turnCount, setTurnCount] = useState(0);
 	const [roundCount, setRoundCount] = useState(0);
+
+	const calcRef = useRef<CalculatorHandle>(null);
 
 	const [defaults, setDefaults] = useState<Record<string, CalcButton>>({
 		...defaultButtons,
@@ -99,6 +103,7 @@ function GameScene({ canCheat }: GameSceneProps) {
 		setExtras(savedExtras!);
 		setRefreshKey((prev) => prev + 1);
 		setShopOpen(false);
+		calcRef.current?.restart();
 	};
 
 	useEffect(() => {
@@ -112,7 +117,26 @@ function GameScene({ canCheat }: GameSceneProps) {
 	const onEval = (result: number) => {
 		setTurnCount((count) => count + 1);
 
-		if (result !== target) return;
+		if (result !== target) {
+			const combined = [...Object.entries(defaults), ...Object.entries(extras)];
+			const nonNumberNonEqualsButtons = combined.filter(
+				([key]) => isNaN(Number(key)) && key !== "equals"
+			);
+
+			const allUsedUp = nonNumberNonEqualsButtons.every(
+				([, button]) => button.uses === 0
+			);
+
+			nonNumberNonEqualsButtons.forEach(([key, btn]) => {
+				console.log(key, btn.uses);
+			});
+
+			if (allUsedUp) {
+				setScene(SceneType.Home);
+			}
+
+			return;
+		}
 
 		// Throw from the left
 		confetti({
@@ -143,6 +167,9 @@ function GameScene({ canCheat }: GameSceneProps) {
 		switch (type) {
 			case "swapTarget":
 				setTarget(swapDigits(target));
+				break;
+			case "randomTarget":
+				setTarget(getRng());
 				break;
 			default:
 				break;
