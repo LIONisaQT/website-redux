@@ -1,0 +1,28 @@
+:root {
+	font-family: "Rubik", sans-serif;
+
+	font-synthesis: none;
+	font-optical-sizing: auto;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+
+	background: #222;
+	color: #eee;
+
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+body,
+p,
+h1,
+h2 {
+	margin: 0;
+}
+
+input,
+button {
+	font-family: "Rubik", sans-serif;
+}
