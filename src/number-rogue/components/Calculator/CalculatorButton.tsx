@@ -38,7 +38,7 @@ function CalculatorButton({
 	}, [justIncreased]);
 
 	const handlePressStart = () => {
-		holdTimer.current = setTimeout(() => {
+		holdTimer.current = window.setTimeout(() => {
 			setShowInfo(true);
 		}, 300);
 	};
