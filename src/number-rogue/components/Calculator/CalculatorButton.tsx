@@ -21,10 +21,19 @@ function CalculatorButton({
 }: ButtonProps) {
 	const [animate, setAnimate] = useState(false);
 	const [showInfo, setShowInfo] = useState(false);
-	const holdTimer = useRef<number | null>(null);
-	const isTouchInput = useRef(false); // Tracks if the current interaction is touch
 
-	const buttonClicked = () => {
+	const holdTimer = useRef<number | null>(null);
+	const isTouchInput = useRef(false);
+	const wasHold = useRef(false);
+
+	const buttonClicked = (e: React.MouseEvent | React.TouchEvent) => {
+		// Prevent click if it was a long press
+		if (wasHold.current) {
+			e.preventDefault();
+			e.stopPropagation();
+			return;
+		}
+
 		if (uses === Infinity) {
 			onClick(button);
 		} else {
@@ -38,9 +47,13 @@ function CalculatorButton({
 		setAnimate(true);
 	}, [justIncreased]);
 
+	// Touch handlers for mobile long press
 	const handleTouchStart = () => {
 		isTouchInput.current = true;
+		wasHold.current = false;
+
 		holdTimer.current = window.setTimeout(() => {
+			wasHold.current = true;
 			setShowInfo(true);
 		}, 300);
 	};
@@ -53,8 +66,9 @@ function CalculatorButton({
 		setShowInfo(false);
 	};
 
+	// Hover handlers for desktop
 	const handleMouseEnter = () => {
-		if (isTouchInput.current) return; // Ignore if last interaction was touch
+		if (isTouchInput.current) return;
 		setShowInfo(true);
 	};
 
