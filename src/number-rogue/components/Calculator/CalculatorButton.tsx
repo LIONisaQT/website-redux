@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import type { CalcButtonDetails } from "./calculator-config";
 import "./CalculatorButton.scss";
 
@@ -20,6 +20,8 @@ function CalculatorButton({
 	justIncreased,
 }: ButtonProps) {
 	const [animate, setAnimate] = useState(false);
+	const [showInfo, setShowInfo] = useState(false);
+	const holdTimer = useRef<number | null>(null);
 
 	const buttonClicked = () => {
 		if (uses === Infinity) {
@@ -35,21 +37,44 @@ function CalculatorButton({
 		setAnimate(true);
 	}, [justIncreased]);
 
+	const handlePressStart = () => {
+		holdTimer.current = setTimeout(() => {
+			setShowInfo(true);
+		}, 300);
+	};
+
+	const handlePressEnd = () => {
+		if (holdTimer.current) {
+			clearTimeout(holdTimer.current);
+			holdTimer.current = null;
+		}
+		setShowInfo(false);
+	};
+
 	return (
 		<div className="button-container">
-			<button
-				className={`calculator-button ${
-					!isNaN(Number(button))
-						? "number"
-						: details.affectsTarget
-						? "target-operator"
-						: "operator"
-				}`}
-				disabled={disabled || uses <= 0}
-				onClick={buttonClicked}
+			<div
+				className="button-wrapper"
+				onTouchStart={handlePressStart}
+				onTouchEnd={handlePressEnd}
+				onTouchCancel={handlePressEnd}
+				onMouseEnter={handlePressStart}
+				onMouseOut={handlePressEnd}
 			>
-				{details.label ?? details.name}
-			</button>
+				<button
+					className={`calculator-button ${
+						!isNaN(Number(button))
+							? "number"
+							: details.affectsTarget
+							? "target-operator"
+							: "operator"
+					}`}
+					disabled={disabled || uses <= 0}
+					onClick={buttonClicked}
+				>
+					{details.label ?? details.name}
+				</button>
+			</div>
 			{uses !== Infinity && (
 				<p
 					onAnimationEnd={() => setAnimate(false)}
@@ -57,6 +82,16 @@ function CalculatorButton({
 				>
 					{uses}
 				</p>
+			)}
+
+			{/* Show pop-up only on long press */}
+			{showInfo && (
+				<div className="button-info">
+					<section className="button-name">{details.name}</section>
+					<section className="button-description">
+						{details.description}
+					</section>
+				</div>
 			)}
 		</div>
 	);

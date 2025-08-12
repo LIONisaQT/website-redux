@@ -18,19 +18,20 @@
 			.seed-input {
 				background: #444;
 				color: #eee;
-				border: none;
 				font-size: 14pt;
 				border-radius: 4px;
 				padding: 4px 8px;
-				margin-bottom: 2px;
 
 				&:focus {
 					outline: none;
 				}
 			}
 
-			.reseed-button {
-				:hover {
+			.seed-button {
+				padding: 6px 8px;
+				display: inline-flex;
+
+				&:hover {
 					cursor: pointer;
 				}
 			}
@@ -72,7 +73,7 @@
 		.cheats {
 			display: flex;
 			flex-direction: column;
-			gap: 10px;
+			gap: 8px;
 		}
 	}
 }

@@ -12,7 +12,15 @@ function App() {
 	const scene = useMemo(() => {
 		switch (currentScene) {
 			case SceneType.Game:
-				return <GameScene canCheat={canCheat} setScene={setScene} />;
+				return (
+					<GameScene
+						canCheat={canCheat}
+						setScene={setScene}
+						rngMax={100}
+						startMoney={0}
+						winMoney={10}
+					/>
+				);
 			case SceneType.Home:
 			default:
 				return <HomeScene setScene={setScene} />;
@@ -28,10 +36,20 @@ function App() {
 				}`}</button>
 				{isFabOpen && (
 					<>
-						<button onClick={() => setCheats(!canCheat)}>{`${
-							canCheat ? "✅" : "❌"
-						}`}</button>
-						<button onClick={() => setScene(SceneType.Home)}>🏠</button>
+						<button
+							onClick={() => {
+								setFabOpen(false);
+								setCheats(!canCheat);
+							}}
+						>{`${canCheat ? "😈" : "😇"}`}</button>
+						<button
+							onClick={() => {
+								setFabOpen(false);
+								setScene(SceneType.Home);
+							}}
+						>
+							🏠
+						</button>
 					</>
 				)}
 			</div>

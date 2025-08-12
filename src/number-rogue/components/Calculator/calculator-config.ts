@@ -11,32 +11,68 @@ export type CalcButton = {
 	details: CalcButtonDetails;
 };
 
-const numNames = [
-	"Zero",
-	"One",
-	"Two",
-	"Three",
-	"Four",
-	"Five",
-	"Six",
-	"Seven",
-	"Eight",
-	"Nine",
-];
-
-// All buttons
 export const buttonList: Record<string, CalcButtonDetails> = {
 	// Numbers
-	...Object.fromEntries(
-		Array.from({ length: 10 }, (_, n) => [
-			String(n),
-			{
-				name: String(n),
-				description: numNames[n],
-				defaultUses: 2,
-			},
-		])
-	),
+	"0": {
+		name: "Zero",
+		label: "0",
+		description: "Arrays start here.",
+		defaultUses: 2,
+	},
+	"1": {
+		name: "One",
+		label: "1",
+		description: "If you're not first, you're last.",
+		defaultUses: 2,
+	},
+	"2": {
+		name: "Two",
+		label: "2",
+		description: "Double trouble.",
+		defaultUses: 2,
+	},
+	"3": {
+		name: "Three",
+		label: "3",
+		description: "Three's a crowd.",
+		defaultUses: 2,
+	},
+	"4": {
+		name: "Four",
+		label: "4",
+		description: "Bad luck.",
+		defaultUses: 2,
+	},
+	"5": {
+		name: "Five",
+		label: "5",
+		description: "Go.",
+		defaultUses: 2,
+	},
+	"6": {
+		name: "Six",
+		label: "6",
+		description: '"Hey, has anyone seen 9 recently?"',
+		defaultUses: 2,
+	},
+	"7": {
+		name: "Seven",
+		label: "7",
+		description: "Claims to not have seen 9 in days.",
+		defaultUses: 2,
+	},
+	"8": {
+		name: "Eight",
+		label: "8",
+		description: "Has a chance of inputting ∞ if the screen is tilted 90°.",
+		defaultUses: 2,
+	},
+	"9": {
+		name: "Nine",
+		label: "9",
+		description: "Still missing.",
+		defaultUses: 2,
+	},
 
 	// Basic operators
 	"+": {
@@ -48,7 +84,7 @@ export const buttonList: Record<string, CalcButtonDetails> = {
 	"-": {
 		name: "Minus",
 		label: "-",
-		description: "Subtracts second number from the first.",
+		description: "Subtracts the second number from the first.",
 		defaultUses: 2,
 	},
 	"*": {
@@ -60,7 +96,7 @@ export const buttonList: Record<string, CalcButtonDetails> = {
 	"/": {
 		name: "Divide",
 		label: "/",
-		description: "Divides first number by the second. Floors result.",
+		description: "Divides the first number by the second. Floors result.",
 		defaultUses: 2,
 	},
 
@@ -68,7 +104,7 @@ export const buttonList: Record<string, CalcButtonDetails> = {
 	equals: {
 		name: "Equals",
 		label: "=",
-		description: "Evaluates.",
+		description: "Evaluates the current expression.",
 		defaultUses: Infinity,
 	},
 	battery: {
@@ -82,7 +118,7 @@ export const buttonList: Record<string, CalcButtonDetails> = {
 	power: {
 		name: "Power",
 		label: "^",
-		description: "Raises number by power of exponent.",
+		description: "Raises the current number by power of the exponent.",
 		defaultUses: 1,
 		affectsTarget: false,
 	},
@@ -104,7 +140,7 @@ export const buttonList: Record<string, CalcButtonDetails> = {
 		name: "Randomize Current",
 		label: "🎲",
 		description:
-			"Replaces current number with a random number between 0 and 100.",
+			"Replaces the current number with a random number between 0 and 100.",
 		defaultUses: 1,
 		affectsTarget: false,
 	},
@@ -112,25 +148,51 @@ export const buttonList: Record<string, CalcButtonDetails> = {
 		name: "Randomize Target",
 		label: "🎲🎯",
 		description:
-			"Replaces current number with a random number between 0 and 100.",
+			"Replaces the current number with a random number between 0 and 100.",
 		defaultUses: 1,
 		affectsTarget: false,
 	},
 	increment: {
 		name: "Increment",
 		label: "x++",
-		description: "Increases current number by 1.",
+		description: "Increases the current number by 1.",
 		defaultUses: 1,
 		affectsTarget: false,
 	},
-	prepend1: {
-		name: "Prepend 1",
-		label: "1X",
-		description: "Prepends 1 to the current number.",
+	decrement: {
+		name: "Decrement",
+		label: "x--",
+		description: "Decreases the current number by 1.",
+		defaultUses: 1,
+		affectsTarget: false,
+	},
+	plusMoney: {
+		name: "Plus $",
+		label: "+$",
+		description: "Increases the current number by $.",
 		defaultUses: 1,
 		affectsTarget: false,
 	},
 };
+
+const generatePrependButtons = (
+	start: number,
+	end: number
+): Record<string, CalcButtonDetails> => {
+	const buttons: Record<string, CalcButtonDetails> = {};
+	for (let i = start; i <= end; i++) {
+		buttons[`prepend${i}`] = {
+			name: `Prepend ${i}`,
+			label: `${i}X`,
+			description: `Prepends ${i} to the current number.`,
+			defaultUses: 1,
+			affectsTarget: false,
+		};
+	}
+	return buttons;
+};
+
+Object.assign(buttonList, generatePrependButtons(1, 9));
 
 export function getKeyByName(name: string): string | undefined {
 	return Object.entries(buttonList).find(
@@ -165,5 +227,11 @@ export const defaultButtons: Record<string, CalcButton> = Object.fromEntries(
 
 export const extraButtons: Record<string, CalcButton> = {
 	// swapTarget: { uses: Infinity, details: buttonList["swapTarget"] },
+	// swapCurrent: { uses: Infinity, details: buttonList["swapCurrent"] },
 	// battery: { uses: Infinity, details: buttonList["battery"] },
+	// increment: { uses: Infinity, details: buttonList["increment"] },
+	// decrement: { uses: Infinity, details: buttonList["decrement"] },
+	// prepend2: { uses: Infinity, details: buttonList["prepend2"] },
+	// randomTarget: { uses: Infinity, details: buttonList["randomTarget"] },
+	// plusMoney: { uses: Infinity, details: buttonList["plusMoney"] },
 };

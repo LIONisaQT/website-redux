@@ -111,7 +111,7 @@ const Shop = forwardRef<ShopHandle, ShopProps>(
 					<section className="cheats">
 						<h2>Cheats</h2>
 						<button onClick={() => setMoney((money) => money + 5)}>
-							Add $
+							Add $5
 						</button>
 					</section>
 				)}

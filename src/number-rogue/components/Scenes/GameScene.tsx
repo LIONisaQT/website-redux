@@ -17,16 +17,27 @@ import { SceneType } from "../../util/scene-management";
 interface GameSceneProps {
 	canCheat: boolean;
 	setScene: React.Dispatch<React.SetStateAction<SceneType>>;
+	rngMax: number;
+	startMoney: number;
+	winMoney: number;
 }
 
-function GameScene({ canCheat, setScene }: GameSceneProps) {
+function GameScene({
+	canCheat,
+	setScene,
+	rngMax,
+	startMoney,
+	winMoney,
+}: GameSceneProps) {
 	const hasStarted = useRef(false);
 	const [refreshKey, setRefreshKey] = useState(0);
 
 	const [seed, setSeed] = useState(generateRandomSeed());
-	const [rng, setRng] = useState(() => seedrandom(seed));
+	const rngRef = useRef(seedrandom(seed, { state: true }));
+	const rngStateRef = useRef(rngRef.current.state());
 
 	const [target, setTarget] = useState(Infinity);
+	const [originalTarget, setOriginalTarget] = useState(Infinity);
 	const [initialNum, setInitialNum] = useState("");
 
 	const [turnCount, setTurnCount] = useState(0);
@@ -48,34 +59,38 @@ function GameScene({ canCheat, setScene }: GameSceneProps) {
 	const shopRef = useRef<ShopHandle>(null);
 	const [shopOpen, setShopOpen] = useState(false);
 
-	const [money, setMoney] = useState(0); // TODO: Kinda magic number; have default per level
-	const [prize] = useState(10); // TODO: Magic number
+	const [money, setMoney] = useState(startMoney);
+	const [prize] = useState(winMoney);
 
 	const getRng = useCallback(
-		(max: number = 100) => {
-			return Math.floor(rng() * max);
+		(max: number = rngMax) => {
+			return Math.floor(rngRef.current() * max);
 		},
-		[rng]
+		[rngMax]
 	);
 
 	const reseed = (newSeed: string) => {
+		if (!/^[A-Z0-9]{6}$/.test(newSeed)) {
+			alert(
+				`Seed can only be uppercase alphanumeric and exactly 6 characters. "${newSeed}" is an invalid seed.`
+			);
+			return;
+		}
 		setSeed(newSeed);
-		setRng(() => seedrandom(newSeed));
+		rngRef.current = seedrandom(newSeed, { state: true });
 		startGame(true);
 	};
 
 	const startGame = useCallback(
 		(reseeded: boolean) => {
-			let initialNum = getRng();
-			let targetNum = getRng();
+			const initialNum = getRng();
+			const offset = 1 + getRng(rngMax - 1);
+			const targetNum = (initialNum + offset) % rngMax;
 
-			// Prevent case where starter is target on initial load.
-			while (initialNum === targetNum) {
-				initialNum = getRng();
-				targetNum = getRng();
-			}
+			rngStateRef.current = rngRef.current.state();
 
 			setInitialNum(initialNum.toString());
+			setOriginalTarget(targetNum);
 			setTarget(targetNum);
 
 			setTurnCount(0);
@@ -87,17 +102,19 @@ function GameScene({ canCheat, setScene }: GameSceneProps) {
 			if (reseeded) {
 				setDefaults({ ...defaultButtons });
 				setExtras({ ...extraButtons });
-				setMoney(0);
+				setMoney(startMoney);
 				setTurnCount(0);
 			}
 
 			setShopOpen(false);
 		},
-		[defaults, extras, getRng]
+		[defaults, extras, getRng, rngMax, startMoney]
 	);
 
 	const restartRound = () => {
+		rngRef.current = seedrandom("", { state: rngStateRef.current });
 		setInitialNum(initialNum);
+		setTarget(originalTarget);
 		setTurnCount(0);
 		setDefaults(savedDefaults!);
 		setExtras(savedExtras!);
@@ -127,10 +144,6 @@ function GameScene({ canCheat, setScene }: GameSceneProps) {
 				([, button]) => button.uses === 0
 			);
 
-			nonNumberNonEqualsButtons.forEach(([key, btn]) => {
-				console.log(key, btn.uses);
-			});
-
 			if (allUsedUp) {
 				setScene(SceneType.Home);
 			}
@@ -143,7 +156,7 @@ function GameScene({ canCheat, setScene }: GameSceneProps) {
 			particleCount: 100,
 			angle: 60,
 			spread: 55,
-			origin: { x: 0, y: 0.66 },
+			origin: { x: 0, y: 0.75 },
 		});
 
 		// Throw from the right
@@ -151,7 +164,7 @@ function GameScene({ canCheat, setScene }: GameSceneProps) {
 			particleCount: 100,
 			angle: 120,
 			spread: 55,
-			origin: { x: 1, y: 0.66 },
+			origin: { x: 1, y: 0.75 },
 		});
 		setMoney((money) => money + prize);
 		setShopOpen(true);
@@ -176,23 +189,48 @@ function GameScene({ canCheat, setScene }: GameSceneProps) {
 		}
 	};
 
+	useEffect(() => {
+		if (roundCount > 0 && roundCount % 5 === 0) {
+			console.log("Boss round!");
+		}
+	}, [roundCount]);
+
 	return (
 		<div className="game">
 			<section className="info">
-				<section className="seed">
-					<label className="seed-label">Seed</label>
-					<input
-						className="seed-input"
-						maxLength={6}
-						value={seed}
-						readOnly
-					></input>
-					<button
-						className="reseed-button"
-						onClick={() => reseed(generateRandomSeed())}
+				<section className="seed-container">
+					<form
+						className="seed"
+						onSubmit={(e) => {
+							e.preventDefault();
+							reseed(seed);
+						}}
 					>
-						🔄
-					</button>
+						<label className="seed-label" htmlFor="seed">
+							Seed
+						</label>
+						<input
+							className="seed-input"
+							id="seed"
+							name="seed"
+							maxLength={6}
+							value={seed}
+							onChange={(e) => setSeed(e.target.value)}
+						></input>
+						<button
+							className="seed-button"
+							onClick={() => reseed(generateRandomSeed())}
+							title="Reseed"
+						>
+							<p>🔄</p>
+						</button>
+						<input
+							className="seed-button"
+							type="submit"
+							title="Load seed"
+							value="➡️"
+						/>
+					</form>
 				</section>
 				<section className="money-round">
 					<section className="money">
@@ -241,6 +279,7 @@ function GameScene({ canCheat, setScene }: GameSceneProps) {
 				getRng={getRng}
 				enableButtons={shopOpen}
 				modifyTarget={modifyTarget}
+				money={money}
 			/>
 			{shopOpen && (
 				<Shop
