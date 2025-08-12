@@ -22,6 +22,7 @@ function CalculatorButton({
 	const [animate, setAnimate] = useState(false);
 	const [showInfo, setShowInfo] = useState(false);
 	const holdTimer = useRef<number | null>(null);
+	const isTouchInput = useRef(false); // Tracks if the current interaction is touch
 
 	const buttonClicked = () => {
 		if (uses === Infinity) {
@@ -37,13 +38,14 @@ function CalculatorButton({
 		setAnimate(true);
 	}, [justIncreased]);
 
-	const handlePressStart = () => {
+	const handleTouchStart = () => {
+		isTouchInput.current = true;
 		holdTimer.current = window.setTimeout(() => {
 			setShowInfo(true);
 		}, 300);
 	};
 
-	const handlePressEnd = () => {
+	const handleTouchEnd = () => {
 		if (holdTimer.current) {
 			clearTimeout(holdTimer.current);
 			holdTimer.current = null;
@@ -51,15 +53,25 @@ function CalculatorButton({
 		setShowInfo(false);
 	};
 
+	const handleMouseEnter = () => {
+		if (isTouchInput.current) return; // Ignore if last interaction was touch
+		setShowInfo(true);
+	};
+
+	const handleMouseLeave = () => {
+		if (isTouchInput.current) return;
+		setShowInfo(false);
+	};
+
 	return (
 		<div className="button-container">
 			<div
 				className="button-wrapper"
-				onTouchStart={handlePressStart}
-				onTouchEnd={handlePressEnd}
-				onTouchCancel={handlePressEnd}
-				onMouseEnter={handlePressStart}
-				onMouseOut={handlePressEnd}
+				onTouchStart={handleTouchStart}
+				onTouchEnd={handleTouchEnd}
+				onTouchCancel={handleTouchEnd}
+				onMouseEnter={handleMouseEnter}
+				onMouseLeave={handleMouseLeave}
 			>
 				<button
 					className={`calculator-button ${
@@ -83,8 +95,6 @@ function CalculatorButton({
 					{uses}
 				</p>
 			)}
-
-			{/* Show pop-up only on long press */}
 			{showInfo && (
 				<div className="button-info">
 					<section className="button-name">{details.name}</section>
