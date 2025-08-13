@@ -1,7 +1,7 @@
 import "./GameScene.scss";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { getShallowCopy, swapDigits } from "../../util/util-methods";
-import Shop, { type ShopHandle } from "../Shop";
+import Shop, { type ShopHandle } from "../Shop/Shop";
 import Calculator, { type CalculatorHandle } from "../Calculator/Calculator";
 import {
 	type CalcButton,
@@ -13,24 +13,46 @@ import seedrandom from "seedrandom";
 import confetti from "canvas-confetti";
 import React from "react";
 import { SceneType } from "../../util/scene-management";
+import { bossModifiers, BossType, type BossModifier } from "../boss/modifiers";
+import useSound from "use-sound";
+import coinSound from "../../assets/sounds/coin6.ogg";
 
 interface GameSceneProps {
 	canCheat: boolean;
 	setScene: React.Dispatch<React.SetStateAction<SceneType>>;
+	rngMax: number;
+	startMoney: number;
+	winMoney: number;
 }
 
-function GameScene({ canCheat, setScene }: GameSceneProps) {
+function GameScene({
+	canCheat,
+	setScene,
+	rngMax,
+	startMoney,
+	winMoney,
+}: GameSceneProps) {
 	const hasStarted = useRef(false);
 	const [refreshKey, setRefreshKey] = useState(0);
 
+	const reseededRef = useRef(false);
 	const [seed, setSeed] = useState(generateRandomSeed());
-	const [rng, setRng] = useState(() => seedrandom(seed));
+	const rngRef = useRef(seedrandom(seed, { state: true }));
+	const rngStateRef = useRef(rngRef.current.state());
 
-	const [target, setTarget] = useState(Infinity);
+	/**
+	 * Initial array can be anything as long as it's not empty.
+	 * Game checks for win state if the target array is empty at any point, which
+	 * could be the case at game start if we initialized this to an empty array.
+	 */
+	const [targets, setTargets] = useState<number[]>([Infinity]);
+	const [originalTargets, setOriginalTargets] = useState<number[]>([]);
+
 	const [initialNum, setInitialNum] = useState("");
 
 	const [turnCount, setTurnCount] = useState(0);
 	const [roundCount, setRoundCount] = useState(0);
+	const roundCountRef = useRef(roundCount);
 
 	const calcRef = useRef<CalculatorHandle>(null);
 
@@ -41,63 +63,125 @@ function GameScene({ canCheat, setScene }: GameSceneProps) {
 		...extraButtons,
 	});
 
+	const defaultsRef = useRef(defaults);
+	const extrasRef = useRef(extras);
+
 	const [savedDefaults, setSavedDefaults] =
 		useState<Record<string, CalcButton>>();
 	const [savedExtras, setSavedExtras] = useState<Record<string, CalcButton>>();
 
 	const shopRef = useRef<ShopHandle>(null);
 	const [shopOpen, setShopOpen] = useState(false);
+	const [coin] = useSound(coinSound);
 
-	const [money, setMoney] = useState(0); // TODO: Kinda magic number; have default per level
-	const [prize] = useState(10); // TODO: Magic number
+	const [money, setMoney] = useState(startMoney);
+	const [prize] = useState(winMoney);
+
+	const [boss, setBoss] = useState<[BossType, BossModifier]>();
+	const [bannedNum, setBannedNum] = useState<number>();
+
+	useEffect(() => {
+		defaultsRef.current = defaults;
+	}, [defaults]);
+
+	useEffect(() => {
+		extrasRef.current = extras;
+	}, [extras]);
+
+	useEffect(() => {
+		roundCountRef.current = roundCount;
+	}, [roundCount]);
 
 	const getRng = useCallback(
-		(max: number = 100) => {
-			return Math.floor(rng() * max);
+		(max: number = rngMax) => {
+			return Math.floor(rngRef.current() * max);
 		},
-		[rng]
+		[rngMax]
 	);
 
 	const reseed = (newSeed: string) => {
+		if (!/^[A-Z0-9]{6}$/.test(newSeed)) {
+			alert(
+				`Seed can only be uppercase alphanumeric and exactly 6 characters. "${newSeed}" is an invalid seed.`
+			);
+			return;
+		}
 		setSeed(newSeed);
-		setRng(() => seedrandom(newSeed));
-		startGame(true);
+		reseededRef.current = true;
+		rngRef.current = seedrandom(newSeed, { state: true });
+		const newBoss = getRandomBoss();
+		setBoss(newBoss);
+		startGame(newBoss, true);
 	};
 
-	const startGame = useCallback(
-		(reseeded: boolean) => {
-			let initialNum = getRng();
-			let targetNum = getRng();
+	const getRandomBoss = useCallback(() => {
+		const bosses = Object.entries(bossModifiers);
+		const boss = bosses[getRng(bosses.length)];
+		return boss;
+	}, [getRng]);
 
-			// Prevent case where starter is target on initial load.
-			while (initialNum === targetNum) {
-				initialNum = getRng();
-				targetNum = getRng();
+	const isBossRound = useCallback(
+		() => roundCount > 0 && roundCount % 5 === 0,
+		[roundCount]
+	);
+
+	const startGame = useCallback(
+		(currentBoss: [BossType, BossModifier], reseeded: boolean) => {
+			// Clear arrays so that initialized value doesn't get included.
+			setTargets([]);
+			setOriginalTargets([]);
+
+			const initialNum = getRng();
+
+			/**
+			 * Uses roundCountRef because using roundCount would trigger a re-render.
+			 * Needs a +1 because roundCount hasn't been incremented yet.
+			 */
+			const targetCount =
+				currentBoss[0] === BossType.Swarm &&
+				roundCountRef.current > 0 &&
+				(roundCountRef.current + 1) % 5 === 0
+					? 3
+					: 1;
+
+			for (let i = 0; i < targetCount; i++) {
+				const offset = 1 + getRng(rngMax - 1);
+				const targetNum = (initialNum + offset) % rngMax;
+				setOriginalTargets((prev) => [...prev, targetNum]);
+				setTargets((prev) => [...prev, targetNum]);
+
+				// Save rng state after final uses of getting rng finished.
+				if (i === targetCount - 1) {
+					rngStateRef.current = rngRef.current.state();
+				}
 			}
 
 			setInitialNum(initialNum.toString());
-			setTarget(targetNum);
 
 			setTurnCount(0);
 			setRoundCount((round) => (reseeded ? 1 : round + 1));
 
-			setSavedDefaults(getShallowCopy(defaults));
-			setSavedExtras(getShallowCopy(extras));
+			setSavedDefaults(getShallowCopy(defaultsRef.current));
+			setSavedExtras(getShallowCopy(extrasRef.current));
 
 			if (reseeded) {
 				setDefaults({ ...defaultButtons });
 				setExtras({ ...extraButtons });
-				setMoney(0);
+				setMoney(startMoney);
 				setTurnCount(0);
 			}
 
 			setShopOpen(false);
+
+			reseededRef.current = false;
 		},
-		[defaults, extras, getRng]
+		[getRng, rngMax, startMoney]
 	);
 
 	const restartRound = () => {
+		rngRef.current = seedrandom("", { state: rngStateRef.current });
 		setInitialNum(initialNum);
+		setTargets(originalTargets);
 		setTurnCount(0);
 		setDefaults(savedDefaults!);
 		setExtras(savedExtras!);
@@ -111,13 +195,25 @@ function GameScene({ canCheat, setScene }: GameSceneProps) {
 		if (hasStarted.current) return;
 
 		hasStarted.current = true;
-		startGame(false);
-	}, [startGame]);
+		const initialBoss = getRandomBoss();
+		setBoss(initialBoss);
+		startGame(initialBoss, false);
+	}, [getRandomBoss, startGame]);
 
 	const onEval = (result: number) => {
+		if (isBossRound()) {
+			switch (boss?.[0]) {
+				case BossType.ExpensiveEval:
+					setMoney((money) => money - 5); // TODO: Magic number
+					break;
+				default:
+					break;
+			}
+		}
+
 		setTurnCount((count) => count + 1);
 
-		if (result !== target) {
+		if (!targets.includes(result)) {
 			const combined = [...Object.entries(defaults), ...Object.entries(extras)];
 			const nonNumberNonEqualsButtons = combined.filter(
 				([key]) => isNaN(Number(key)) && key !== "equals"
@@ -127,10 +223,6 @@ function GameScene({ canCheat, setScene }: GameSceneProps) {
 				([, button]) => button.uses === 0
 			);
 
-			nonNumberNonEqualsButtons.forEach(([key, btn]) => {
-				console.log(key, btn.uses);
-			});
-
 			if (allUsedUp) {
 				setScene(SceneType.Home);
 			}
@@ -138,12 +230,18 @@ function GameScene({ canCheat, setScene }: GameSceneProps) {
 			return;
 		}
 
+		setTargets((prev) => prev.filter((n) => n !== result));
+	};
+
+	useEffect(() => {
+		if (targets.length > 0) return;
+
 		// Throw from the left
 		confetti({
 			particleCount: 100,
 			angle: 60,
 			spread: 55,
-			origin: { x: 0, y: 0.66 },
+			origin: { x: 0, y: 0.75 },
 		});
 
 		// Throw from the right
@@ -151,54 +249,92 @@ function GameScene({ canCheat, setScene }: GameSceneProps) {
 			particleCount: 100,
 			angle: 120,
 			spread: 55,
-			origin: { x: 1, y: 0.66 },
+			origin: { x: 1, y: 0.75 },
 		});
-		setMoney((money) => money + prize);
+
+		setMoney((money) => money + prize * (isBossRound() ? 2 : 1));
 		setShopOpen(true);
-	};
+	}, [roundCount, prize, targets, isBossRound]);
 
 	useEffect(() => {
 		if (!shopOpen) return;
 
 		shopRef.current?.generateShop();
-	}, [shopOpen]);
+		coin();
+	}, [coin, shopOpen]);
 
 	const modifyTarget = (type: string) => {
 		switch (type) {
 			case "swapTarget":
-				setTarget(swapDigits(target));
+				setTargets((prev) => prev.map(swapDigits));
 				break;
 			case "randomTarget":
-				setTarget(getRng());
+				setTargets((prev) => prev.map(getRng));
 				break;
 			default:
 				break;
 		}
 	};
 
+	useEffect(() => {
+		switch (boss?.[0]) {
+			case BossType.Prohibit:
+				setBannedNum(getRng(9));
+				break;
+			default:
+				break;
+		}
+	}, [boss, getRng]);
+
 	return (
-		<div className="game">
+		<div
+			className={`game ${
+				Object.entries(extraButtons).length > 8 ? "wide-calc" : ""
+			}`}
+		>
 			<section className="info">
-				<section className="seed">
-					<label className="seed-label">Seed</label>
-					<input
-						className="seed-input"
-						maxLength={6}
-						value={seed}
-						readOnly
-					></input>
-					<button
-						className="reseed-button"
-						onClick={() => reseed(generateRandomSeed())}
+				<section className="seed-container">
+					<form
+						className="seed"
+						onSubmit={(e) => {
+							e.preventDefault();
+							reseed(seed);
+						}}
 					>
-						🔄
-					</button>
+						<label className="seed-label" htmlFor="seed">
+							Seed
+						</label>
+						<input
+							className="seed-input"
+							id="seed"
+							name="seed"
+							maxLength={6}
+							value={seed}
+							onChange={(e) => setSeed(e.target.value)}
+						></input>
+						<button
+							className="seed-button"
+							onClick={() => reseed(generateRandomSeed())}
+							title="Reseed"
+							type="button"
+						>
+							<p>🔄</p>
+						</button>
+						<input
+							className="seed-button"
+							type="submit"
+							title="Load current seed"
+							value="➡️"
+						/>
+					</form>
 				</section>
 				<section className="money-round">
 					<section className="money">
 						<p className="spaced-out">
 							<span>Money:</span>
-							<span className="money-text">{`$${money}`}</span>
+							<span
+								className={`money-text ${money < 1 ? "debt" : ""}`}
+							>{`$${money}`}</span>
 						</p>
 						<section className="round">
 							<p className="spaced-out">
@@ -212,8 +348,10 @@ function GameScene({ canCheat, setScene }: GameSceneProps) {
 				<section className="target-turn">
 					<section className="target">
 						<p className="spaced-out">
-							<span>Target number:</span>
-							<span className="target-text">{target}</span>
+							<span>Target number(s):</span>
+							<span className="target-text">
+								{targets.map((target) => ` ${target}`)}
+							</span>
 						</p>
 					</section>
 					<section className="turns">
@@ -223,9 +361,33 @@ function GameScene({ canCheat, setScene }: GameSceneProps) {
 						</p>
 					</section>
 				</section>
+				{boss && (
+					<section className="boss">
+						<h2>{`${roundCount % 5 === 0 ? "Current" : "Upcoming"} boss ${
+							!(roundCount % 5 === 0)
+								? `(${5 - (roundCount % 5)} round${
+										5 - (roundCount % 5) === 1 ? "" : "s"
+								  } away)`
+								: ``
+						} `}</h2>
+						<p className="justified-text">
+							<span className="boss-name">{`${boss[1].name}`}</span>
+							<span>{`: ${boss[1].description}`}</span>
+						</p>
+						{boss[0] === BossType.Prohibit && (
+							<p>
+								<span>Banned number: </span>
+								<span className="banned-number">{bannedNum}</span>
+							</p>
+						)}
+					</section>
+				)}
 				{canCheat && (
 					<section className="cheats">
 						<h2>Cheats</h2>
+						<button onClick={() => startGame(boss!, false)}>
+							Force next round
+						</button>
 						<button onClick={() => setShopOpen(!shopOpen)}>Toggle shop</button>
 					</section>
 				)}
@@ -241,6 +403,11 @@ function GameScene({ canCheat, setScene }: GameSceneProps) {
 				getRng={getRng}
 				enableButtons={shopOpen}
 				modifyTarget={modifyTarget}
+				money={money}
+				setMoney={setMoney}
+				isBossLevel={isBossRound()}
+				bossModifier={isBossRound() ? boss?.[0] : undefined}
+				bannedNum={isBossRound() ? bannedNum : undefined}
 			/>
 			{shopOpen && (
 				<Shop
@@ -254,7 +421,15 @@ function GameScene({ canCheat, setScene }: GameSceneProps) {
 					setExtras={setExtras}
 					money={money}
 					setMoney={setMoney}
-					onNextRoundClicked={() => startGame(false)}
+					onNextRoundClicked={() => {
+						if (isBossRound()) {
+							const newBoss = getRandomBoss();
+							setBoss(newBoss);
+							startGame(newBoss, false);
+						} else {
+							startGame(boss!, false);
+						}
+					}}
 				/>
 			)}
 		</div>

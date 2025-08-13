@@ -1,8 +1,16 @@
-import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
+import {
+	forwardRef,
+	useCallback,
+	useEffect,
+	useImperativeHandle,
+	useRef,
+	useState,
+} from "react";
 import CalculatorButton from "./CalculatorButton";
 import "./Calculator.scss";
 import { getUpdatedUses, swapDigits } from "../../util/util-methods";
 import { type CalcButton, calcOrder } from "./calculator-config";
+import { BossType } from "../boss/modifiers";
 
 export type CalculatorHandle = {
 	restart: () => void;
@@ -19,6 +27,11 @@ interface CalculatorProps {
 	getRng: (max: number) => number;
 	enableButtons: boolean;
 	modifyTarget: (type: string) => void;
+	money: number;
+	setMoney: React.Dispatch<React.SetStateAction<number>>;
+	isBossLevel: boolean;
+	bossModifier?: BossType;
+	bannedNum?: number;
 }
 
 const Calculator = forwardRef<CalculatorHandle, CalculatorProps>(
@@ -34,39 +47,74 @@ const Calculator = forwardRef<CalculatorHandle, CalculatorProps>(
 			getRng,
 			enableButtons,
 			modifyTarget,
+			money,
+			setMoney,
+			isBossLevel,
+			bossModifier,
+			bannedNum,
 		},
 		ref
 	) => {
+		// Required to prevent useEffect for prevOp from complaining.
+		const defaultsRef = useRef(defaults);
+		const extrasRef = useRef(extras);
+
 		const [num1, setNum1] = useState(0);
 		const [num2, setNum2] = useState("");
 		const [display, setDisplay] = useState("");
 		const [currentOp, setCurrentOp] = useState("");
+		const [previousOp, setPreviousOp] = useState("");
 		const [opOnly, setOpOnly] = useState(true);
+		const [prevKey, setPrevKey] = useState("hi");
 
 		const [justIncreased, setJustIncreased] = useState("");
 
-		useEffect(() => {
-			restart();
-		}, [initialNum, refreshKey]);
-
-		const restart = () => {
+		const restart = useCallback(() => {
 			setNum1(Number(initialNum));
 			setNum2("");
 			setDisplay(initialNum);
 			setCurrentOp("");
 			setOpOnly(true);
+			setPrevKey("hi");
 			setJustIncreased("");
-		};
+		}, [initialNum]);
+
+		useEffect(() => {
+			restart();
+		}, [initialNum, refreshKey, restart]);
 
 		useImperativeHandle(ref, () => ({
 			restart,
 		}));
 
+		useEffect(() => {
+			defaultsRef.current = defaults;
+			extrasRef.current = extras;
+		}, [defaults, extras]);
+
 		const onClick = (value: string) => {
 			if (value in defaults) {
+				defaults = getUpdatedUses(value, defaults, -1);
 				setDefaults((prev) => getUpdatedUses(value, prev, -1));
 			} else if (value in extras) {
 				setExtras(getUpdatedUses(value, extras, -1));
+			} else {
+				console.error(`Invalid key pressed: ${value}`);
+				return;
+			}
+
+			if (value !== "battery") {
+				setPrevKey(value);
+			}
+
+			if (isBossLevel) {
+				switch (bossModifier) {
+					case BossType.PayPerUse:
+						setMoney((money) => money - 1); // TODO: Magic number
+						break;
+					default:
+						break;
+				}
 			}
 
 			if (isNaN(Number(value))) {
@@ -129,18 +177,48 @@ const Calculator = forwardRef<CalculatorHandle, CalculatorProps>(
 					onEval(newNum);
 					break;
 				}
-				case "prepend1":
-					setDisplay(1 + display);
-					setNum1(Number(1 + display));
-					onEval(Number(1 + display));
+				case "increment":
+					setDisplay((Number(display) + 1).toString());
+					setNum1(Number(display) + 1);
+					onEval(Number(display) + 1);
+					break;
+				case "decrement":
+					setDisplay((Number(display) - 1).toString());
+					setNum1(Number(display) - 1);
+					onEval(Number(display) - 1);
+					break;
+				case "plusMoney":
+					setDisplay((Number(display) + money).toString());
+					setNum1(Number(display) + money);
+					onEval(Number(display) + money);
 					break;
 				default:
+					if (value.startsWith("prepend")) {
+						const digit = value.slice("prepend".length);
+						if (/^[1-9]$/.test(digit)) {
+							setDisplay(digit + display);
+							setNum1(Number(digit + display));
+							onEval(Number(digit + display));
+							break;
+						}
+					}
 					setDisplay(num1 + value);
+					setPreviousOp(currentOp);
 					setCurrentOp(value);
 					setOpOnly(false);
 					break;
 			}
 		};
+
+		useEffect(() => {
+			if (previousOp !== "") {
+				if (previousOp in defaultsRef.current) {
+					setDefaults((prev) => getUpdatedUses(previousOp, prev, 1));
+				} else if (previousOp in extrasRef.current) {
+					setExtras((prev) => getUpdatedUses(previousOp, prev, 1));
+				}
+			}
+		}, [previousOp, setDefaults, setExtras]);
 
 		const evaluate = () => {
 			let result: number;
@@ -162,6 +240,9 @@ const Calculator = forwardRef<CalculatorHandle, CalculatorProps>(
 					}
 					result = Math.floor(num1 / n2);
 					break;
+				case "%":
+					result = num1 % n2;
+					break;
 				case "power":
 					result = Math.pow(num1, n2);
 					break;
@@ -174,8 +255,33 @@ const Calculator = forwardRef<CalculatorHandle, CalculatorProps>(
 			setNum1(result);
 			setNum2("");
 			setDisplay(result.toString());
+			setPreviousOp("");
+			setCurrentOp("");
 			setOpOnly(true);
 			onEval(result);
+		};
+
+		const getIsDisabled = (key: string) => {
+			if (enableButtons) return true;
+			if (bannedNum?.toString() === key) return true;
+
+			// If last key was a number, disable operators
+			if (
+				!isNaN(Number(prevKey)) &&
+				isNaN(Number(key)) &&
+				key !== "equals" &&
+				key !== "battery"
+			) {
+				return true;
+			}
+
+			// Enable equals sign if an operator and second number available
+			if (key === "equals") {
+				return currentOp === "" || num2 === "";
+			}
+
+			// Enable only operators
+			return !isNaN(Number(key)) && opOnly;
 		};
 
 		return (
@@ -189,7 +295,7 @@ const Calculator = forwardRef<CalculatorHandle, CalculatorProps>(
 								button={key}
 								details={defaults[key].details}
 								uses={defaults[key].uses}
-								disabled={(!isNaN(Number(key)) && opOnly) || enableButtons}
+								disabled={getIsDisabled(key)}
 								onClick={onClick}
 								justIncreased={justIncreased === key}
 							/>
@@ -204,7 +310,7 @@ const Calculator = forwardRef<CalculatorHandle, CalculatorProps>(
 										button={key}
 										details={extras[key].details}
 										uses={value.uses}
-										disabled={(!isNaN(Number(key)) && opOnly) || enableButtons}
+										disabled={getIsDisabled(key)}
 										onClick={onClick}
 										justIncreased={justIncreased === key}
 									/>

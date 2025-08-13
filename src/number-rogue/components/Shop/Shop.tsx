@@ -6,9 +6,11 @@ import {
 	shopList,
 	type CalcButton,
 	type CalcButtonDetails,
-} from "./Calculator/calculator-config";
-import CalculatorButton from "./Calculator/CalculatorButton";
-import { getUpdatedUses } from "../util/util-methods";
+} from "../Calculator/calculator-config";
+import CalculatorButton from "../Calculator/CalculatorButton";
+import { getUpdatedUses } from "../../util/util-methods";
+import useSound from "use-sound";
+import coinSound from "../../assets/sounds/coin6.ogg";
 
 export type ShopHandle = {
 	generateShop: () => void;
@@ -48,6 +50,7 @@ const Shop = forwardRef<ShopHandle, ShopProps>(
 		ref
 	) => {
 		const [shopItems, setShopItems] = useState<ShopItem[]>([]);
+		const [coin] = useSound(coinSound);
 
 		const generateShop = useCallback(() => {
 			const shopItems = [];
@@ -73,6 +76,7 @@ const Shop = forwardRef<ShopHandle, ShopProps>(
 			if (money < price) return;
 
 			setMoney((money) => money - price);
+			coin();
 
 			if (button in defaults) {
 				setDefaults(getUpdatedUses(button, defaults, 2));
@@ -111,7 +115,7 @@ const Shop = forwardRef<ShopHandle, ShopProps>(
 					<section className="cheats">
 						<h2>Cheats</h2>
 						<button onClick={() => setMoney((money) => money + 5)}>
-							Add $
+							Add $5
 						</button>
 					</section>
 				)}

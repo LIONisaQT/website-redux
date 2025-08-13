@@ -25,4 +25,12 @@ h2 {
 input,
 button {
 	font-family: "Rubik", sans-serif;
+	border: none;
+	padding: 6px 12px;
+	border-radius: 4px;
+	color: #333;
+}
+
+.justified-text {
+	text-align: justify;
 }

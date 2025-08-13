@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import type { CalcButtonDetails } from "./calculator-config";
 import "./CalculatorButton.scss";
+import useSound from "use-sound";
+import clickSound from "../../assets/sounds/generic1.ogg";
 
 interface ButtonProps {
 	button: string;
@@ -20,12 +22,28 @@ function CalculatorButton({
 	justIncreased,
 }: ButtonProps) {
 	const [animate, setAnimate] = useState(false);
+	const [showInfo, setShowInfo] = useState(false);
 
-	const buttonClicked = () => {
+	const holdTimer = useRef<number | null>(null);
+	const isTouchInput = useRef(false);
+	const wasHold = useRef(false);
+
+	const [click] = useSound(clickSound);
+
+	const buttonClicked = (e: React.MouseEvent | React.TouchEvent) => {
+		// Prevent click if it was a long press
+		if (wasHold.current) {
+			e.preventDefault();
+			e.stopPropagation();
+			return;
+		}
+
 		if (uses === Infinity) {
+			click();
 			onClick(button);
 		} else {
 			if (uses <= 0) return;
+			click();
 			onClick(button);
 		}
 	};
@@ -35,21 +53,60 @@ function CalculatorButton({
 		setAnimate(true);
 	}, [justIncreased]);
 
+	// Touch handlers for mobile long press
+	const handleTouchStart = () => {
+		isTouchInput.current = true;
+		wasHold.current = false;
+
+		holdTimer.current = window.setTimeout(() => {
+			wasHold.current = true;
+			setShowInfo(true);
+		}, 300);
+	};
+
+	const handleTouchEnd = () => {
+		if (holdTimer.current) {
+			clearTimeout(holdTimer.current);
+			holdTimer.current = null;
+		}
+		setShowInfo(false);
+	};
+
+	// Hover handlers for desktop
+	const handleMouseEnter = () => {
+		if (isTouchInput.current) return;
+		setShowInfo(true);
+	};
+
+	const handleMouseLeave = () => {
+		if (isTouchInput.current) return;
+		setShowInfo(false);
+	};
+
 	return (
 		<div className="button-container">
-			<button
-				className={`calculator-button ${
-					!isNaN(Number(button))
-						? "number"
-						: details.affectsTarget
-						? "target-operator"
-						: "operator"
-				}`}
-				disabled={disabled || uses <= 0}
-				onClick={buttonClicked}
+			<div
+				className="button-wrapper"
+				onTouchStart={handleTouchStart}
+				onTouchEnd={handleTouchEnd}
+				onTouchCancel={handleTouchEnd}
+				onMouseEnter={handleMouseEnter}
+				onMouseLeave={handleMouseLeave}
 			>
-				{details.label ?? details.name}
-			</button>
+				<button
+					className={`calculator-button ${
+						!isNaN(Number(button))
+							? "number"
+							: details.affectsTarget
+							? "target-operator"
+							: "operator"
+					}`}
+					disabled={disabled || uses <= 0}
+					onClick={buttonClicked}
+				>
+					{details.label ?? details.name}
+				</button>
+			</div>
 			{uses !== Infinity && (
 				<p
 					onAnimationEnd={() => setAnimate(false)}
@@ -57,6 +114,14 @@ function CalculatorButton({
 				>
 					{uses}
 				</p>
+			)}
+			{showInfo && (
+				<div className="button-info">
+					<section className="button-name">{details.name}</section>
+					<section className="button-description">
+						{details.description}
+					</section>
+				</div>
 			)}
 		</div>
 	);

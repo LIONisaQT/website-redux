@@ -1,6 +1,40 @@
 .button-container {
 	position: relative;
 
+	.button-info {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 20px;
+		position: absolute;
+		bottom: calc(100% + 4px);
+		left: 50%;
+		transform: translateX(-50%);
+		z-index: 1;
+		pointer-events: none;
+		width: 220px;
+		padding: 16px 20px;
+		background: #666666dd;
+		border-radius: 4px;
+
+		.button-name {
+			font-size: 14pt;
+			color: yellow;
+		}
+
+		.button-description {
+			font-size: 12pt;
+		}
+	}
+
+	&:hover .button-info {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 20px;
+		filter: opacity(1);
+	}
+
 	.calculator-button {
 		width: 60px;
 		height: 60px;
@@ -11,17 +45,22 @@
 		transition: filter 0.2s ease;
 		overflow-x: none;
 		text-wrap: nowrap;
+		color: #333;
 
-		&:hover {
-			cursor: pointer;
-			filter: brightness(2);
+		@media (hover: hover) and (pointer: fine) {
+			&:hover {
+				cursor: pointer;
+				filter: brightness(2);
+			}
 		}
 
 		&:disabled {
 			filter: saturate(0.5);
 
-			&:hover {
-				cursor: not-allowed;
+			@media (hover: hover) and (pointer: fine) {
+				&:hover {
+					cursor: not-allowed;
+				}
 			}
 		}
 	}
