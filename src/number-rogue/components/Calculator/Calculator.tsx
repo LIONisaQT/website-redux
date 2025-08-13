@@ -73,6 +73,7 @@ const Calculator = forwardRef<CalculatorHandle, CalculatorProps>(
 			setDisplay(initialNum);
 			setCurrentOp("");
 			setOpOnly(true);
+			setPrevKey("hi");
 			setJustIncreased("");
 		}, [initialNum]);
 
