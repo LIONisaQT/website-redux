@@ -89,13 +89,13 @@ export const buttonList: Record<string, CalcButtonDetails> = {
 	},
 	"*": {
 		name: "Multiply",
-		label: "*",
+		label: "×",
 		description: "Multiplies two numbers.",
 		defaultUses: 2,
 	},
 	"/": {
 		name: "Divide",
-		label: "/",
+		label: "÷",
 		description: "Divides the first number by the second. Floors result.",
 		defaultUses: 2,
 	},
@@ -132,21 +132,21 @@ export const buttonList: Record<string, CalcButtonDetails> = {
 	},
 	swapTarget: {
 		name: "Swap Target",
-		label: "🔄🎯",
+		label: "SpT",
 		description: "Reverses direction of the target (69 -> 96).",
 		defaultUses: 1,
 		affectsTarget: true,
 	},
 	swapCurrent: {
 		name: "Swap Current",
-		label: "🔄",
+		label: "SpC",
 		description: "Reverses direction of the current number (69 -> 96).",
 		defaultUses: 1,
 		affectsTarget: false,
 	},
 	randomCurrent: {
 		name: "Randomize Current",
-		label: "🎲",
+		label: "RdC",
 		description:
 			"Replaces the current number with a random number between 0 and 100.",
 		defaultUses: 1,
@@ -154,22 +154,22 @@ export const buttonList: Record<string, CalcButtonDetails> = {
 	},
 	randomTarget: {
 		name: "Randomize Target",
-		label: "🎲🎯",
+		label: "RdT",
 		description:
-			"Replaces the current number with a random number between 0 and 100.",
+			"Replaces the current target with a random number between 0 and 100.",
 		defaultUses: 1,
 		affectsTarget: true,
 	},
 	increment: {
 		name: "Increment",
-		label: "x++",
+		label: "n++",
 		description: "Increases the current number by 1.",
 		defaultUses: 1,
 		affectsTarget: false,
 	},
 	decrement: {
 		name: "Decrement",
-		label: "x--",
+		label: "n--",
 		description: "Decreases the current number by 1.",
 		defaultUses: 1,
 		affectsTarget: false,
@@ -192,7 +192,7 @@ const generatePrependButtons = (
 	for (let i = start; i <= end; i++) {
 		buttons[`prepend${i}`] = {
 			name: `Prepend ${i}`,
-			label: `${i}X`,
+			label: `${i}_`,
 			description: `Prepends ${i} to the current number.`,
 			defaultUses: 1,
 			affectsTarget: false,

@@ -1,3 +1,5 @@
+@import url('../../colors.css');
+
 .calculator {
 	display: flex;
 	flex-direction: column;
@@ -10,7 +12,7 @@
 		display: inline-block;
 		white-space: nowrap;
 		overflow-x: auto;
-		background: #444;
+		background: var(--darker);
 		padding: 8px 16px;
 		box-sizing: border-box;
 		text-align: right;

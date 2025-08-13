@@ -1,3 +1,5 @@
+@import url('../../colors.css');
+
 .game {
 	display: flex;
 	flex-direction: column;
@@ -12,70 +14,111 @@
 		gap: 20px;
 		width: 100%;
 
-		.seed {
-			display: flex;
-			align-items: center;
-			gap: 4px;
+		.seed-container {
+			.seed {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 4px;
 
-			.seed-input {
-				background: #444;
-				color: #eee;
-				font-size: 14pt;
-				border-radius: 4px;
-				padding: 4px 8px;
+				.seed-input {
+					background: var(--darker);
+					color: var(--light);
+					font-size: 14pt;
+					border-radius: 4px;
+					padding: 4px 8px;
 
-				&:focus {
-					outline: none;
+					&:focus {
+						outline: none;
+					}
+				}
+
+				.seed-button {
+					padding: 6px 8px;
+					display: inline-flex;
+					background: var(--light);
+					transition: all 0.2s ease;
+
+					&:hover {
+						cursor: pointer;
+						filter: brightness(0.8);
+					}
 				}
 			}
-
-			.seed-button {
-				padding: 6px 8px;
-				display: inline-flex;
-				background: #eee;
-
-				&:hover {
-					cursor: pointer;
-					background: #ddd;
-				}
-			}
 		}
 
-		.spaced-out {
-			display: flex;
-			justify-content: space-between;
-			align-items: baseline;
-			width: 100%;
-		}
-
-		.money-text {
-			color: lime;
-			font-size: 18pt;
-		}
-
-		.debt {
-			color: red;
-		}
-
-		.round {
+		.stat-text {
 			display: flex;
 			flex-direction: column;
 			gap: 10px;
 
-			.round-text {
-				color: yellow;
-				font-size: 18pt;
+			.stat-text-container {
+				display: flex;
+				flex-direction: row;
+				justify-content: space-evenly;
+				align-items: center;
+			}
+
+			.stats {
+				position: relative;
+
+				.stat-label {
+					position: absolute;
+					top: -2px;
+					left: 50%;
+					transform: translateX(-50%);
+					font-size: 14pt;
+					text-shadow: 0 0 10px black;
+				}
+
+				.stat-value {
+					font-size: 40pt;
+					font-weight: 900;
+					-webkit-text-stroke-width: 2px;
+					color: transparent;
+				}
+			}
+
+			.restart-button {
+				background: var(--light);
+				color: var(--darkest);
+				font-size: 14pt;
+				width: 100%;
+				transition: all 0.2s ease;
+
+				&:hover {
+					cursor: pointer;
+					filter: brightness(0.8);
+				}
 			}
 		}
 
-		.target-text {
-			color: red;
-			font-size: 28pt;
+		.neutral {
+			-webkit-text-stroke-color: var(--cyan);
 		}
 
-		.turn-text {
-			color: red;
-			font-size: 24pt;
+		.debt {
+			-webkit-text-stroke-color: var(--red);
+		}
+
+		.positive {
+			-webkit-text-stroke-color: var(--green);
+		}
+
+		.target-text-container {
+			.target-text {
+				display: flex;
+				flex-direction: row;
+				justify-content: space-between;
+
+				.target-number {
+					height: 44px;
+					font-weight: bold;
+					font-size: 40pt;
+					line-height: 0.8;
+					color: var(--red);
+				}
+			}
 		}
 
 		.boss {
@@ -84,12 +127,12 @@
 			gap: 4px;
 
 			.boss-name {
-				color: red;
+				color: var(--red);
 				font-weight: bold;
 			}
 
 			.banned-number {
-				color: red;
+				color: var(--red);
 				font-weight: bold;
 			}
 		}
