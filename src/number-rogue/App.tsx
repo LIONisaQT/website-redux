@@ -17,7 +17,7 @@ function App() {
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [track, setTrack] = useState(deepWithin);
 
-	const [playBgm, { sound, stop, pause }] = useSound(track, {
+	const [playBgm, { stop, pause }] = useSound(track, {
 		loop: true,
 		onplay: () => setIsPlaying(true),
 		onpause: () => setIsPlaying(false),
