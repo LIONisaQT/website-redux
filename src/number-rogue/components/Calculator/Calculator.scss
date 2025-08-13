@@ -6,6 +6,7 @@
 
 	.display {
 		font-family: 'Jetbrains Mono', monospace;
+		max-width: 400px;
 		display: inline-block;
 		white-space: nowrap;
 		overflow-x: auto;
@@ -20,12 +21,12 @@
 	.buttons {
 		display: flex;
 		flex-direction: row;
-		gap: 10px;
+		gap: 8px;
 
 		.base-buttons,
 		.extra-buttons {
 			display: grid;
-			gap: 10px;
+			gap: 8px;
 		}
 
 		.base-buttons {

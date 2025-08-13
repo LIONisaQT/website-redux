@@ -4,11 +4,13 @@
 	align-items: center;
 	padding: 60px 0;
 	gap: 20px;
+	width: clamp(320px, 400px, 400px);
 
 	.info {
 		display: flex;
 		flex-direction: column;
 		gap: 20px;
+		width: 100%;
 
 		.seed {
 			display: flex;
@@ -30,9 +32,11 @@
 			.seed-button {
 				padding: 6px 8px;
 				display: inline-flex;
+				background: #eee;
 
 				&:hover {
 					cursor: pointer;
+					background: #ddd;
 				}
 			}
 		}
@@ -47,6 +51,10 @@
 		.money-text {
 			color: lime;
 			font-size: 18pt;
+		}
+
+		.debt {
+			color: red;
 		}
 
 		.round {
@@ -70,10 +78,30 @@
 			font-size: 24pt;
 		}
 
+		.boss {
+			display: flex;
+			flex-direction: column;
+			gap: 4px;
+
+			.boss-name {
+				color: red;
+				font-weight: bold;
+			}
+
+			.banned-number {
+				color: red;
+				font-weight: bold;
+			}
+		}
+
 		.cheats {
 			display: flex;
 			flex-direction: column;
 			gap: 8px;
 		}
 	}
+}
+
+.wide-calc {
+	align-items: start;
 }

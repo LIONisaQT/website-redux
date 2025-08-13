@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 import type { CalcButtonDetails } from "./calculator-config";
 import "./CalculatorButton.scss";
+import useSound from "use-sound";
+import clickSound from "../../assets/sounds/generic1.ogg";
 
 interface ButtonProps {
 	button: string;
@@ -26,6 +28,8 @@ function CalculatorButton({
 	const isTouchInput = useRef(false);
 	const wasHold = useRef(false);
 
+	const [click] = useSound(clickSound);
+
 	const buttonClicked = (e: React.MouseEvent | React.TouchEvent) => {
 		// Prevent click if it was a long press
 		if (wasHold.current) {
@@ -35,9 +39,11 @@ function CalculatorButton({
 		}
 
 		if (uses === Infinity) {
+			click();
 			onClick(button);
 		} else {
 			if (uses <= 0) return;
+			click();
 			onClick(button);
 		}
 	};

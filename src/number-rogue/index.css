@@ -30,3 +30,7 @@ button {
 	border-radius: 4px;
 	color: #333;
 }
+
+.justified-text {
+	text-align: justify;
+}

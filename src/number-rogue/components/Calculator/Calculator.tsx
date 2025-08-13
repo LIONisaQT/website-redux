@@ -10,6 +10,7 @@ import CalculatorButton from "./CalculatorButton";
 import "./Calculator.scss";
 import { getUpdatedUses, swapDigits } from "../../util/util-methods";
 import { type CalcButton, calcOrder } from "./calculator-config";
+import { BossType } from "../boss/modifiers";
 
 export type CalculatorHandle = {
 	restart: () => void;
@@ -27,6 +28,9 @@ interface CalculatorProps {
 	enableButtons: boolean;
 	modifyTarget: (type: string) => void;
 	money: number;
+	setMoney: React.Dispatch<React.SetStateAction<number>>;
+	bossModifier?: BossType;
+	bannedNum?: number;
 }
 
 const Calculator = forwardRef<CalculatorHandle, CalculatorProps>(
@@ -43,6 +47,9 @@ const Calculator = forwardRef<CalculatorHandle, CalculatorProps>(
 			enableButtons,
 			modifyTarget,
 			money,
+			setMoney,
+			bossModifier,
+			bannedNum,
 		},
 		ref
 	) => {
@@ -56,6 +63,7 @@ const Calculator = forwardRef<CalculatorHandle, CalculatorProps>(
 		const [currentOp, setCurrentOp] = useState("");
 		const [previousOp, setPreviousOp] = useState("");
 		const [opOnly, setOpOnly] = useState(true);
+		const [prevKey, setPrevKey] = useState("hi");
 
 		const [justIncreased, setJustIncreased] = useState("");
 
@@ -83,9 +91,25 @@ const Calculator = forwardRef<CalculatorHandle, CalculatorProps>(
 
 		const onClick = (value: string) => {
 			if (value in defaults) {
+				defaults = getUpdatedUses(value, defaults, -1);
 				setDefaults((prev) => getUpdatedUses(value, prev, -1));
 			} else if (value in extras) {
 				setExtras(getUpdatedUses(value, extras, -1));
+			} else {
+				console.error(`Invalid key pressed: ${value}`);
+				return;
+			}
+
+			if (value !== "battery") {
+				setPrevKey(value);
+			}
+
+			switch (bossModifier) {
+				case BossType.PayPerUse:
+					setMoney((money) => money - 1); // TODO: Magic number
+					break;
+				default:
+					break;
 			}
 
 			if (isNaN(Number(value))) {
@@ -211,6 +235,9 @@ const Calculator = forwardRef<CalculatorHandle, CalculatorProps>(
 					}
 					result = Math.floor(num1 / n2);
 					break;
+				case "%":
+					result = num1 % n2;
+					break;
 				case "power":
 					result = Math.pow(num1, n2);
 					break;
@@ -231,11 +258,24 @@ const Calculator = forwardRef<CalculatorHandle, CalculatorProps>(
 
 		const getIsDisabled = (key: string) => {
 			if (enableButtons) return true;
+			if (bannedNum?.toString() === key) return true;
 
+			// If last key was a number, disable operators
+			if (
+				!isNaN(Number(prevKey)) &&
+				isNaN(Number(key)) &&
+				key !== "equals" &&
+				key !== "battery"
+			) {
+				return true;
+			}
+
+			// Enable equals sign if an operator and second number available
 			if (key === "equals") {
 				return currentOp === "" || num2 === "";
 			}
 
+			// Enable only operators
 			return !isNaN(Number(key)) && opOnly;
 		};
 
