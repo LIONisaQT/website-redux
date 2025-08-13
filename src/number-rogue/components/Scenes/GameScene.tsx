@@ -109,8 +109,9 @@ function GameScene({
 		setSeed(newSeed);
 		reseededRef.current = true;
 		rngRef.current = seedrandom(newSeed, { state: true });
-		setBoss(getRandomBoss());
-		// startGame(true);
+		const newBoss = getRandomBoss();
+		setBoss(newBoss);
+		startGame(newBoss, true);
 	};
 
 	const getRandomBoss = useCallback(() => {
@@ -123,29 +124,27 @@ function GameScene({
 	 * Checks for calledFromStart because roundCount isn't incremented then, and
 	 * needs to be. In all other cases, the count should be its expected value.
 	 */
-	const isBossRound = useCallback(
-		(calledFromStart = false) =>
-			roundCountRef.current > 0 &&
-			(roundCountRef.current + (calledFromStart ? 1 : 0)) % 5 === 0,
-		[]
-	);
-
-	// roundCountRef is always one behind roundCount because of my spahgetti.
-	const isSwarm = useCallback(
-		(calledFromStart = false) =>
-			boss?.[0] === BossType.Swarm && isBossRound(calledFromStart),
-		[boss, isBossRound]
-	);
+	// const isBossRound = useCallback((calledFromStart = false) => {
+	// 	return (
+	// 		roundCountRef.current > 0 &&
+	// 		(roundCountRef.current + (calledFromStart ? 1 : 0)) % 5 === 0
+	// 	);
+	// }, []);
 
 	const startGame = useCallback(
-		(reseeded: boolean) => {
+		(currentBoss: [BossType, BossModifier], reseeded: boolean) => {
 			// Clear arrays so that initialized value doesn't get included.
 			setTargets([]);
 			setOriginalTargets([]);
 
 			const initialNum = getRng();
 
-			const targetCount = isSwarm(true) ? 3 : 1;
+			const targetCount =
+				currentBoss[0] === BossType.Swarm &&
+				roundCountRef.current > 0 &&
+				(roundCountRef.current + 1) % 5 === 0
+					? 3
+					: 1;
 
 			for (let i = 0; i < targetCount; i++) {
 				const offset = 1 + getRng(rngMax - 1);
@@ -178,7 +177,7 @@ function GameScene({
 
 			reseededRef.current = false;
 		},
-		[getRng, isSwarm, rngMax, startMoney]
+		[getRng, rngMax, startMoney]
 	);
 
 	const restartRound = () => {
@@ -198,14 +197,10 @@ function GameScene({
 		if (hasStarted.current) return;
 
 		hasStarted.current = true;
-		setBoss(getRandomBoss());
-	}, [getRandomBoss]);
-
-	useEffect(() => {
-		if (!boss) return;
-
-		startGame(reseededRef.current);
-	}, [boss, startGame]);
+		const initialBoss = getRandomBoss();
+		setBoss(initialBoss);
+		startGame(initialBoss, false);
+	}, [getRandomBoss, startGame]);
 
 	const onEval = (result: number) => {
 		switch (boss?.[0]) {
@@ -256,10 +251,12 @@ function GameScene({
 			origin: { x: 1, y: 0.75 },
 		});
 
-		console.log(roundCountRef.current);
-		setMoney((money) => money + prize * (isBossRound() ? 2 : 1));
+		setMoney(
+			(money) =>
+				money + prize * (roundCount > 0 && roundCount % 5 === 0 ? 2 : 1)
+		);
 		setShopOpen(true);
-	}, [isBossRound, prize, targets]);
+	}, [roundCount, prize, targets]);
 
 	useEffect(() => {
 		if (!shopOpen) return;
@@ -289,6 +286,8 @@ function GameScene({
 			default:
 				break;
 		}
+
+		console.log("new boss", boss?.[1].name);
 	}, [boss, getRng]);
 
 	return (
@@ -368,8 +367,12 @@ function GameScene({
 				</section>
 				{boss && (
 					<section className="boss">
-						<h2>{`${isBossRound() ? "Current" : "Upcoming"} boss ${
-							!isBossRound() ? `(${5 - (roundCount % 5)} rounds away)` : ``
+						<h2>{`${roundCount % 5 === 0 ? "Current" : "Upcoming"} boss ${
+							!(roundCount % 5 === 0)
+								? `(${5 - (roundCount % 5)} round${
+										5 - (roundCount % 5) === 1 ? "" : "s"
+								  } away)`
+								: ``
 						} `}</h2>
 						<p className="justified-text">
 							<span className="boss-name">{`${boss[1].name}`}</span>
@@ -386,7 +389,9 @@ function GameScene({
 				{canCheat && (
 					<section className="cheats">
 						<h2>Cheats</h2>
-						<button onClick={() => startGame(false)}>Force next round</button>
+						<button onClick={() => startGame(boss!, false)}>
+							Force next round
+						</button>
 						<button onClick={() => setShopOpen(!shopOpen)}>Toggle shop</button>
 					</section>
 				)}
@@ -404,8 +409,12 @@ function GameScene({
 				modifyTarget={modifyTarget}
 				money={money}
 				setMoney={setMoney}
-				bossModifier={isBossRound() ? boss?.[0] : undefined}
-				bannedNum={isBossRound() ? bannedNum : undefined}
+				bossModifier={
+					roundCount > 0 && roundCount % 5 === 0 ? boss?.[0] : undefined
+				}
+				bannedNum={
+					roundCount > 0 && roundCount % 5 === 0 ? bannedNum : undefined
+				}
 			/>
 			{shopOpen && (
 				<Shop
@@ -419,7 +428,15 @@ function GameScene({
 					setExtras={setExtras}
 					money={money}
 					setMoney={setMoney}
-					onNextRoundClicked={() => startGame(false)}
+					onNextRoundClicked={() => {
+						if (roundCount > 0 && roundCount % 5 === 0) {
+							const newBoss = getRandomBoss();
+							setBoss(newBoss);
+							startGame(newBoss, false);
+						} else {
+							startGame(boss!, false);
+						}
+					}}
 				/>
 			)}
 		</div>
