@@ -15,7 +15,7 @@ export type BossModifier = {
 export const bossModifiers: Record<BossType, BossModifier> = {
 	[BossType.Prohibit]: {
 		name: "Prohibit",
-		description: "Prohibits use of certain numbers.",
+		description: "Prohibits use of a certain number.",
 	},
 	[BossType.ExpensiveEval]: {
 		name: "Costly evals",
@@ -27,6 +27,6 @@ export const bossModifiers: Record<BossType, BossModifier> = {
 	},
 	[BossType.Swarm]: {
 		name: "Swarm",
-		description: "Multiple target values must be hit.",
+		description: "Multiple target values must be reached.",
 	},
 };

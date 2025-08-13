@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import "./App.scss";
 import GameScene from "./components/Scenes/GameScene";
 import { SceneType } from "./util/scene-management";
 import HomeScene from "./components/Scenes/HomeScene";
 import useSound from "use-sound";
 import deepWithin from "./assets/music/deep-within.mp3";
+import overtrip from "./assets/music/overtrip-r1.mp3";
 import About from "./components/About/About";
 
 function App() {
@@ -14,7 +15,9 @@ function App() {
 	const [isAboutOpen, setAboutOpen] = useState(false);
 
 	const [isPlaying, setIsPlaying] = useState(false);
-	const [playBgm, { stop }] = useSound(deepWithin, {
+	const [track, setTrack] = useState(deepWithin);
+
+	const [playBgm, { sound, stop, pause }] = useSound(track, {
 		loop: true,
 		onplay: () => setIsPlaying(true),
 		onpause: () => setIsPlaying(false),
@@ -32,11 +35,17 @@ function App() {
 		};
 	}, [playBgm, stop]);
 
+	const changeTrack = useCallback((isBoss: boolean) => {
+		// sound.fade(0.5, 0, 1000);
+		setTrack(isBoss ? overtrip : deepWithin);
+	}, []);
+
 	const scene = useMemo(() => {
 		switch (currentScene) {
 			case SceneType.Game:
 				return (
 					<GameScene
+						setTrack={changeTrack}
 						canCheat={canCheat}
 						setScene={setScene}
 						rngMax={100}
@@ -48,7 +57,7 @@ function App() {
 			default:
 				return <HomeScene setScene={setScene} />;
 		}
-	}, [currentScene, canCheat]);
+	}, [currentScene, changeTrack, canCheat]);
 
 	return (
 		<div className="container">
@@ -76,7 +85,7 @@ function App() {
 						<button
 							onClick={() => {
 								if (isPlaying) {
-									stop();
+									pause();
 									setIsPlaying(false);
 								} else {
 									playBgm();
@@ -84,7 +93,7 @@ function App() {
 								}
 							}}
 						>
-							{isPlaying ? "⏹️" : "▶️"}
+							{isPlaying ? "⏸️" : "▶️"}
 						</button>
 						<button
 							onClick={() => {

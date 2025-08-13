@@ -1,3 +1,5 @@
+@import url("./colors.css");
+
 :root {
 	font-family: "Rubik", sans-serif;
 
@@ -7,8 +9,8 @@
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 
-	background: #222;
-	color: #eee;
+	background: var(--darkest);
+	color: var(--light);
 
 	-webkit-user-select: none;
 	-ms-user-select: none;
@@ -28,7 +30,34 @@ button {
 	border: none;
 	padding: 6px 12px;
 	border-radius: 4px;
-	color: #333;
+	background: var(--light);
+	color: var(--darker);
+}
+
+button {
+	filter: brightness(1) saturate(1);
+	transition: filter 0.2s ease;
+	overflow-x: none;
+	text-wrap: nowrap;
+	color: var(--darker);
+	background: var(--light);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	button:hover {
+		cursor: pointer;
+		filter: brightness(0.8);
+	}
+}
+
+button:disabled {
+	filter: brightness(0.5) saturate(0.5);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	button:disabled:hover {
+		cursor: not-allowed;
+	}
 }
 
 .justified-text {

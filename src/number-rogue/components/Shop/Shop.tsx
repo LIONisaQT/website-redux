@@ -31,6 +31,7 @@ interface ShopProps {
 
 interface ShopItem extends CalcButtonDetails {
 	price: number;
+	purchased?: boolean;
 }
 
 const Shop = forwardRef<ShopHandle, ShopProps>(
@@ -92,17 +93,25 @@ const Shop = forwardRef<ShopHandle, ShopProps>(
 				setExtras(newExtras);
 			}
 
-			const index = shopItems.findIndex(
-				(item) => getKeyByName(item.name) === button
+			// const index = shopItems.findIndex(
+			// 	(item) => getKeyByName(item.name) === button
+			// );
+			// if (index >= 0) {
+			// 	shopItems.splice(index, 1);
+			// 	setShopItems(shopItems);
+			// }
+
+			setShopItems((prev) =>
+				prev.map((item) =>
+					getKeyByName(item.name) === button
+						? { ...item, purchased: true }
+						: item
+				)
 			);
-			if (index >= 0) {
-				shopItems.splice(index, 1);
-				setShopItems(shopItems);
-			}
 		};
 
 		return (
-			<div className="shop-container">
+			<div id="shop" className="shop-container">
 				<h2>Shop</h2>
 				<section className="shop-description">
 					<p>
@@ -114,7 +123,12 @@ const Shop = forwardRef<ShopHandle, ShopProps>(
 				{canCheat && (
 					<section className="cheats">
 						<h2>Cheats</h2>
-						<button onClick={() => setMoney((money) => money + 5)}>
+						<button
+							onClick={() => {
+								coin();
+								setMoney((money) => money + 5);
+							}}
+						>
 							Add $5
 						</button>
 					</section>
@@ -127,15 +141,15 @@ const Shop = forwardRef<ShopHandle, ShopProps>(
 								<CalculatorButton
 									button={listName!}
 									details={details}
-									disabled={money < details.price}
+									disabled={money < details.price || details.purchased}
 									onClick={() => purchaseButton(listName!, details.price)}
 								/>
 								<div
 									className={`price-tag ${
-										money < details.price ? "disabled" : ""
+										money < details.price || details.purchased ? "disabled" : ""
 									}`}
 								>
-									<p>${details.price}</p>
+									<p>{details.purchased ? "SOLD" : `$${details.price}`}</p>
 								</div>
 							</div>
 						);
@@ -146,6 +160,7 @@ const Shop = forwardRef<ShopHandle, ShopProps>(
 						disabled={money <= 5} // TODO: Magic number
 						onClick={() => {
 							generateShop();
+							coin();
 							setMoney((money) => money - 5); // TODO: Magic number
 						}}
 					>

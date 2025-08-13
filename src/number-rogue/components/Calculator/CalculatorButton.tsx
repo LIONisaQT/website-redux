@@ -4,6 +4,9 @@ import "./CalculatorButton.scss";
 import useSound from "use-sound";
 import clickSound from "../../assets/sounds/generic1.ogg";
 
+const HOLD_DURATION = 300;
+const HOVER_DURATION = 500;
+
 interface ButtonProps {
 	button: string;
 	details: CalcButtonDetails;
@@ -32,7 +35,7 @@ function CalculatorButton({
 
 	const buttonClicked = (e: React.MouseEvent | React.TouchEvent) => {
 		// Prevent click if it was a long press
-		if (wasHold.current) {
+		if (wasHold.current && isTouchInput.current) {
 			e.preventDefault();
 			e.stopPropagation();
 			return;
@@ -61,7 +64,7 @@ function CalculatorButton({
 		holdTimer.current = window.setTimeout(() => {
 			wasHold.current = true;
 			setShowInfo(true);
-		}, 300);
+		}, HOLD_DURATION);
 	};
 
 	const handleTouchEnd = () => {
@@ -75,11 +78,21 @@ function CalculatorButton({
 	// Hover handlers for desktop
 	const handleMouseEnter = () => {
 		if (isTouchInput.current) return;
-		setShowInfo(true);
+
+		wasHold.current = false;
+		holdTimer.current = window.setTimeout(() => {
+			wasHold.current = true;
+			setShowInfo(true);
+		}, HOVER_DURATION);
 	};
 
 	const handleMouseLeave = () => {
 		if (isTouchInput.current) return;
+
+		if (holdTimer.current) {
+			clearTimeout(holdTimer.current);
+			holdTimer.current = null;
+		}
 		setShowInfo(false);
 	};
 

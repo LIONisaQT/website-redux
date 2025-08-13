@@ -1,3 +1,5 @@
+@import url('../../colors.css');
+
 .button-container {
 	position: relative;
 
@@ -14,16 +16,19 @@
 		pointer-events: none;
 		width: 220px;
 		padding: 16px 20px;
-		background: #666666dd;
+		background: var(--dark);
 		border-radius: 4px;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 
 		.button-name {
-			font-size: 14pt;
-			color: yellow;
+			font-size: 16pt;
+			font-weight: bold;
+			text-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+			color: var(--yellow);
 		}
 
 		.button-description {
-			font-size: 12pt;
+			text-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 		}
 	}
 
@@ -36,48 +41,27 @@
 	}
 
 	.calculator-button {
+		font-family: 'Asap Condensed', sans-serif;
+		font-weight: 500;
 		width: 60px;
 		height: 60px;
 		border-radius: 4px;
-		border: none;
 		font-size: clamp(0.75rem, 16vw, 1.6rem);
-		filter: brightness(1) saturate(1);
-		transition: filter 0.2s ease;
-		overflow-x: none;
-		text-wrap: nowrap;
-		color: #333;
-
-		@media (hover: hover) and (pointer: fine) {
-			&:hover {
-				cursor: pointer;
-				filter: brightness(2);
-			}
-		}
-
-		&:disabled {
-			filter: saturate(0.5);
-
-			@media (hover: hover) and (pointer: fine) {
-				&:hover {
-					cursor: not-allowed;
-				}
-			}
-		}
 	}
 
 	.target-operator {
-		background: brown;
+		background: var(--red);
 	}
 
 	.operator {
-		background: orangered;
+		background: var(--orange);
 	}
 
 	.uses {
 		position: absolute;
 		top: -1px;
 		right: 2px;
-		color: yellow;
+		color: var(--yellow);
 		text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.6), 1px -1px 0 rgba(0, 0, 0, 0.6), -1px 1px 0 rgba(0, 0, 0, 0.6), 1px 1px 0 rgba(0, 0, 0, 0.6);
 
 		&.just-increased {
@@ -93,8 +77,9 @@
 	}
 
 	50% {
-		transform: scale(1.15);
-		box-shadow: 0 0 8px 3px gold;
+		transform: scale(1.5);
+
+		box-shadow: 0 0 8px 3px var(--yellow);
 	}
 
 	100% {

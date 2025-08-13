@@ -18,6 +18,7 @@ import useSound from "use-sound";
 import coinSound from "../../assets/sounds/coin6.ogg";
 
 interface GameSceneProps {
+	setTrack: (isBoss: boolean) => void;
 	canCheat: boolean;
 	setScene: React.Dispatch<React.SetStateAction<SceneType>>;
 	rngMax: number;
@@ -26,6 +27,7 @@ interface GameSceneProps {
 }
 
 function GameScene({
+	setTrack,
 	canCheat,
 	setScene,
 	rngMax,
@@ -127,22 +129,23 @@ function GameScene({
 
 	const startGame = useCallback(
 		(currentBoss: [BossType, BossModifier], reseeded: boolean) => {
+			/**
+			 * Uses roundCountRef because using roundCount would trigger a re-render.
+			 * Needs a +1 because roundCount hasn't been incremented yet.
+			 */
+			const isBossRound =
+				roundCountRef.current > 0 && (roundCountRef.current + 1) % 5 === 0;
+
+			setTrack(isBossRound);
+
 			// Clear arrays so that initialized value doesn't get included.
 			setTargets([]);
 			setOriginalTargets([]);
 
 			const initialNum = getRng();
 
-			/**
-			 * Uses roundCountRef because using roundCount would trigger a re-render.
-			 * Needs a +1 because roundCount hasn't been incremented yet.
-			 */
 			const targetCount =
-				currentBoss[0] === BossType.Swarm &&
-				roundCountRef.current > 0 &&
-				(roundCountRef.current + 1) % 5 === 0
-					? 3
-					: 1;
+				currentBoss[0] === BossType.Swarm && isBossRound ? 3 : 1;
 
 			for (let i = 0; i < targetCount; i++) {
 				const offset = 1 + getRng(rngMax - 1);
@@ -175,7 +178,7 @@ function GameScene({
 
 			reseededRef.current = false;
 		},
-		[getRng, rngMax, startMoney]
+		[getRng, rngMax, setTrack, startMoney]
 	);
 
 	const restartRound = () => {
@@ -261,6 +264,8 @@ function GameScene({
 
 		shopRef.current?.generateShop();
 		coin();
+
+		window.scrollTo(0, document.body.scrollHeight);
 	}, [coin, shopOpen]);
 
 	const modifyTarget = (type: string) => {
@@ -282,6 +287,7 @@ function GameScene({
 				setBannedNum(getRng(9));
 				break;
 			default:
+				setBannedNum(undefined);
 				break;
 		}
 	}, [boss, getRng]);
@@ -328,36 +334,42 @@ function GameScene({
 						/>
 					</form>
 				</section>
-				<section className="money-round">
-					<section className="money">
-						<p className="spaced-out">
-							<span>Money:</span>
-							<span
-								className={`money-text ${money < 1 ? "debt" : ""}`}
-							>{`$${money}`}</span>
-						</p>
-						<section className="round">
-							<p className="spaced-out">
-								<span>Round:</span>
-								<span className="round-text">{`${roundCount}/20`}</span>
+				<section className="stat-text">
+					<section className="stat-text-container">
+						<section className="money">
+							<p className="stats">
+								<span className="stat-label">MONEY</span>
+								<span
+									className={`stat-value ${money < 1 ? "debt" : "positive"}`}
+								>{`${money}`}</span>
 							</p>
-							<button onClick={restartRound}>Restart round</button>
+						</section>
+						<section className="round">
+							<p className="stats">
+								<span className="stat-label">ROUND</span>
+								<span className="stat-value neutral">{`${roundCount}/20`}</span>
+							</p>
+						</section>
+						<section className="turns">
+							<p className="stats">
+								<span className="stat-label">TURNS</span>
+								<span className="stat-value neutral">{turnCount}</span>
+							</p>
 						</section>
 					</section>
+					<button className="restart-button" onClick={restartRound}>
+						Press to restart round
+					</button>
 				</section>
-				<section className="target-turn">
+				<section className="target-text-container">
 					<section className="target">
-						<p className="spaced-out">
-							<span>Target number(s):</span>
-							<span className="target-text">
+						<p className="target-text">
+							<span className="target-label">{`Target number${
+								targets.length <= 1 ? "" : "s"
+							}:`}</span>
+							<span className="target-number">
 								{targets.map((target) => ` ${target}`)}
 							</span>
-						</p>
-					</section>
-					<section className="turns">
-						<p className="spaced-out">
-							<span>Turns:</span>
-							<span className="turn-text">{turnCount}</span>
 						</p>
 					</section>
 				</section>
@@ -377,7 +389,9 @@ function GameScene({
 						{boss[0] === BossType.Prohibit && (
 							<p>
 								<span>Banned number: </span>
-								<span className="banned-number">{bannedNum}</span>
+								<span className="banned-number">{`${
+									roundCount % 5 === 0 ? bannedNum : "Revealed on boss round"
+								}`}</span>
 							</p>
 						)}
 					</section>
