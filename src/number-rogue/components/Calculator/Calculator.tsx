@@ -29,6 +29,7 @@ interface CalculatorProps {
 	modifyTarget: (type: string) => void;
 	money: number;
 	setMoney: React.Dispatch<React.SetStateAction<number>>;
+	isBossLevel: boolean;
 	bossModifier?: BossType;
 	bannedNum?: number;
 }
@@ -48,6 +49,7 @@ const Calculator = forwardRef<CalculatorHandle, CalculatorProps>(
 			modifyTarget,
 			money,
 			setMoney,
+			isBossLevel,
 			bossModifier,
 			bannedNum,
 		},
@@ -105,12 +107,14 @@ const Calculator = forwardRef<CalculatorHandle, CalculatorProps>(
 				setPrevKey(value);
 			}
 
-			switch (bossModifier) {
-				case BossType.PayPerUse:
-					setMoney((money) => money - 1); // TODO: Magic number
-					break;
-				default:
-					break;
+			if (isBossLevel) {
+				switch (bossModifier) {
+					case BossType.PayPerUse:
+						setMoney((money) => money - 1); // TODO: Magic number
+						break;
+					default:
+						break;
+				}
 			}
 
 			if (isNaN(Number(value))) {
