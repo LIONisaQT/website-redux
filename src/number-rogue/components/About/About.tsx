@@ -42,6 +42,7 @@ function About({ isOpen, closeModal }: AboutProps) {
 								<li>🎲: Randomize</li>
 								<li>_T (e.g. 🔄 T): Affects the target number</li>
 								<li>_C (e.g. 🎲 C): Affects the current number</li>
+								<li>n_/_n: Appends or prepends next input</li>
 								<li>+$: Adds your current money to the current number</li>
 								<li>🔋: +1 use to a random button</li>
 							</ul>
