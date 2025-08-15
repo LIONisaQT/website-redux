@@ -270,12 +270,12 @@ export const defaultButtons: Record<string, CalcButton> = Object.fromEntries(
 );
 
 export const extraButtons: Record<string, CalcButton> = {
-	swapTarget: { uses: Infinity, details: buttonList["swapTarget"] },
-	swapCurrent: { uses: Infinity, details: buttonList["swapCurrent"] },
+	// swapTarget: { uses: Infinity, details: buttonList["swapTarget"] },
+	// swapCurrent: { uses: Infinity, details: buttonList["swapCurrent"] },
 	// increment: { uses: Infinity, details: buttonList["increment"] },
 	// decrement: { uses: Infinity, details: buttonList["decrement"] },
 	// prepend2: { uses: Infinity, details: buttonList["prepend2"] },
-	randomTarget: { uses: Infinity, details: buttonList["randomTarget"] },
+	// randomTarget: { uses: Infinity, details: buttonList["randomTarget"] },
 	// plusMoney: { uses: Infinity, details: buttonList["plusMoney"] },
 	// "%": { uses: Infinity, details: buttonList["%"] },
 	// prepend: { uses: Infinity, details: buttonList["customPrepend"] },
