@@ -1,7 +1,7 @@
 .about {
 	position: absolute;
-	height: 100vh;
 	width: 100vw;
+	min-height: 100vh;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -10,7 +10,7 @@
 		position: absolute;
 		width: 100vw;
 		height: 100vh;
-		background: rgba(0, 0, 0, 0.2);
+		background: rgba(0, 0, 0, 0.5);
 	}
 
 	.about-body {
@@ -22,13 +22,13 @@
 		width: 100%;
 		gap: 40px;
 		text-align: justify;
-		background: #444;
+		background: var(--darker);
 		padding: 36px 48px;
 		border-radius: 8px;
 		z-index: 1;
 
 		a {
-			color: cyan;
+			color: var(--cyan);
 		}
 	}
 

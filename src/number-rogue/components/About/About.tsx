@@ -28,9 +28,13 @@ function About({ isOpen, closeModal }: AboutProps) {
 							.
 						</p>
 						<p>
-							The background track is{" "}
+							The background tracks used are{" "}
 							<a href="https://www.youtube.com/watch?v=l9lnzNSz94M" target="_">
 								Deep Within by HOYO-MiX
+							</a>{" "}
+							and{" "}
+							<a href="https://www.youtube.com/watch?v=X_-2qMyfj5A" target="_">
+								Overtrip by CAPCOM
 							</a>
 							.
 						</p>

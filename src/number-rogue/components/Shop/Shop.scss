@@ -4,6 +4,15 @@
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
+	width: 100%;
+
+	.shop-money {
+		color: var(--green);
+	}
+
+	.debt {
+		color: var(--red);
+	}
 
 	.cheats {
 		display: flex;

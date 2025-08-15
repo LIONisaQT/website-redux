@@ -4,6 +4,8 @@ export type CalcButtonDetails = {
 	description?: string;
 	defaultUses: number;
 	affectsTarget?: boolean;
+	priceModifier?: number;
+	weight?: number;
 };
 
 export type CalcButton = {
@@ -106,6 +108,7 @@ export const buttonList: Record<string, CalcButtonDetails> = {
 			"Divides the first number by the second and replaces the current number with the remainder.",
 		defaultUses: 1,
 		affectsTarget: false,
+		weight: 0.75,
 	},
 
 	// Always-available
@@ -129,6 +132,8 @@ export const buttonList: Record<string, CalcButtonDetails> = {
 		description: "Raises the current number by power of the exponent.",
 		defaultUses: 1,
 		affectsTarget: false,
+		priceModifier: 0.5,
+		weight: 0.25,
 	},
 	swapTarget: {
 		name: "Swap Target",
@@ -136,6 +141,7 @@ export const buttonList: Record<string, CalcButtonDetails> = {
 		description: "Reverses direction of the target (69 -> 96).",
 		defaultUses: 1,
 		affectsTarget: true,
+		weight: 0.5,
 	},
 	swapCurrent: {
 		name: "Swap Current",
@@ -143,6 +149,7 @@ export const buttonList: Record<string, CalcButtonDetails> = {
 		description: "Reverses direction of the current number (69 -> 96).",
 		defaultUses: 1,
 		affectsTarget: false,
+		weight: 0.5,
 	},
 	randomCurrent: {
 		name: "Randomize Current",
@@ -151,6 +158,8 @@ export const buttonList: Record<string, CalcButtonDetails> = {
 			"Replaces the current number with a random number between 0 and 100.",
 		defaultUses: 1,
 		affectsTarget: false,
+		priceModifier: 0.5,
+		weight: 0.5,
 	},
 	randomTarget: {
 		name: "Randomize Target",
@@ -159,6 +168,8 @@ export const buttonList: Record<string, CalcButtonDetails> = {
 			"Replaces the current target with a random number between 0 and 100.",
 		defaultUses: 1,
 		affectsTarget: true,
+		priceModifier: 0.5,
+		weight: 0.5,
 	},
 	increment: {
 		name: "Increment",
@@ -166,6 +177,7 @@ export const buttonList: Record<string, CalcButtonDetails> = {
 		description: "Increases the current number by 1.",
 		defaultUses: 1,
 		affectsTarget: false,
+		weight: 0.75,
 	},
 	decrement: {
 		name: "Decrement",
@@ -173,6 +185,7 @@ export const buttonList: Record<string, CalcButtonDetails> = {
 		description: "Decreases the current number by 1.",
 		defaultUses: 1,
 		affectsTarget: false,
+		weight: 0.75,
 	},
 	plusMoney: {
 		name: "Plus $",
@@ -181,6 +194,25 @@ export const buttonList: Record<string, CalcButtonDetails> = {
 			"Increases the current number by the amount of money you have.",
 		defaultUses: 1,
 		affectsTarget: false,
+		weight: 0.5,
+	},
+	customPrepend: {
+		name: "Prepend n",
+		label: "n _",
+		description: "Prepends n to the current number.",
+		defaultUses: 1,
+		affectsTarget: false,
+		priceModifier: 1.5,
+		weight: 0.25,
+	},
+	customAppend: {
+		name: "Append n",
+		label: "_ n",
+		description: "Appends n to the current number.",
+		defaultUses: 1,
+		affectsTarget: false,
+		priceModifier: 1.5,
+		weight: 0.25,
 	},
 };
 
@@ -196,12 +228,15 @@ const generatePrependButtons = (
 			description: `Prepends ${i} to the current number.`,
 			defaultUses: 1,
 			affectsTarget: false,
+			priceModifier: 0.75,
+			weight: 0.5,
 		};
 	}
 	return buttons;
 };
 
-Object.assign(buttonList, generatePrependButtons(1, 9));
+// Maybe this can be increased to 9 for levels with higher max numbers.
+Object.assign(buttonList, generatePrependButtons(1, 3));
 
 export function getKeyByName(name: string): string | undefined {
 	return Object.entries(buttonList).find(
@@ -243,4 +278,6 @@ export const extraButtons: Record<string, CalcButton> = {
 	// randomTarget: { uses: Infinity, details: buttonList["randomTarget"] },
 	// plusMoney: { uses: Infinity, details: buttonList["plusMoney"] },
 	// "%": { uses: Infinity, details: buttonList["%"] },
+	// prepend: { uses: Infinity, details: buttonList["customPrepend"] },
+	// append: { uses: Infinity, details: buttonList["customAppend"] },
 };

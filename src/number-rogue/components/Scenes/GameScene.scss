@@ -141,6 +141,53 @@
 			display: flex;
 			flex-direction: column;
 			gap: 8px;
+
+			.button-group {
+				display: flex;
+				gap: 8px;
+
+				button {
+					flex: 1;
+				}
+			}
+		}
+	}
+
+	.game-end-container {
+		position: fixed;
+		top: 0;
+		right: 0;
+		width: 100vw;
+		height: 100vh;
+		background-color: rgba(0, 0, 0, 0.5);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+
+		.game-end-modal {
+			max-width: 200px;
+			width: 100%;
+			background-color: var(--darker);
+			padding: 36px 48px;
+			border-radius: 8px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 40px;
+
+			.text {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				gap: 12px;
+			}
+
+			.button-group {
+				display: flex;
+				gap: 16px;
+			}
 		}
 	}
 }

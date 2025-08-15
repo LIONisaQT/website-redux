@@ -14,19 +14,19 @@ export type BossModifier = {
 
 export const bossModifiers: Record<BossType, BossModifier> = {
 	[BossType.Prohibit]: {
-		name: "Prohibit",
+		name: "Envy",
 		description: "Prohibits use of a certain number.",
 	},
 	[BossType.ExpensiveEval]: {
-		name: "Costly evals",
-		description: "Each evaluation costs $5 (will go into debt).",
+		name: "Greed",
+		description: "Each evaluation costs $5. Can go into debt.",
 	},
 	[BossType.PayPerUse]: {
-		name: "Pay per use",
-		description: "Each button costs $1 to tap (will go into debt).",
+		name: "Sloth",
+		description: "Each button costs $1 to tap. Can go into debt.",
 	},
 	[BossType.Swarm]: {
-		name: "Swarm",
-		description: "Multiple target values must be reached.",
+		name: "Wrath",
+		description: "Multiple target values must be reached. Can go in any order.",
 	},
 };

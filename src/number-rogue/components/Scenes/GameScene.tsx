@@ -77,10 +77,14 @@ function GameScene({
 	const [coin] = useSound(coinSound);
 
 	const [money, setMoney] = useState(startMoney);
+	const [initialMoney, setInitialMoney] = useState(money);
 	const [prize] = useState(winMoney);
 
 	const [boss, setBoss] = useState<[BossType, BossModifier]>();
 	const [bannedNum, setBannedNum] = useState<number>();
+
+	const [gameOver, setGameOver] = useState(false);
+	const [didWin, setDidWin] = useState(false);
 
 	useEffect(() => {
 		defaultsRef.current = defaults;
@@ -160,6 +164,7 @@ function GameScene({
 			}
 
 			setInitialNum(initialNum.toString());
+			setInitialMoney(money);
 
 			setTurnCount(0);
 			setRoundCount((round) => (reseeded ? 1 : round + 1));
@@ -178,12 +183,13 @@ function GameScene({
 
 			reseededRef.current = false;
 		},
-		[getRng, rngMax, setTrack, startMoney]
+		[getRng, money, rngMax, setTrack, startMoney]
 	);
 
 	const restartRound = () => {
 		rngRef.current = seedrandom("", { state: rngStateRef.current });
 		setInitialNum(initialNum);
+		setMoney(initialMoney);
 		setTargets(originalTargets);
 		setTurnCount(0);
 		setDefaults(savedDefaults!);
@@ -227,7 +233,8 @@ function GameScene({
 			);
 
 			if (allUsedUp) {
-				setScene(SceneType.Home);
+				setGameOver(true);
+				setDidWin(false);
 			}
 
 			return;
@@ -254,6 +261,12 @@ function GameScene({
 			spread: 55,
 			origin: { x: 1, y: 0.75 },
 		});
+
+		if (roundCount === 20) {
+			console.log("you win");
+			setGameOver(true);
+			setDidWin(true);
+		}
 
 		setMoney((money) => money + prize * (isBossRound() ? 2 : 1));
 		setShopOpen(true);
@@ -367,9 +380,7 @@ function GameScene({
 							<span className="target-label">{`Target number${
 								targets.length <= 1 ? "" : "s"
 							}:`}</span>
-							<span className="target-number">
-								{targets.map((target) => ` ${target}`)}
-							</span>
+							<span className="target-number">{targets.join(",")}</span>
 						</p>
 					</section>
 				</section>
@@ -399,10 +410,14 @@ function GameScene({
 				{canCheat && (
 					<section className="cheats">
 						<h2>Cheats</h2>
-						<button onClick={() => startGame(boss!, false)}>
-							Force next round
-						</button>
-						<button onClick={() => setShopOpen(!shopOpen)}>Toggle shop</button>
+						<div className="button-group">
+							<button onClick={() => startGame(boss!, false)}>
+								Force next round
+							</button>
+							<button onClick={() => setShopOpen(!shopOpen)}>
+								Toggle shop
+							</button>
+						</div>
 					</section>
 				)}
 			</section>
@@ -445,6 +460,26 @@ function GameScene({
 						}
 					}}
 				/>
+			)}
+			{gameOver && (
+				<div className="game-end-container">
+					<div className="game-end-modal">
+						<section className="text">
+							<h1>{didWin ? "You win!" : "Game over..."}</h1>
+							<p>{`You played ${roundCount} round${
+								roundCount === 1 ? "" : "s"
+							}!`}</p>
+						</section>
+						<section className="button-group">
+							{didWin && (
+								<button onClick={() => setGameOver(false)}>Endless mode</button>
+							)}
+							<button onClick={() => setScene(SceneType.Home)}>
+								Main menu
+							</button>
+						</section>
+					</div>
+				</div>
 			)}
 		</div>
 	);
