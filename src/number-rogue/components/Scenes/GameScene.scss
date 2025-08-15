@@ -6,6 +6,7 @@
 	align-items: center;
 	gap: 20px;
 	width: clamp(320px, 400px, 400px);
+	margin-top: 60px;
 
 	.info {
 		display: flex;
@@ -188,6 +189,10 @@
 				gap: 16px;
 			}
 		}
+	}
+
+	@media (max-width: 600px) and (orientation: portrait) {
+		margin-top: 20px;
 	}
 }
 

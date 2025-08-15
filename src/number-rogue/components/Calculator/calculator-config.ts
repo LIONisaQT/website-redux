@@ -137,7 +137,7 @@ export const buttonList: Record<string, CalcButtonDetails> = {
 	},
 	swapTarget: {
 		name: "Swap Target",
-		label: "SpT",
+		label: "🔄 T",
 		description: "Reverses direction of the target (69 -> 96).",
 		defaultUses: 1,
 		affectsTarget: true,
@@ -145,7 +145,7 @@ export const buttonList: Record<string, CalcButtonDetails> = {
 	},
 	swapCurrent: {
 		name: "Swap Current",
-		label: "SpC",
+		label: "🔄 C",
 		description: "Reverses direction of the current number (69 -> 96).",
 		defaultUses: 1,
 		affectsTarget: false,
@@ -153,7 +153,7 @@ export const buttonList: Record<string, CalcButtonDetails> = {
 	},
 	randomCurrent: {
 		name: "Randomize Current",
-		label: "RdC",
+		label: "🎲 C",
 		description:
 			"Replaces the current number with a random number between 0 and 100.",
 		defaultUses: 1,
@@ -163,7 +163,7 @@ export const buttonList: Record<string, CalcButtonDetails> = {
 	},
 	randomTarget: {
 		name: "Randomize Target",
-		label: "RdT",
+		label: "🎲 T",
 		description:
 			"Replaces the current target with a random number between 0 and 100.",
 		defaultUses: 1,
@@ -270,12 +270,12 @@ export const defaultButtons: Record<string, CalcButton> = Object.fromEntries(
 );
 
 export const extraButtons: Record<string, CalcButton> = {
-	// swapTarget: { uses: Infinity, details: buttonList["swapTarget"] },
-	// swapCurrent: { uses: Infinity, details: buttonList["swapCurrent"] },
+	swapTarget: { uses: Infinity, details: buttonList["swapTarget"] },
+	swapCurrent: { uses: Infinity, details: buttonList["swapCurrent"] },
 	// increment: { uses: Infinity, details: buttonList["increment"] },
 	// decrement: { uses: Infinity, details: buttonList["decrement"] },
 	// prepend2: { uses: Infinity, details: buttonList["prepend2"] },
-	// randomTarget: { uses: Infinity, details: buttonList["randomTarget"] },
+	randomTarget: { uses: Infinity, details: buttonList["randomTarget"] },
 	// plusMoney: { uses: Infinity, details: buttonList["plusMoney"] },
 	// "%": { uses: Infinity, details: buttonList["%"] },
 	// prepend: { uses: Infinity, details: buttonList["customPrepend"] },

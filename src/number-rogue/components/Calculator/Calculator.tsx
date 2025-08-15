@@ -109,7 +109,7 @@ const Calculator = forwardRef<CalculatorHandle, CalculatorProps>(
 
 			if (isBossLevel) {
 				switch (bossModifier) {
-					case BossType.PayPerUse:
+					case BossType.Sloth:
 						setMoney((money) => money - 1); // TODO: Magic number
 						break;
 					default:

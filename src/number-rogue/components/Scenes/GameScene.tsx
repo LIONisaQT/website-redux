@@ -149,7 +149,7 @@ function GameScene({
 			const initialNum = getRng();
 
 			const targetCount =
-				currentBoss[0] === BossType.Swarm && isBossRound ? 3 : 1;
+				currentBoss[0] === BossType.Wrath && isBossRound ? 3 : 1;
 
 			for (let i = 0; i < targetCount; i++) {
 				const offset = 1 + getRng(rngMax - 1);
@@ -212,7 +212,7 @@ function GameScene({
 	const onEval = (result: number) => {
 		if (isBossRound()) {
 			switch (boss?.[0]) {
-				case BossType.ExpensiveEval:
+				case BossType.Greed:
 					setMoney((money) => money - 5); // TODO: Magic number
 					break;
 				default:
@@ -296,7 +296,7 @@ function GameScene({
 
 	useEffect(() => {
 		switch (boss?.[0]) {
-			case BossType.Prohibit:
+			case BossType.Envy:
 				setBannedNum(getRng(9));
 				break;
 			default:
@@ -397,7 +397,7 @@ function GameScene({
 							<span className="boss-name">{`${boss[1].name}`}</span>
 							<span>{`: ${boss[1].description}`}</span>
 						</p>
-						{boss[0] === BossType.Prohibit && (
+						{boss[0] === BossType.Envy && (
 							<p>
 								<span>Banned number: </span>
 								<span className="banned-number">{`${
