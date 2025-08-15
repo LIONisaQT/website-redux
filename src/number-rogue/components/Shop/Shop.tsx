@@ -51,17 +51,44 @@ const Shop = forwardRef<ShopHandle, ShopProps>(
 		ref
 	) => {
 		const [shopItems, setShopItems] = useState<ShopItem[]>([]);
-		const [coin] = useSound(coinSound);
+		const [coin] = useSound(coinSound, { volume: 0.33 });
 
 		const generateShop = useCallback(() => {
-			const shopItems = [];
-			for (let i = 0; i < shopSize; i++) {
-				const keys = Object.keys(shopList);
-				const randomKey = keys[getRng(keys.length)];
-				const newItem = buttonList[randomKey] as ShopItem;
-				newItem.price = getRng(4) + 4;
-				shopItems.push(newItem);
+			const pool = Object.keys(shopList).map((key) => ({
+				key,
+				item: { ...buttonList[key] } as ShopItem,
+				weight: shopList[key].weight ?? 1,
+			}));
+
+			const shopItems: ShopItem[] = [];
+
+			// Precompute total weight
+			let totalWeight = pool.reduce((sum, entry) => sum + entry.weight, 0);
+
+			for (let i = 0; i < shopSize && pool.length > 0; i++) {
+				const r = getRng(totalWeight); // random number in [0, totalWeight)
+
+				// Find chosen index without reduce
+				let chosenIndex = 0;
+				for (let j = 0, acc = 0; j < pool.length; j++) {
+					acc += pool[j].weight;
+					if (r < acc) {
+						chosenIndex = j;
+						break;
+					}
+				}
+
+				const chosen = pool[chosenIndex];
+				const priceModifier = chosen.item.priceModifier ?? 1;
+				chosen.item.price = Math.ceil((getRng(4) + 4) * priceModifier);
+
+				shopItems.push(chosen.item);
+
+				// Update total weight and remove chosen entry
+				totalWeight -= chosen.weight;
+				pool.splice(chosenIndex, 1);
 			}
+
 			setShopItems(shopItems);
 		}, [getRng, shopSize]);
 
@@ -112,7 +139,12 @@ const Shop = forwardRef<ShopHandle, ShopProps>(
 
 		return (
 			<div id="shop" className="shop-container">
-				<h2>Shop</h2>
+				<h2>
+					<span>Shop with your </span>
+					<span
+						className={`shop-money ${money > 0 ? "" : "debt"}`}
+					>{`$${money}`}</span>
+				</h2>
 				<section className="shop-description">
 					<p>
 						When you purchase an item, you get +2 uses of it.

@@ -36,7 +36,7 @@ function App() {
 	}, [playBgm, stop]);
 
 	const changeTrack = useCallback((isBoss: boolean) => {
-		// sound.fade(0.5, 0, 1000);
+		// sound.fade(0, 0.5, 1000);
 		setTrack(isBoss ? overtrip : deepWithin);
 	}, []);
 

@@ -109,7 +109,7 @@ const Calculator = forwardRef<CalculatorHandle, CalculatorProps>(
 
 			if (isBossLevel) {
 				switch (bossModifier) {
-					case BossType.PayPerUse:
+					case BossType.Sloth:
 						setMoney((money) => money - 1); // TODO: Magic number
 						break;
 					default:
@@ -202,6 +202,7 @@ const Calculator = forwardRef<CalculatorHandle, CalculatorProps>(
 							break;
 						}
 					}
+
 					setDisplay(num1 + value);
 					setPreviousOp(currentOp);
 					setCurrentOp(value);
@@ -245,6 +246,12 @@ const Calculator = forwardRef<CalculatorHandle, CalculatorProps>(
 					break;
 				case "power":
 					result = Math.pow(num1, n2);
+					break;
+				case "prepend":
+					result = Number(n2.toString() + num1.toString());
+					break;
+				case "append":
+					result = Number(num1.toString() + n2.toString());
 					break;
 				default:
 					alert(`This operation (${currentOp}) hasn't been implemented yet.`);
