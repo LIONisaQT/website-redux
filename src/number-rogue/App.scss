@@ -4,7 +4,7 @@
 	align-items: center;
 	max-width: 1000px;
 	width: 100%;
-	margin: 0 auto;
+	margin: 60px auto;
 	gap: 20px;
 	transition: width 0.3s ease, max-width 0.3s ease;
 
@@ -31,6 +31,7 @@
 	@media (max-width: 600px) and (orientation: portrait) {
 		max-width: 100%;
 		width: 100%;
+		margin: 20px auto;
 
 		.fab {
 			bottom: 16px;
