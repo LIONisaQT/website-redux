@@ -51,7 +51,7 @@ const Shop = forwardRef<ShopHandle, ShopProps>(
 		ref
 	) => {
 		const [shopItems, setShopItems] = useState<ShopItem[]>([]);
-		const [coin] = useSound(coinSound);
+		const [coin] = useSound(coinSound, { volume: 0.33 });
 
 		const generateShop = useCallback(() => {
 			const pool = Object.keys(shopList).map((key) => ({

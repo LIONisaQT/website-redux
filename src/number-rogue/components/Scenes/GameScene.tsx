@@ -74,7 +74,7 @@ function GameScene({
 
 	const shopRef = useRef<ShopHandle>(null);
 	const [shopOpen, setShopOpen] = useState(false);
-	const [coin] = useSound(coinSound);
+	const [coin] = useSound(coinSound, { volume: 0.5 });
 
 	const [money, setMoney] = useState(startMoney);
 	const [initialMoney, setInitialMoney] = useState(money);
