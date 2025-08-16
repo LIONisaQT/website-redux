@@ -261,7 +261,7 @@ const calcLayout = [
 
 export const calcOrder = calcLayout.flat();
 
-const excludedFromShop = ["equals"];
+const excludedFromShop = ["equals", "backspace"];
 
 export const shopList: Record<string, CalcButtonDetails> = Object.fromEntries(
 	Object.entries(buttonList).filter(([key]) => !excludedFromShop.includes(key))
