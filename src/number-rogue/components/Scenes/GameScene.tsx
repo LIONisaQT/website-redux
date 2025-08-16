@@ -392,7 +392,9 @@ function GameScene({
 							<span className="target-label">{`Target number${
 								targets.length <= 1 ? "" : "s"
 							}:`}</span>
-							<span className="target-number">{targets.join(",")}</span>
+							<span className="target-number">{`${
+								targets.length > 0 ? targets.join(",") : "CLEAR"
+							}`}</span>
 						</p>
 					</section>
 				</section>
