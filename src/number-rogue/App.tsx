@@ -35,6 +35,33 @@ function App() {
 		};
 	}, [playBgm, stop]);
 
+	useEffect(() => {
+		const handleVisibilityChange = () => {
+			if (document.hidden) {
+				pause();
+			} else {
+				playBgm();
+			}
+		};
+
+		const handlePauseAudio = () => {
+			pause();
+		};
+
+		const handleResumeAudio = () => {
+			playBgm();
+		};
+
+		document.addEventListener("visibilitychange", handleVisibilityChange);
+		window.addEventListener("blur", handlePauseAudio);
+		window.addEventListener("focus", handleResumeAudio);
+		return () => {
+			document.removeEventListener("visibilitychange", handleVisibilityChange);
+			window.removeEventListener("blur", handlePauseAudio);
+			window.removeEventListener("focus", handleResumeAudio);
+		};
+	}, [pause, playBgm]);
+
 	const changeTrack = useCallback((isBoss: boolean) => {
 		// sound.fade(0, 0.5, 1000);
 		setTrack(isBoss ? overtrip : deepWithin);
@@ -63,7 +90,7 @@ function App() {
 		<div className="container">
 			<>{scene}</>
 			<div className="fab">
-				<button onClick={() => setFabOpen(!isFabOpen)}>{`${
+				<button className="fab-main" onClick={() => setFabOpen(!isFabOpen)}>{`${
 					isFabOpen ? "🔽" : "🔼"
 				}`}</button>
 				{isFabOpen && (
@@ -71,16 +98,18 @@ function App() {
 						<button
 							onClick={() => {
 								setFabOpen(false);
-								setCheats(!canCheat);
-							}}
-						>{`${canCheat ? "😈" : "😇"}`}</button>
-						<button
-							onClick={() => {
-								setFabOpen(false);
 								setScene(SceneType.Home);
 							}}
 						>
-							🏠
+							Back
+						</button>
+						<button
+							onClick={() => {
+								setFabOpen(false);
+								setAboutOpen(!isAboutOpen);
+							}}
+						>
+							About
 						</button>
 						<button
 							onClick={() => {
@@ -91,18 +120,17 @@ function App() {
 									playBgm();
 									setIsPlaying(true);
 								}
+								setFabOpen(false);
 							}}
 						>
-							{isPlaying ? "⏸️" : "▶️"}
+							{`Music: ${isPlaying ? "⏸️" : "▶️"}`}
 						</button>
 						<button
 							onClick={() => {
 								setFabOpen(false);
-								setAboutOpen(!isAboutOpen);
+								setCheats(!canCheat);
 							}}
-						>
-							?
-						</button>
+						>{`Cheats: ${canCheat ? "ON" : "OFF"}`}</button>
 					</>
 				)}
 			</div>

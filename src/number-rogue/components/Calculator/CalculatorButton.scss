@@ -32,20 +32,23 @@
 		}
 	}
 
-	&:hover {
+	@media (max-width: 600px) and (orientation: portrait) {
 		.button-info {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			gap: 20px;
-			filter: opacity(1);
+			position: fixed;
+			top: 33%;
+			left: 50%;
+			height: 80px;
 		}
+	}
 
-		.calculator-button {
-			filter: brightness(1.2);
+	@media (hover: hover) and (pointer: fine) {
+		&:hover {
+			.calculator-button {
+				filter: brightness(1.2);
 
-			&:disabled:hover {
-				filter: brightness(0.5) saturate(0.5)
+				&:disabled:hover {
+					filter: brightness(0.5) saturate(0.5)
+				}
 			}
 		}
 	}

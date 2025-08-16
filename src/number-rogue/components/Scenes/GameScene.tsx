@@ -305,6 +305,25 @@ function GameScene({
 		}
 	}, [boss, getRng]);
 
+	const copySeed = async () => {
+		try {
+			await navigator.clipboard.writeText(seed);
+			alert(`Copied ${seed} to clipboard.`);
+		} catch (err) {
+			console.error(err);
+		}
+	};
+
+	const pasteSeed = async () => {
+		try {
+			let text = await navigator.clipboard.readText();
+			text = text.substring(0, 6);
+			reseed(text);
+		} catch (err) {
+			console.error(err);
+		}
+	};
+
 	return (
 		<div
 			className={`game ${
@@ -312,40 +331,33 @@ function GameScene({
 			}`}
 		>
 			<section className="info">
-				<section className="seed-container">
-					<form
-						className="seed"
-						onSubmit={(e) => {
-							e.preventDefault();
-							reseed(seed);
-						}}
+				<section className="seed">
+					<label className="seed-label">Seed</label>
+					<button
+						className="seed-button"
+						onClick={() => reseed(generateRandomSeed())}
+						title="Reseed"
+						type="button"
 					>
-						<label className="seed-label" htmlFor="seed">
-							Seed
-						</label>
-						<input
-							className="seed-input"
-							id="seed"
-							name="seed"
-							maxLength={6}
-							value={seed}
-							onChange={(e) => setSeed(e.target.value)}
-						></input>
-						<button
-							className="seed-button"
-							onClick={() => reseed(generateRandomSeed())}
-							title="Reseed"
-							type="button"
-						>
-							<p>🔄</p>
-						</button>
-						<input
-							className="seed-button"
-							type="submit"
-							title="Load current seed"
-							value="➡️"
-						/>
-					</form>
+						<p>🔄</p>
+					</button>
+					<p className="seed-input">{seed}</p>
+					<button
+						className="seed-button"
+						onClick={() => copySeed()}
+						title="Copy"
+						type="button"
+					>
+						<p>✂️</p>
+					</button>
+					<button
+						className="seed-button"
+						onClick={() => pasteSeed()}
+						title="Paste"
+						type="button"
+					>
+						<p>📋</p>
+					</button>
 				</section>
 				<section className="stat-text">
 					<section className="stat-text-container">
@@ -371,7 +383,7 @@ function GameScene({
 						</section>
 					</section>
 					<button className="restart-button" onClick={restartRound}>
-						Press to restart round
+						Restart round
 					</button>
 				</section>
 				<section className="target-text-container">

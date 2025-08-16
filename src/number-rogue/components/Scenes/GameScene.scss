@@ -6,7 +6,7 @@
 	align-items: center;
 	gap: 20px;
 	width: clamp(320px, 400px, 400px);
-	margin-top: 60px;
+	margin: 60px 0;
 
 	.info {
 		display: flex;
@@ -14,35 +14,34 @@
 		gap: 20px;
 		width: 100%;
 
-		.seed-container {
-			.seed {
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				gap: 4px;
+		.seed {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 8px;
 
-				.seed-input {
-					background: var(--darker);
-					color: var(--light);
-					font-size: 14pt;
-					border-radius: 4px;
-					padding: 4px 8px;
+			.seed-input {
+				background: var(--darker);
+				color: var(--light);
+				font-size: 14pt;
+				border-radius: 4px;
+				padding: 4px 8px;
+				width: 100%;
 
-					&:focus {
-						outline: none;
-					}
+				&:focus {
+					outline: none;
 				}
+			}
 
-				.seed-button {
-					padding: 6px 8px;
-					display: inline-flex;
-					background: var(--light);
-					transition: all 0.2s ease;
+			.seed-button {
+				padding: 6px 8px;
+				display: inline-flex;
+				background: var(--light);
+				transition: all 0.2s ease;
 
-					&:hover {
-						cursor: pointer;
-						filter: brightness(0.8);
-					}
+				&:hover {
+					cursor: pointer;
+					filter: brightness(0.8);
 				}
 			}
 		}
@@ -73,15 +72,12 @@
 
 				.stat-value {
 					font-size: 40pt;
-					font-weight: 900;
-					-webkit-text-stroke-width: 2px;
-					color: transparent;
+					font-weight: bold;
 				}
 			}
 
 			.restart-button {
 				background: var(--light);
-				color: var(--darkest);
 				font-size: 14pt;
 				width: 100%;
 				transition: all 0.2s ease;
@@ -94,15 +90,15 @@
 		}
 
 		.neutral {
-			-webkit-text-stroke-color: var(--cyan);
+			color: var(--cyan);
 		}
 
 		.debt {
-			-webkit-text-stroke-color: var(--red);
+			color: var(--red);
 		}
 
 		.positive {
-			-webkit-text-stroke-color: var(--green);
+			color: var(--green);
 		}
 
 		.target-text-container {
@@ -192,7 +188,7 @@
 	}
 
 	@media (max-width: 600px) and (orientation: portrait) {
-		margin-top: 20px;
+		margin: 20px 0;
 	}
 }
 

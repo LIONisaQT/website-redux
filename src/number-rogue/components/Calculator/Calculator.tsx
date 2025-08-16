@@ -8,9 +8,15 @@ import {
 } from "react";
 import CalculatorButton from "./CalculatorButton";
 import "./Calculator.scss";
-import { getUpdatedUses, swapDigits } from "../../util/util-methods";
+import {
+	getUpdatedUses,
+	removeLastInstance,
+	swapDigits,
+} from "../../util/util-methods";
 import { type CalcButton, calcOrder } from "./calculator-config";
 import { BossType } from "../boss/modifiers";
+
+const DEFAULT_PREV_KEY = "hi"; // Prev key needs a non-empty default string
 
 export type CalculatorHandle = {
 	restart: () => void;
@@ -65,7 +71,7 @@ const Calculator = forwardRef<CalculatorHandle, CalculatorProps>(
 		const [currentOp, setCurrentOp] = useState("");
 		const [previousOp, setPreviousOp] = useState("");
 		const [opOnly, setOpOnly] = useState(true);
-		const [prevKey, setPrevKey] = useState("hi");
+		const [prevKey, setPrevKey] = useState(DEFAULT_PREV_KEY);
 
 		const [justIncreased, setJustIncreased] = useState("");
 
@@ -75,7 +81,7 @@ const Calculator = forwardRef<CalculatorHandle, CalculatorProps>(
 			setDisplay(initialNum);
 			setCurrentOp("");
 			setOpOnly(true);
-			setPrevKey("hi");
+			setPrevKey(DEFAULT_PREV_KEY);
 			setJustIncreased("");
 		}, [initialNum]);
 
@@ -92,9 +98,37 @@ const Calculator = forwardRef<CalculatorHandle, CalculatorProps>(
 			extrasRef.current = extras;
 		}, [defaults, extras]);
 
+		const modifyRecord = (key: string, amount: number) => {
+			if (key in defaults) {
+				setDefaults((prev) => getUpdatedUses(key, prev, amount));
+			} else if (key in extras) {
+				setExtras(getUpdatedUses(key, extras, amount));
+			}
+		};
+
 		const onClick = (value: string) => {
+			if (value === "backspace") {
+				if (num2.length > 0) {
+					const lastDigit = num2[num2.length - 1];
+					modifyRecord(lastDigit, 1);
+					setDisplay((prev) => prev.slice(0, -1));
+					const new2 = num2.slice(0, -1);
+					setNum2(new2);
+
+					if (new2.length === 0) {
+						setPrevKey(currentOp);
+					}
+				} else if (currentOp !== "") {
+					modifyRecord(currentOp, 1);
+					setDisplay((prev) => removeLastInstance(prev, currentOp));
+					setCurrentOp("");
+					setOpOnly(true);
+					setPrevKey(DEFAULT_PREV_KEY);
+				}
+				return;
+			}
+
 			if (value in defaults) {
-				defaults = getUpdatedUses(value, defaults, -1);
 				setDefaults((prev) => getUpdatedUses(value, prev, -1));
 			} else if (value in extras) {
 				setExtras(getUpdatedUses(value, extras, -1));
@@ -192,7 +226,7 @@ const Calculator = forwardRef<CalculatorHandle, CalculatorProps>(
 					setNum1(Number(display) + money);
 					onEval(Number(display) + money);
 					break;
-				default:
+				default: {
 					if (value.startsWith("prepend")) {
 						const digit = value.slice("prepend".length);
 						if (/^[1-9]$/.test(digit)) {
@@ -208,6 +242,7 @@ const Calculator = forwardRef<CalculatorHandle, CalculatorProps>(
 					setCurrentOp(value);
 					setOpOnly(false);
 					break;
+				}
 			}
 		};
 
@@ -247,10 +282,10 @@ const Calculator = forwardRef<CalculatorHandle, CalculatorProps>(
 				case "power":
 					result = Math.pow(num1, n2);
 					break;
-				case "prepend":
+				case "nPrepend":
 					result = Number(n2.toString() + num1.toString());
 					break;
-				case "append":
+				case "nAppend":
 					result = Number(num1.toString() + n2.toString());
 					break;
 				default:
@@ -272,6 +307,14 @@ const Calculator = forwardRef<CalculatorHandle, CalculatorProps>(
 			if (enableButtons) return true;
 			if (bannedNum?.toString() === key) return true;
 
+			if (key === "backspace") {
+				return currentOp === "" && num2 === "";
+			}
+
+			if (key === "equals") {
+				return currentOp === "" || num2 === "";
+			}
+
 			// If last key was a number, disable operators
 			if (
 				!isNaN(Number(prevKey)) &&
@@ -280,11 +323,6 @@ const Calculator = forwardRef<CalculatorHandle, CalculatorProps>(
 				key !== "battery"
 			) {
 				return true;
-			}
-
-			// Enable equals sign if an operator and second number available
-			if (key === "equals") {
-				return currentOp === "" || num2 === "";
 			}
 
 			// Enable only operators

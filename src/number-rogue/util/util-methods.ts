@@ -28,3 +28,9 @@ export function getShallowCopy(source: Record<string, CalcButton>) {
 		Object.entries(source).map(([k, v]) => [k, { ...v }])
 	);
 }
+
+export function removeLastInstance(str1: string, str2: string) {
+	const index = str1.lastIndexOf(str2);
+	if (index === -1) return str1; // not found
+	return str1.slice(0, index) + str1.slice(index + str2.length);
+}

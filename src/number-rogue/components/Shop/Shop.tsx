@@ -107,12 +107,16 @@ const Shop = forwardRef<ShopHandle, ShopProps>(
 			coin();
 
 			if (button in defaults) {
-				setDefaults(getUpdatedUses(button, defaults, 2));
+				setDefaults(
+					getUpdatedUses(button, defaults, buttonList[button].defaultUses)
+				);
 			} else if (button in extras) {
-				setExtras(getUpdatedUses(button, extras, 2));
+				setExtras(
+					getUpdatedUses(button, extras, buttonList[button].defaultUses)
+				);
 			} else {
 				const newButton: CalcButton = {
-					uses: 2,
+					uses: buttonList[button].defaultUses,
 					details: buttonList[button],
 				};
 				const newExtras = { ...extras };
@@ -145,13 +149,13 @@ const Shop = forwardRef<ShopHandle, ShopProps>(
 						className={`shop-money ${money > 0 ? "" : "debt"}`}
 					>{`$${money}`}</span>
 				</h2>
-				<section className="shop-description">
+				{/* <section className="shop-description">
 					<p>
 						When you purchase an item, you get +2 uses of it.
 						<br />
 						You can only buy one of each item.
 					</p>
-				</section>
+				</section> */}
 				{canCheat && (
 					<section className="cheats">
 						<h2>Cheats</h2>
@@ -173,6 +177,7 @@ const Shop = forwardRef<ShopHandle, ShopProps>(
 								<CalculatorButton
 									button={listName!}
 									details={details}
+									uses={details.defaultUses}
 									disabled={money < details.price || details.purchased}
 									onClick={() => purchaseButton(listName!, details.price)}
 								/>

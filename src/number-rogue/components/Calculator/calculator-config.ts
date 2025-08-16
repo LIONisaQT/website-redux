@@ -48,7 +48,7 @@ export const buttonList: Record<string, CalcButtonDetails> = {
 	"5": {
 		name: "Five",
 		label: "5",
-		description: "Go.",
+		description: "🖐️",
 		defaultUses: 2,
 	},
 	"6": {
@@ -106,7 +106,7 @@ export const buttonList: Record<string, CalcButtonDetails> = {
 		label: "%",
 		description:
 			"Divides the first number by the second and replaces the current number with the remainder.",
-		defaultUses: 1,
+		defaultUses: 2,
 		affectsTarget: false,
 		weight: 0.75,
 	},
@@ -123,6 +123,14 @@ export const buttonList: Record<string, CalcButtonDetails> = {
 		label: "🔋",
 		description: "Adds one use to a random button.",
 		defaultUses: 5,
+		priceModifier: 0.25,
+	},
+	backspace: {
+		name: "Backspace",
+		label: "🔙",
+		description: "Does not undo monetary losses from bosses.",
+		defaultUses: Infinity,
+		affectsTarget: true,
 	},
 
 	// Special
@@ -130,7 +138,7 @@ export const buttonList: Record<string, CalcButtonDetails> = {
 		name: "Power",
 		label: "^",
 		description: "Raises the current number by power of the exponent.",
-		defaultUses: 1,
+		defaultUses: 2,
 		affectsTarget: false,
 		priceModifier: 0.5,
 		weight: 0.25,
@@ -139,7 +147,7 @@ export const buttonList: Record<string, CalcButtonDetails> = {
 		name: "Swap Target",
 		label: "🔄 T",
 		description: "Reverses direction of the target (69 -> 96).",
-		defaultUses: 1,
+		defaultUses: 2,
 		affectsTarget: true,
 		weight: 0.5,
 	},
@@ -147,7 +155,7 @@ export const buttonList: Record<string, CalcButtonDetails> = {
 		name: "Swap Current",
 		label: "🔄 C",
 		description: "Reverses direction of the current number (69 -> 96).",
-		defaultUses: 1,
+		defaultUses: 2,
 		affectsTarget: false,
 		weight: 0.5,
 	},
@@ -156,7 +164,7 @@ export const buttonList: Record<string, CalcButtonDetails> = {
 		label: "🎲 C",
 		description:
 			"Replaces the current number with a random number between 0 and 100.",
-		defaultUses: 1,
+		defaultUses: 2,
 		affectsTarget: false,
 		priceModifier: 0.5,
 		weight: 0.5,
@@ -166,7 +174,7 @@ export const buttonList: Record<string, CalcButtonDetails> = {
 		label: "🎲 T",
 		description:
 			"Replaces the current target with a random number between 0 and 100.",
-		defaultUses: 1,
+		defaultUses: 2,
 		affectsTarget: true,
 		priceModifier: 0.5,
 		weight: 0.5,
@@ -175,7 +183,7 @@ export const buttonList: Record<string, CalcButtonDetails> = {
 		name: "Increment",
 		label: "n++",
 		description: "Increases the current number by 1.",
-		defaultUses: 1,
+		defaultUses: 2,
 		affectsTarget: false,
 		weight: 0.75,
 	},
@@ -183,7 +191,7 @@ export const buttonList: Record<string, CalcButtonDetails> = {
 		name: "Decrement",
 		label: "n--",
 		description: "Decreases the current number by 1.",
-		defaultUses: 1,
+		defaultUses: 2,
 		affectsTarget: false,
 		weight: 0.75,
 	},
@@ -192,24 +200,24 @@ export const buttonList: Record<string, CalcButtonDetails> = {
 		label: "+$",
 		description:
 			"Increases the current number by the amount of money you have.",
-		defaultUses: 1,
+		defaultUses: 2,
 		affectsTarget: false,
 		weight: 0.5,
 	},
-	customPrepend: {
+	nPrepend: {
 		name: "Prepend n",
 		label: "n _",
 		description: "Prepends n to the current number.",
-		defaultUses: 1,
+		defaultUses: 2,
 		affectsTarget: false,
 		priceModifier: 1.5,
 		weight: 0.25,
 	},
-	customAppend: {
+	nAppend: {
 		name: "Append n",
 		label: "_ n",
 		description: "Appends n to the current number.",
-		defaultUses: 1,
+		defaultUses: 2,
 		affectsTarget: false,
 		priceModifier: 1.5,
 		weight: 0.25,
@@ -226,7 +234,7 @@ const generatePrependButtons = (
 			name: `Prepend ${i}`,
 			label: `${i}_`,
 			description: `Prepends ${i} to the current number.`,
-			defaultUses: 1,
+			defaultUses: 2,
 			affectsTarget: false,
 			priceModifier: 0.75,
 			weight: 0.5,
@@ -248,12 +256,12 @@ const calcLayout = [
 	["7", "8", "9", "+"],
 	["4", "5", "6", "-"],
 	["1", "2", "3", "*"],
-	["battery", "0", "equals", "/"],
+	["backspace", "0", "equals", "/"],
 ] as const;
 
 export const calcOrder = calcLayout.flat();
 
-const excludedFromShop = ["equals", "battery"];
+const excludedFromShop = ["equals"];
 
 export const shopList: Record<string, CalcButtonDetails> = Object.fromEntries(
 	Object.entries(buttonList).filter(([key]) => !excludedFromShop.includes(key))
@@ -278,6 +286,6 @@ export const extraButtons: Record<string, CalcButton> = {
 	// randomTarget: { uses: Infinity, details: buttonList["randomTarget"] },
 	// plusMoney: { uses: Infinity, details: buttonList["plusMoney"] },
 	// "%": { uses: Infinity, details: buttonList["%"] },
-	// prepend: { uses: Infinity, details: buttonList["customPrepend"] },
-	// append: { uses: Infinity, details: buttonList["customAppend"] },
+	// nAppend: { uses: Infinity, details: buttonList["nAppend"] },
+	// nPrepend: { uses: Infinity, details: buttonList["nPrepend"] },
 };
