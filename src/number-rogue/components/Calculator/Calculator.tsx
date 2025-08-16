@@ -170,7 +170,7 @@ const Calculator = forwardRef<CalculatorHandle, CalculatorProps>(
 					const combined = { ...defaults, ...extras };
 
 					const eligibleKeys = Object.keys(combined).filter((key) => {
-						const isExcluded = key === "battery" || key === "equals";
+						const isExcluded = key === "battery";
 						const hasInfiniteUses = combined[key].uses === Infinity;
 						return !isExcluded && !hasInfiniteUses;
 					});
