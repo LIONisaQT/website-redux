@@ -1,0 +1,36 @@
+.empty-pile {
+	width: 100px;
+	height: 140px;
+	border: 2px solid #272932;
+	border-radius: 8px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.empty-text {
+	font-size: 52pt;
+	color: #f05d5e;
+	font-family: "Oswald", sans-serif;
+	user-select: none;
+}
+
+.tableau-pile {
+	display: flex;
+	flex-direction: column;
+}
+
+.tableau-pile > *:not(:first-child) {
+	margin-top: -105px;
+}
+
+@media screen and (max-width: 1080px) and (orientation: landscape) {
+	.empty-pile {
+		height: 110px;
+	}
+
+	.tableau-pile > *:not(:first-child) {
+		margin-top: -90px;
+	}
+}
