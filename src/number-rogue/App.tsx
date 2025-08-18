@@ -17,7 +17,7 @@ function App() {
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [track, setTrack] = useState(deepWithin);
 
-	const [playBgm, { stop, pause }] = useSound(track, {
+	const [playBgm, { stop, pause, sound }] = useSound(track, {
 		loop: true,
 		onplay: () => setIsPlaying(true),
 		onpause: () => setIsPlaying(false),
@@ -49,7 +49,9 @@ function App() {
 		};
 
 		const handleResumeAudio = () => {
-			playBgm();
+			if (sound && sound.isPlaying()) {
+				playBgm();
+			}
 		};
 
 		document.addEventListener("visibilitychange", handleVisibilityChange);
@@ -60,7 +62,7 @@ function App() {
 			window.removeEventListener("blur", handlePauseAudio);
 			window.removeEventListener("focus", handleResumeAudio);
 		};
-	}, [pause, playBgm]);
+	}, [pause, sound, playBgm]);
 
 	const changeTrack = useCallback((isBoss: boolean) => {
 		// sound.fade(0, 0.5, 1000);
