@@ -225,7 +225,7 @@ function GameScene({
 		if (!targets.includes(result)) {
 			const combined = [...Object.entries(defaults), ...Object.entries(extras)];
 			const nonNumberNonEqualsButtons = combined.filter(
-				([key]) => isNaN(Number(key)) && key !== "equals"
+				([key]) => isNaN(Number(key)) && key !== "equals" && key !== "backspace"
 			);
 
 			const allUsedUp = nonNumberNonEqualsButtons.every(

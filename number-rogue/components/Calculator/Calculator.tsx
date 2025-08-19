@@ -11,7 +11,9 @@ import "./Calculator.scss";
 import {
 	getUpdatedUses,
 	removeLastInstance,
+	removeZeroUses,
 	swapDigits,
+	trimToValidInteger,
 } from "../../util/util-methods";
 import { type CalcButton, calcOrder } from "./calculator-config";
 import { BossType } from "../boss/modifiers";
@@ -161,6 +163,9 @@ const Calculator = forwardRef<CalculatorHandle, CalculatorProps>(
 		};
 
 		const operationClicked = (value: string) => {
+			setPreviousOp(currentOp);
+			// setExtras((prev) => removeZeroUses({ ...prev }));
+
 			switch (value) {
 				case "equals":
 					if (num2 === "") return;
@@ -196,12 +201,14 @@ const Calculator = forwardRef<CalculatorHandle, CalculatorProps>(
 				case "randomTarget":
 					modifyTarget(value);
 					onEval(num1);
+					setExtras((prev) => removeZeroUses({ ...prev }));
 					break;
 				case "swapCurrent": {
-					const newNum = swapDigits(Number(display));
+					const newNum = swapDigits(Number(trimToValidInteger(display)));
 					setDisplay(newNum.toString());
 					setNum1(newNum);
 					onEval(newNum);
+					setExtras((prev) => removeZeroUses({ ...prev }));
 					break;
 				}
 				case "randomCurrent": {
@@ -209,36 +216,47 @@ const Calculator = forwardRef<CalculatorHandle, CalculatorProps>(
 					setDisplay(newNum.toString());
 					setNum1(newNum);
 					onEval(newNum);
+					setExtras((prev) => removeZeroUses({ ...prev }));
 					break;
 				}
-				case "increment":
-					setDisplay((Number(display) + 1).toString());
-					setNum1(Number(display) + 1);
-					onEval(Number(display) + 1);
+				case "increment": {
+					const newNum = trimToValidInteger(display);
+					setDisplay((Number(newNum) + 1).toString());
+					setNum1(Number(newNum) + 1);
+					onEval(Number(newNum) + 1);
+					setExtras((prev) => removeZeroUses({ ...prev }));
 					break;
-				case "decrement":
-					setDisplay((Number(display) - 1).toString());
-					setNum1(Number(display) - 1);
-					onEval(Number(display) - 1);
+				}
+				case "decrement": {
+					const newNum = trimToValidInteger(display);
+					setDisplay((Number(newNum) - 1).toString());
+					setNum1(Number(newNum) - 1);
+					onEval(Number(newNum) - 1);
+					setExtras((prev) => removeZeroUses({ ...prev }));
 					break;
-				case "plusMoney":
-					setDisplay((Number(display) + money).toString());
-					setNum1(Number(display) + money);
-					onEval(Number(display) + money);
+				}
+				case "plusMoney": {
+					const newNum = trimToValidInteger(display);
+					setDisplay((Number(newNum) + money).toString());
+					setNum1(Number(newNum) + money);
+					onEval(Number(newNum) + money);
+					setExtras((prev) => removeZeroUses({ ...prev }));
 					break;
+				}
 				default: {
 					if (value.startsWith("prepend")) {
 						const digit = value.slice("prepend".length);
 						if (/^[1-9]$/.test(digit)) {
-							setDisplay(digit + display);
-							setNum1(Number(digit + display));
-							onEval(Number(digit + display));
+							const newNum = trimToValidInteger(display);
+							setDisplay(digit + newNum);
+							setNum1(Number(digit + newNum));
+							onEval(Number(digit + newNum));
+							setExtras((prev) => removeZeroUses({ ...prev }));
 							break;
 						}
 					}
 
 					setDisplay(num1 + value);
-					setPreviousOp(currentOp);
 					setCurrentOp(value);
 					setOpOnly(false);
 					break;
@@ -301,32 +319,36 @@ const Calculator = forwardRef<CalculatorHandle, CalculatorProps>(
 			setCurrentOp("");
 			setOpOnly(true);
 			onEval(result);
+			setExtras((prev) => removeZeroUses({ ...prev }));
 		};
 
 		const getIsDisabled = (key: string) => {
 			if (enableButtons) return true;
 			if (bannedNum?.toString() === key) return true;
 
-			if (key === "backspace") {
-				return currentOp === "" && num2 === "";
-			}
+			switch (key) {
+				case "backspace":
+					return currentOp === "" && num2 === "";
+				case "equals":
+					return currentOp === "" || num2 === "";
+				case "nPrepend":
+					return prevKey === "nPrepend";
+				case "nAppend":
+					return prevKey === "nAppend";
+				default:
+					// If last key was a number, disable operators
+					if (
+						!isNaN(Number(prevKey)) &&
+						isNaN(Number(key)) &&
+						key !== "equals" &&
+						key !== "battery"
+					) {
+						return true;
+					}
 
-			if (key === "equals") {
-				return currentOp === "" || num2 === "";
+					// Enable only operators
+					return !isNaN(Number(key)) && opOnly;
 			}
-
-			// If last key was a number, disable operators
-			if (
-				!isNaN(Number(prevKey)) &&
-				isNaN(Number(key)) &&
-				key !== "equals" &&
-				key !== "battery"
-			) {
-				return true;
-			}
-
-			// Enable only operators
-			return !isNaN(Number(key)) && opOnly;
 		};
 
 		return (

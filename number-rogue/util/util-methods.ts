@@ -34,3 +34,23 @@ export function removeLastInstance(str1: string, str2: string) {
 	if (index === -1) return str1; // not found
 	return str1.slice(0, index) + str1.slice(index + str2.length);
 }
+
+export function trimToValidInteger(s: string): string {
+	if (!isNaN(Number(s))) return s;
+
+	const newStr = s.match(/^-?\d+/);
+	return newStr ? newStr[0] : "";
+}
+
+export function removeZeroUses<T extends Record<string, { uses: number }>>(
+	extras: T
+): T {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const cleaned: any = {};
+	for (const key in extras) {
+		if (extras[key].uses > 0) {
+			cleaned[key] = extras[key];
+		}
+	}
+	return cleaned;
+}
