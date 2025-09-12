@@ -4,6 +4,7 @@ import Cuisine from "./components/cuisine/Cuisine";
 import Location from "./components/location/Location";
 import Price from "./components/price/Price";
 import Rating from "./components/rating/Rating";
+import Distance from "./components/distance/Distance";
 
 function App() {
 	const [placesService, setPlacesService] =
@@ -13,6 +14,7 @@ function App() {
 	const [loading, setLoading] = useState(false);
 	const [cuisines, setCuisines] = useState<string[]>([]);
 	const [latLng, setLatLng] = useState<google.maps.LatLng | null>(null);
+	const [distance, setDistance] = useState(5000); // meters
 	const [price, setPrice] = useState([1, 3]);
 	const [rating, setRating] = useState(3);
 
@@ -52,7 +54,7 @@ function App() {
 				new Promise<google.maps.places.PlaceResult[]>((resolve, reject) => {
 					const request: google.maps.places.PlaceSearchRequest = {
 						location: latLng,
-						radius: 5000, // meters
+						radius: distance,
 						type: "restaurant",
 						keyword: cuisine,
 						minPriceLevel: price[0],
@@ -61,7 +63,7 @@ function App() {
 
 					placesService.nearbySearch(request, (res, status) => {
 						if (status === google.maps.places.PlacesServiceStatus.OK && res) {
-							resolve(res.slice(0, 3));
+							resolve(res.slice(0, 10));
 						} else {
 							reject(status);
 						}
@@ -72,7 +74,10 @@ function App() {
 		try {
 			const resultsArrays = await Promise.all(promises);
 			const combinedResults = resultsArrays.flat();
-			setResults(combinedResults);
+			const filteredResults = combinedResults.filter(
+				(place) => place.rating && place.rating >= rating
+			);
+			setResults(filteredResults);
 		} catch (status) {
 			setError(`Search failed: ${status}`);
 		} finally {
@@ -96,6 +101,7 @@ function App() {
 				onCuisineClicked={onCuisineClicked}
 			/>
 			<Location setLatLng={setLatLng} />
+			<Distance distance={distance} setDistance={setDistance} />
 			<Price price={price} setPrice={setPrice} />
 			<Rating rating={rating} setRating={setRating} />
 			<button
@@ -115,7 +121,8 @@ function App() {
 				{results.map((place) => (
 					<li key={place.place_id}>
 						<strong>{place.name}</strong>
-						{place.vicinity && ` — ${place.vicinity}`}
+						{place.vicinity &&
+							` — ${place.vicinity} — ${place.rating} (${place.user_ratings_total})`}
 					</li>
 				))}
 			</ul>
