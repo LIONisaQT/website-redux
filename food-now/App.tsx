@@ -2,6 +2,7 @@ import { Loader } from "@googlemaps/js-api-loader";
 import { useEffect, useState } from "react";
 import Cuisine from "./components/cuisine/Cuisine";
 import Location from "./components/location/Location";
+import Price from "./components/price/Price";
 
 function App() {
 	const [placesService, setPlacesService] =
@@ -11,6 +12,7 @@ function App() {
 	const [loading, setLoading] = useState(false);
 	const [cuisines, setCuisines] = useState<string[]>([]);
 	const [latLng, setLatLng] = useState<google.maps.LatLng | null>(null);
+	const [price, setPrice] = useState([1, 3]);
 
 	useEffect(() => {
 		const loader = new Loader({
@@ -51,6 +53,8 @@ function App() {
 						radius: 5000, // meters
 						type: "restaurant",
 						keyword: cuisine,
+						minPriceLevel: price[0],
+						maxPriceLevel: price[1],
 					};
 
 					placesService.nearbySearch(request, (res, status) => {
@@ -90,6 +94,7 @@ function App() {
 				onCuisineClicked={onCuisineClicked}
 			/>
 			<Location setLatLng={setLatLng} />
+			<Price price={price} setPrice={setPrice} />
 			<button
 				onClick={searchNearbyRestaurants}
 				disabled={!placesService || cuisines.length === 0}
