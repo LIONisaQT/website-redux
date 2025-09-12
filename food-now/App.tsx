@@ -101,35 +101,89 @@ function App() {
 		);
 	};
 
+	const onPrevSectionClicked = (event: React.MouseEvent<HTMLButtonElement>) => {
+		const btn = event.currentTarget;
+		const currentSection = btn.closest("section");
+		const prevSection =
+			currentSection?.previousElementSibling as HTMLElement | null;
+
+		if (prevSection) {
+			prevSection.scrollIntoView({ behavior: "smooth" });
+		}
+	};
+
+	const onNextSectionClicked = (event: React.MouseEvent<HTMLButtonElement>) => {
+		const btn = event.currentTarget;
+		const currentSection = btn.closest("section");
+		const nextSection =
+			currentSection?.nextElementSibling as HTMLElement | null;
+
+		if (nextSection) {
+			nextSection.scrollIntoView({ behavior: "smooth" });
+		}
+	};
+
 	return (
 		<div className="food-now">
-			<h1>Food Now</h1>
 			<section className="criteria">
-				<section className="cuisine">
+				<section className="criteria-section cuisine">
 					<Cuisine
 						selectedCuisines={cuisines}
 						onCuisineClicked={onCuisineClicked}
 					/>
+					<button
+						className="section-button next"
+						onClick={onNextSectionClicked}
+					>
+						Location
+					</button>
 				</section>
-				<section className="location">
+				<section className="criteria-section location">
+					<button
+						className="section-button prev"
+						onClick={onPrevSectionClicked}
+					>
+						Cuisines
+					</button>
 					<Location setLatLng={setLatLng} />
+					<button
+						className="section-button next"
+						onClick={onNextSectionClicked}
+					>
+						Extras
+					</button>
 				</section>
-				<section className="sliders">
-					<Distance distance={distance} setDistance={setDistance} />
-					<Price price={price} setPrice={setPrice} />
-					<Rating rating={rating} setRating={setRating} />
+				<section className="criteria-section sliders">
+					<button
+						className="section-button prev"
+						onClick={onPrevSectionClicked}
+					>
+						Location
+					</button>
+					<section>
+						<Distance distance={distance} setDistance={setDistance} />
+						<Price price={price} setPrice={setPrice} />
+						<Rating rating={rating} setRating={setRating} />
+					</section>
+					<button
+						className="food-now-button"
+						onClick={searchNearbyRestaurants}
+						disabled={!placesService || cuisines.length === 0}
+					>
+						Get Food Now!
+					</button>
 				</section>
 			</section>
-			<button
-				onClick={searchNearbyRestaurants}
-				disabled={!placesService || cuisines.length === 0}
-			>
-				Get Food Now!
-			</button>
-			<section className="info-messages">
-				{error && <p>{error}</p>}
-				{loading && <p>Searching restaurants...</p>}
-			</section>
+			{error && (
+				<section>
+					<p>{error}</p>
+				</section>
+			)}
+			{loading && (
+				<section>
+					<p>Searching restaurants...</p>
+				</section>
+			)}
 			<section className="results">
 				<ul>
 					{results.map((place) => (

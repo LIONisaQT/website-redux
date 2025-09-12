@@ -1,13 +1,32 @@
 .food-now {
 	max-width: 1000px;
-	margin: 20px auto;
+	margin: 0 auto;
 	display: flex;
 	flex-direction: column;
-	gap: 40px;
 
 	.criteria {
 		display: flex;
 		flex-direction: column;
-		gap: 20px;
+
+		.criteria-section {
+			height: calc(100vh - 80px);
+			padding: 40px 8px;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+
+			.section-button {
+				flex: 0 0 auto;
+				width: auto;
+			}
+
+			.prev {
+				align-self: flex-start;
+			}
+
+			.next {
+				align-self: flex-end;
+			}
+		}
 	}
 }
