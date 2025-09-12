@@ -7,6 +7,7 @@ function App() {
 		useState<google.maps.places.PlacesService | null>(null);
 	const [results, setResults] = useState<google.maps.places.PlaceResult[]>([]);
 	const [error, setError] = useState<string | null>(null);
+	const [loading, setLoading] = useState(false);
 	const [cuisines, setCuisines] = useState<string[]>([]);
 
 	useEffect(() => {
@@ -36,6 +37,10 @@ function App() {
 			return;
 		}
 
+		setLoading(true);
+		setResults([]);
+		setError(null);
+
 		navigator.geolocation.getCurrentPosition(async (pos) => {
 			const userLocation = new google.maps.LatLng(
 				pos.coords.latitude,
@@ -54,7 +59,7 @@ function App() {
 
 						placesService.nearbySearch(request, (res, status) => {
 							if (status === google.maps.places.PlacesServiceStatus.OK && res) {
-								resolve(res.slice(0, 5)); // store first 5
+								resolve(res.slice(0, 3));
 							} else {
 								reject(status);
 							}
@@ -68,6 +73,8 @@ function App() {
 				setResults(combinedResults);
 			} catch (status) {
 				setError(`Search failed: ${status}`);
+			} finally {
+				setLoading(false);
 			}
 		});
 	};
@@ -95,6 +102,7 @@ function App() {
 			</button>
 
 			{error && <p>{error}</p>}
+			{loading && <p>Searching restaurants...</p>}
 
 			<ul>
 				{results.map((place) => (
