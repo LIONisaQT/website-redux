@@ -1,6 +1,7 @@
 import { Loader } from "@googlemaps/js-api-loader";
 import { useEffect, useState } from "react";
 import Cuisine from "./components/cuisine/Cuisine";
+import Location from "./components/location/Location";
 
 function App() {
 	const [placesService, setPlacesService] =
@@ -9,6 +10,7 @@ function App() {
 	const [error, setError] = useState<string | null>(null);
 	const [loading, setLoading] = useState(false);
 	const [cuisines, setCuisines] = useState<string[]>([]);
+	const [latLng, setLatLng] = useState<google.maps.LatLng | null>(null);
 
 	useEffect(() => {
 		const loader = new Loader({
@@ -26,13 +28,13 @@ function App() {
 		});
 	}, []);
 
-	const searchNearbyRestaurants = () => {
+	const searchNearbyRestaurants = async () => {
 		if (!placesService) {
 			setError("PlacesService not ready yet.");
 			return;
 		}
 
-		if (!navigator.geolocation) {
+		if (!navigator.geolocation || !latLng) {
 			setError("Geolocation not supported.");
 			return;
 		}
@@ -41,42 +43,35 @@ function App() {
 		setResults([]);
 		setError(null);
 
-		navigator.geolocation.getCurrentPosition(async (pos) => {
-			const userLocation = new google.maps.LatLng(
-				pos.coords.latitude,
-				pos.coords.longitude
-			);
+		const promises = cuisines.map(
+			(cuisine) =>
+				new Promise<google.maps.places.PlaceResult[]>((resolve, reject) => {
+					const request: google.maps.places.PlaceSearchRequest = {
+						location: latLng,
+						radius: 5000, // meters
+						type: "restaurant",
+						keyword: cuisine,
+					};
 
-			const promises = cuisines.map(
-				(cuisine) =>
-					new Promise<google.maps.places.PlaceResult[]>((resolve, reject) => {
-						const request: google.maps.places.PlaceSearchRequest = {
-							location: userLocation,
-							radius: 5000, // meters
-							type: "restaurant",
-							keyword: cuisine,
-						};
+					placesService.nearbySearch(request, (res, status) => {
+						if (status === google.maps.places.PlacesServiceStatus.OK && res) {
+							resolve(res.slice(0, 3));
+						} else {
+							reject(status);
+						}
+					});
+				})
+		);
 
-						placesService.nearbySearch(request, (res, status) => {
-							if (status === google.maps.places.PlacesServiceStatus.OK && res) {
-								resolve(res.slice(0, 3));
-							} else {
-								reject(status);
-							}
-						});
-					})
-			);
-
-			try {
-				const resultsArrays = await Promise.all(promises);
-				const combinedResults = resultsArrays.flat();
-				setResults(combinedResults);
-			} catch (status) {
-				setError(`Search failed: ${status}`);
-			} finally {
-				setLoading(false);
-			}
-		});
+		try {
+			const resultsArrays = await Promise.all(promises);
+			const combinedResults = resultsArrays.flat();
+			setResults(combinedResults);
+		} catch (status) {
+			setError(`Search failed: ${status}`);
+		} finally {
+			setLoading(false);
+		}
 	};
 
 	const onCuisineClicked = (value: string) => {
@@ -94,6 +89,7 @@ function App() {
 				selectedCuisines={cuisines}
 				onCuisineClicked={onCuisineClicked}
 			/>
+			<Location setLatLng={setLatLng} />
 			<button
 				onClick={searchNearbyRestaurants}
 				disabled={!placesService || cuisines.length === 0}
