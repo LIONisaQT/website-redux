@@ -57,10 +57,20 @@ export default function Location({ setLatLng }: LocationProps) {
 		}
 
 		const fillLocation = (latitude: number, longitude: number) => {
+			const geocoder = new google.maps.Geocoder();
+			const latLng = new google.maps.LatLng(latitude, longitude);
+
 			if (inputRef.current) {
-				inputRef.current.value = `Lat: ${latitude}, Lng: ${longitude}`;
+				geocoder.geocode({ location: latLng }, (results, status) => {
+					if (status === "OK" && results && results[0]) {
+						inputRef.current!.value = results[0].formatted_address;
+					} else {
+						inputRef.current!.value = `Lat: ${latitude}, Lng: ${longitude}`;
+					}
+				});
 			}
-			setLatLng(new google.maps.LatLng(latitude, longitude));
+
+			setLatLng(latLng);
 			setMessage("Location filled successfully.");
 		};
 
@@ -83,7 +93,7 @@ export default function Location({ setLatLng }: LocationProps) {
 	return (
 		<div>
 			<h2>Location</h2>
-			<input type="text" placeholder="Location" ref={inputRef} />
+			<input type="text" placeholder="Location" ref={inputRef} readOnly />
 			<button onClick={handleGetLocation}>Get Location</button>
 			{message && (
 				<p
