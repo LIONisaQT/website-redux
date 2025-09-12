@@ -94,7 +94,10 @@ function App() {
 				selectedCuisines={cuisines}
 				onCuisineClicked={onCuisineClicked}
 			/>
-			<button onClick={searchNearbyRestaurants} disabled={!placesService}>
+			<button
+				onClick={searchNearbyRestaurants}
+				disabled={!placesService || cuisines.length === 0}
+			>
 				Get Food Now!
 			</button>
 			<button onClick={() => setResults([])} disabled={results.length === 0}>
