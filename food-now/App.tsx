@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Cuisine from "./components/cuisine/Cuisine";
 import Location from "./components/location/Location";
 import Price from "./components/price/Price";
+import Rating from "./components/rating/Rating";
 
 function App() {
 	const [placesService, setPlacesService] =
@@ -13,6 +14,7 @@ function App() {
 	const [cuisines, setCuisines] = useState<string[]>([]);
 	const [latLng, setLatLng] = useState<google.maps.LatLng | null>(null);
 	const [price, setPrice] = useState([1, 3]);
+	const [rating, setRating] = useState(3);
 
 	useEffect(() => {
 		const loader = new Loader({
@@ -95,6 +97,7 @@ function App() {
 			/>
 			<Location setLatLng={setLatLng} />
 			<Price price={price} setPrice={setPrice} />
+			<Rating rating={rating} setRating={setRating} />
 			<button
 				onClick={searchNearbyRestaurants}
 				disabled={!placesService || cuisines.length === 0}
