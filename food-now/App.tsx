@@ -1,3 +1,4 @@
+import "./App.scss";
 import { Loader } from "@googlemaps/js-api-loader";
 import { useEffect, useState } from "react";
 import Cuisine from "./components/cuisine/Cuisine";
@@ -35,6 +36,12 @@ function App() {
 	}, []);
 
 	const searchNearbyRestaurants = async () => {
+		const results = localStorage.getItem("cachedResults");
+		if (results) {
+			setResults(JSON.parse(results));
+			return;
+		}
+
 		if (!placesService) {
 			setError("PlacesService not ready yet.");
 			return;
@@ -78,6 +85,7 @@ function App() {
 				(place) => place.rating && place.rating >= rating
 			);
 			setResults(filteredResults);
+			localStorage.setItem("cachedResults", JSON.stringify(filteredResults));
 		} catch (status) {
 			setError(`Search failed: ${status}`);
 		} finally {
@@ -94,38 +102,45 @@ function App() {
 	};
 
 	return (
-		<div>
+		<div className="food-now">
 			<h1>Food Now</h1>
-			<Cuisine
-				selectedCuisines={cuisines}
-				onCuisineClicked={onCuisineClicked}
-			/>
-			<Location setLatLng={setLatLng} />
-			<Distance distance={distance} setDistance={setDistance} />
-			<Price price={price} setPrice={setPrice} />
-			<Rating rating={rating} setRating={setRating} />
+			<section className="criteria">
+				<section className="cuisine">
+					<Cuisine
+						selectedCuisines={cuisines}
+						onCuisineClicked={onCuisineClicked}
+					/>
+				</section>
+				<section className="location">
+					<Location setLatLng={setLatLng} />
+				</section>
+				<section className="sliders">
+					<Distance distance={distance} setDistance={setDistance} />
+					<Price price={price} setPrice={setPrice} />
+					<Rating rating={rating} setRating={setRating} />
+				</section>
+			</section>
 			<button
 				onClick={searchNearbyRestaurants}
 				disabled={!placesService || cuisines.length === 0}
 			>
 				Get Food Now!
 			</button>
-			<button onClick={() => setResults([])} disabled={results.length === 0}>
-				Restart
-			</button>
-
-			{error && <p>{error}</p>}
-			{loading && <p>Searching restaurants...</p>}
-
-			<ul>
-				{results.map((place) => (
-					<li key={place.place_id}>
-						<strong>{place.name}</strong>
-						{place.vicinity &&
-							` — ${place.vicinity} — ${place.rating} (${place.user_ratings_total})`}
-					</li>
-				))}
-			</ul>
+			<section className="info-messages">
+				{error && <p>{error}</p>}
+				{loading && <p>Searching restaurants...</p>}
+			</section>
+			<section className="results">
+				<ul>
+					{results.map((place) => (
+						<li key={place.place_id}>
+							<strong>{place.name}</strong>
+							{place.vicinity &&
+								` — ${place.vicinity} — ${place.rating} (${place.user_ratings_total})`}
+						</li>
+					))}
+				</ul>
+			</section>
 		</div>
 	);
 }
