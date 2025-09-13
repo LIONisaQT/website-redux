@@ -1,10 +1,5 @@
-import React, {
-	useState,
-	useRef,
-	useEffect,
-	Dispatch,
-	SetStateAction,
-} from "react";
+import "./Location.scss";
+import { useState, useRef, useEffect, Dispatch, SetStateAction } from "react";
 
 interface LocationProps {
 	setLatLng: Dispatch<SetStateAction<google.maps.LatLng | null>>;
@@ -90,11 +85,25 @@ export default function Location({ setLatLng }: LocationProps) {
 		);
 	};
 
+	const onLocationTextClick = () => {
+		setMessage("Sorry, manual address entry denied for now.");
+	};
+
 	return (
-		<div>
-			<h2>Location</h2>
-			<input type="text" placeholder="Location" ref={inputRef} readOnly />
-			<button onClick={handleGetLocation}>Get Location</button>
+		<section className="location-container">
+			<h2>2. WYA?</h2>
+			<p>Tap to fill in your location.</p>
+			<button className="locator-button" onClick={handleGetLocation}>
+				📍
+			</button>
+			<input
+				className="location-text"
+				type="text"
+				placeholder="Location"
+				ref={inputRef}
+				readOnly
+				onClick={onLocationTextClick}
+			/>
 			{message && (
 				<p
 					style={{
@@ -109,6 +118,6 @@ export default function Location({ setLatLng }: LocationProps) {
 					{message}
 				</p>
 			)}
-		</div>
+		</section>
 	);
 }

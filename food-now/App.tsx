@@ -134,6 +134,7 @@ function App() {
 					<button
 						className="section-button next"
 						onClick={onNextSectionClicked}
+						disabled={cuisines.length === 0}
 					>
 						Location
 					</button>
@@ -149,6 +150,7 @@ function App() {
 					<button
 						className="section-button next"
 						onClick={onNextSectionClicked}
+						disabled={latLng === null}
 					>
 						Extras
 					</button>

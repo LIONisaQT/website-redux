@@ -65,8 +65,8 @@ export default function Cuisine({
 	onCuisineClicked,
 }: CuisineProps) {
 	return (
-		<div>
-			<h2>Options</h2>
+		<section className="options-container">
+			<h2>1. Pick at least 1 option</h2>
 			<div className="options-grid">
 				{defaultOptions.map((option) => {
 					const isSelected = selectedCuisines.includes(option.value);
@@ -90,6 +90,6 @@ export default function Cuisine({
 					);
 				})}
 			</div>
-		</div>
+		</section>
 	);
 }
