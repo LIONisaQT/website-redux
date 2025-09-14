@@ -6,7 +6,7 @@ import Location from "./components/location/Location";
 import Price from "./components/price/Price";
 import Rating from "./components/rating/Rating";
 import Distance from "./components/distance/Distance";
-import Loading from "./components/loader/Loading";
+import Modal from "./components/modal/Modal";
 
 function App() {
 	const [placesService, setPlacesService] =
@@ -195,18 +195,7 @@ function App() {
 					<p>{error}</p>
 				</section>
 			)}
-			{loading && <Loading />}
-			<section className="results">
-				<ul>
-					{results.map((place) => (
-						<li key={place.place_id}>
-							<strong>{place.name}</strong>
-							{place.vicinity &&
-								` — ${place.vicinity} — ${place.rating} (${place.user_ratings_total})`}
-						</li>
-					))}
-				</ul>
-			</section>
+			<Modal isLoading={loading} results={results} />
 		</div>
 	);
 }
