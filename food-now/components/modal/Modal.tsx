@@ -168,7 +168,7 @@ export default function Modal({ isLoading, results }: LoadingProps) {
 										rel="noopener noreferrer"
 									>
 										<img src="https://upload.wikimedia.org/wikipedia/commons/a/aa/Google_Maps_icon_%282020%29.svg" />
-										<p>Open in Maps</p>
+										Open in Maps
 									</a>
 									<a
 										className="ext-link-button"
@@ -183,6 +183,7 @@ export default function Modal({ isLoading, results }: LoadingProps) {
 							</div>
 							<section className="button-group">
 								<button
+									className="primary"
 									onClick={selectRandomRestaurant}
 									disabled={debounceTimer > 0 || loadingDetails}
 								>
@@ -190,7 +191,7 @@ export default function Modal({ isLoading, results }: LoadingProps) {
 										? `Request a different place in ${debounceTimer}s`
 										: "Give me a different place!"}
 								</button>
-								<button>Start a new search</button>
+								<button className="secondary">Restart</button>
 							</section>
 						</div>
 					)

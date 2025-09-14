@@ -112,6 +112,36 @@
 					justify-content: center;
 				}
 			}
+
+			.button-group {
+				display: flex;
+				flex-direction: row-reverse;
+				gap: 8px;
+				width: 100%;
+
+				button {
+					padding: 8px 16px;
+					border-radius: 32px;
+					border: none;
+					font-size: 12pt;
+					transition: all 0.5s ease;
+					cursor: pointer;
+
+					&:disabled {
+						background: gray;
+						color: #ddd;
+						cursor: not-allowed;
+					}
+				}
+
+				.primary {
+					flex: 3
+				}
+
+				.secondary {
+					flex: 1;
+				}
+			}
 		}
 	}
 
