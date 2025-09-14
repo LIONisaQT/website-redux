@@ -118,7 +118,7 @@ export default function Modal({ isLoading, results }: LoadingProps) {
 				) : (
 					selected && (
 						<div className="result">
-							<p>Your randomly selected pick:</p>
+							<h2>Your randomly selected pick:</h2>
 							<div className="result-data">
 								{selected.photos && selected.photos.length > 0 && (
 									<div className="photo-container">
@@ -128,14 +128,16 @@ export default function Modal({ isLoading, results }: LoadingProps) {
 										/>
 									</div>
 								)}
-								<h1>{selected.name}</h1>
-								<p>{selected.vicinity}</p>
-								<p>
-									{selected.rating}
-									{selected.user_ratings_total && (
-										<span> ({selected.user_ratings_total})</span>
-									)}
-								</p>
+								<h1 className="name">{selected.name}</h1>
+								<section className="details">
+									<p>{selected.vicinity}</p>
+									<p>
+										{selected.rating}
+										{selected.user_ratings_total && (
+											<span> ({selected.user_ratings_total} reviews)</span>
+										)}
+									</p>
+								</section>
 								{selected.reviews?.[0] && (
 									<section className="review">
 										<p>
@@ -146,7 +148,8 @@ export default function Modal({ isLoading, results }: LoadingProps) {
 											, who rated the place with{" "}
 											<span className="rating">
 												{selected.reviews[0].rating} stars
-											</span>{" "}
+											</span>
+											{", "}
 											<span className="time">
 												{selected.reviews[0].relative_time_description}
 											</span>
@@ -157,20 +160,26 @@ export default function Modal({ isLoading, results }: LoadingProps) {
 										</div>
 									</section>
 								)}
-								<a
-									href={getMapLink()}
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									Open in Google Maps
-								</a>
-								<a
-									href={getYelpLink(selected)}
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									Open in Yelp
-								</a>
+								<section className="link-group">
+									<a
+										className="ext-link-button"
+										href={getMapLink()}
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										<img src="https://upload.wikimedia.org/wikipedia/commons/a/aa/Google_Maps_icon_%282020%29.svg" />
+										<p>Open in Maps</p>
+									</a>
+									<a
+										className="ext-link-button"
+										href={getYelpLink(selected)}
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										<img src="https://companieslogo.com/img/orig/YELP-d704c977.png?t=1720244494" />
+										Open in Yelp
+									</a>
+								</section>
 							</div>
 							<section className="button-group">
 								<button

@@ -38,71 +38,93 @@
 		border-radius: 8px;
 		opacity: 0;
 		transition: transform 0.4s ease, opacity 0.4s ease;
+
+		.result {
+			width: 100%;
+			height: 100%;
+			padding: 36px 24px;
+			box-sizing: border-box;
+			overflow: hidden;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: space-between;
+
+			.result-data {
+				display: flex;
+				flex-direction: column;
+				gap: 8px;
+
+				.photo-container {
+					width: 100%;
+					height: 200px;
+					overflow: hidden;
+					position: relative;
+
+					img {
+						width: 100%;
+						height: 100%;
+						object-fit: cover;
+						display: block
+					}
+				}
+
+				.details {
+					padding: 0 12px;
+				}
+
+				.review {
+					.author {
+						color: red;
+					}
+
+					.rating {
+						color: greenyellow;
+					}
+
+					.time {
+						color: gray;
+					}
+
+					.review-text-wrapper {
+						margin-top: 4px;
+						max-height: calc(150px + 16px);
+						border-radius: 8px;
+						background-color: gray;
+						overflow: hidden;
+						padding: 8px;
+						box-sizing: border-box;
+
+						.review-text {
+							padding: 0px 8px;
+							overflow-y: auto;
+							max-height: 150px;
+							line-height: 1.4;
+							scrollbar-color: white transparent;
+						}
+					}
+				}
+
+				.link-group {
+					padding-top: 16px;
+					display: flex;
+					gap: 8px;
+					justify-content: center;
+				}
+			}
+		}
 	}
 
 	&.show {
 		pointer-events: auto;
 
-		/* enable interaction */
 		.background {
 			opacity: 1;
 		}
 
 		.modal {
 			transform: translate(-50%, -50%);
-			/* center on screen */
 			opacity: 1;
-		}
-	}
-
-	.result {
-		width: 100%;
-		padding: 40px;
-		overflow: hidden;
-
-		.photo-container {
-			width: 100%;
-			height: 200px;
-			overflow: hidden;
-			position: relative;
-
-			img {
-				width: 100%;
-				height: 100%;
-				object-fit: cover;
-				display: block
-			}
-		}
-
-		.review {
-			.author {
-				color: red;
-			}
-
-			.rating {
-				color: greenyellow;
-			}
-
-			.time {
-				color: gray;
-			}
-
-			.review-text-wrapper {
-				max-height: calc(150px + 16px);
-				border-radius: 8px;
-				background-color: gray;
-				overflow: hidden;
-				padding: 8px;
-				box-sizing: border-box;
-
-				.review-text {
-					padding: 0px 8px;
-					overflow-y: auto;
-					max-height: 150px;
-					line-height: 1.4;
-					scrollbar-color: white transparent;
-				}
-			}
 		}
 	}
 }

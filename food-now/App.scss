@@ -58,4 +58,25 @@
 			}
 		}
 	}
+
+	.ext-link-button {
+		background: #eee;
+		text-decoration: none;
+		color: black;
+		font-weight: normal;
+		padding: 8px 16px;
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		border-radius: 24px;
+		cursor: pointer;
+
+		&:hover {
+			filter: brightness(0.9);
+		}
+
+		img {
+			height: 16pt;
+		}
+	}
 }
