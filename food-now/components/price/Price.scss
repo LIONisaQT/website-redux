@@ -1,4 +1,6 @@
-.body {
+.range-body {
+	// TODO: Range component's thumbs can exceed width of container, pls fix
+
 	.range-label {
 		padding-bottom: 8px;
 		display: flex;
