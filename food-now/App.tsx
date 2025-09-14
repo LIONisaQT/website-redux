@@ -6,6 +6,7 @@ import Location from "./components/location/Location";
 import Price from "./components/price/Price";
 import Rating from "./components/rating/Rating";
 import Distance from "./components/distance/Distance";
+import Loading from "./components/loader/Loading";
 
 function App() {
 	const [placesService, setPlacesService] =
@@ -37,9 +38,16 @@ function App() {
 	}, []);
 
 	const searchNearbyRestaurants = async () => {
+		setLoading(true);
+		setResults([]);
+		setError(null);
+
 		const results = localStorage.getItem("cachedResults");
 		if (results) {
-			setResults(JSON.parse(results));
+			setTimeout(() => {
+				setResults(JSON.parse(results));
+				setLoading(false);
+			}, 1000);
 			return;
 		}
 
@@ -52,10 +60,6 @@ function App() {
 			setError("Geolocation not supported.");
 			return;
 		}
-
-		setLoading(true);
-		setResults([]);
-		setError(null);
 
 		const promises = cuisines.map(
 			(cuisine) =>
@@ -180,7 +184,7 @@ function App() {
 					<button
 						className="food-now-button"
 						onClick={searchNearbyRestaurants}
-						disabled={!placesService || cuisines.length === 0}
+						disabled={!placesService || cuisines.length === 0 || loading}
 					>
 						Get Food Now!
 					</button>
@@ -191,11 +195,7 @@ function App() {
 					<p>{error}</p>
 				</section>
 			)}
-			{loading && (
-				<section>
-					<p>Searching restaurants...</p>
-				</section>
-			)}
+			{loading && <Loading />}
 			<section className="results">
 				<ul>
 					{results.map((place) => (
