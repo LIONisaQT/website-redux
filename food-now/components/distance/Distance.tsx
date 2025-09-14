@@ -11,8 +11,8 @@ export default function Distance({ distance, setDistance }: DistanceProps) {
 			<h2 className="title">3. How far do you wanna go?</h2>
 			<div className="body">
 				<div>
-					Maximum distance: {distance / 1000} km/
-					{(distance * 0.000621371).toFixed(2)}mi
+					Maximum distance: {distance / 1000} km (
+					{(distance * 0.000621371).toFixed(2)}mi)
 				</div>
 				<CustomSlider
 					min={1000}

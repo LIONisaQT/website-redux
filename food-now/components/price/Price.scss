@@ -1,6 +1,10 @@
 .body {
 	.range-label {
 		padding-bottom: 8px;
+		display: flex;
+		flex-direction: row;
+		gap: 4px;
+		justify-content: center;
 	}
 
 	.render-track {

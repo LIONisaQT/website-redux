@@ -8,14 +8,14 @@ interface PriceProps {
 
 export default function Price({ price, setPrice }: PriceProps) {
 	const STEP = 1;
-	const MIN = 0;
+	const MIN = 1;
 	const MAX = 4;
 	const priceLabels = [
-		"Free",
-		"Inexpensive",
-		"Moderate",
-		"Expensive",
-		"Very Expensive",
+		"Free (0)", // Realistically this never happens, but it's here for completeness
+		"Inexpensive ($)",
+		"Moderate ($$)",
+		"Expensive ($$$)",
+		"Very Expensive ($$$$)",
 	];
 
 	return (
@@ -24,6 +24,7 @@ export default function Price({ price, setPrice }: PriceProps) {
 			<div className="body">
 				<div className="range-label">
 					<span>{priceLabels[price[0]]}</span>
+					<span>&mdash;</span>
 					<span>{priceLabels[price[1]]}</span>
 				</div>
 				<Range
