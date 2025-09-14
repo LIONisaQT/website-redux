@@ -18,6 +18,7 @@ function App() {
 	const [distance, setDistance] = useState(5000); // meters
 	const [price, setPrice] = useState([1, 3]);
 	const [rating, setRating] = useState(3);
+	const [checkOpen, setCheckOpen] = useState(true);
 
 	useEffect(() => {
 		const loader = new Loader({
@@ -66,6 +67,7 @@ function App() {
 						keyword: cuisine,
 						minPriceLevel: price[0],
 						maxPriceLevel: price[1],
+						openNow: checkOpen,
 					};
 
 					placesService.nearbySearch(request, (res, status) => {
@@ -166,6 +168,14 @@ function App() {
 						<Distance distance={distance} setDistance={setDistance} />
 						<Price price={price} setPrice={setPrice} />
 						<Rating rating={rating} setRating={setRating} />
+						<section className="check-open">
+							<input
+								type="checkbox"
+								checked={checkOpen}
+								onChange={() => setCheckOpen(!checkOpen)}
+							/>
+							<p>Only show open restaurants</p>
+						</section>
 					</section>
 					<button
 						className="food-now-button"

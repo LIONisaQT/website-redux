@@ -27,6 +27,12 @@
 			.next {
 				align-self: flex-end;
 			}
+
+			.check-open {
+				padding-top: 20px;
+				display: flex;
+				flex-direction: row;
+			}
 		}
 	}
 }
