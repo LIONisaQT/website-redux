@@ -100,7 +100,7 @@ export default function Modal({ isLoading, results }: LoadingProps) {
 
 	const getYelpLink = (place: google.maps.places.PlaceResult): string => {
 		const name = place.name || "";
-		const address = place.vicinity || place.formatted_address || "";
+		const address = place.vicinity || "";
 		const query = encodeURIComponent(`${name} ${address}`);
 		return `https://www.yelp.com/search?find_desc=${query}`;
 	};
@@ -136,6 +136,27 @@ export default function Modal({ isLoading, results }: LoadingProps) {
 										<span> ({selected.user_ratings_total})</span>
 									)}
 								</p>
+								{selected.reviews?.[0] && (
+									<section className="review">
+										<p>
+											Here's a recent review by{" "}
+											<span className="author">
+												{selected.reviews[0].author_name}
+											</span>
+											, who rated the place with{" "}
+											<span className="rating">
+												{selected.reviews[0].rating} stars
+											</span>{" "}
+											<span className="time">
+												{selected.reviews[0].relative_time_description}
+											</span>
+											:
+										</p>
+										<div className="review-text-wrapper">
+											<p className="review-text">{selected.reviews[0].text}</p>
+										</div>
+									</section>
+								)}
 								<a
 									href={getMapLink()}
 									target="_blank"

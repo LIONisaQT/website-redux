@@ -57,7 +57,7 @@
 
 	.result {
 		width: 100%;
-		padding: 24px;
+		padding: 40px;
 		overflow: hidden;
 
 		.photo-container {
@@ -71,6 +71,37 @@
 				height: 100%;
 				object-fit: cover;
 				display: block
+			}
+		}
+
+		.review {
+			.author {
+				color: red;
+			}
+
+			.rating {
+				color: greenyellow;
+			}
+
+			.time {
+				color: gray;
+			}
+
+			.review-text-wrapper {
+				max-height: calc(150px + 16px);
+				border-radius: 8px;
+				background-color: gray;
+				overflow: hidden;
+				padding: 8px;
+				box-sizing: border-box;
+
+				.review-text {
+					padding: 0px 8px;
+					overflow-y: auto;
+					max-height: 150px;
+					line-height: 1.4;
+					scrollbar-color: white transparent;
+				}
 			}
 		}
 	}
