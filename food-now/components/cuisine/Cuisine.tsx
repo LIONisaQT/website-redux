@@ -66,7 +66,7 @@ export default function Cuisine({
 }: CuisineProps) {
 	return (
 		<section className="options-container">
-			<h2>1. Pick at least 1 option</h2>
+			<h2>1. Pick at least 1 option.</h2>
 			<div className="options-grid">
 				{defaultOptions.map((option) => {
 					const isSelected = selectedCuisines.includes(option.value);

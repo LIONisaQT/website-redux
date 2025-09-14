@@ -20,7 +20,7 @@ export default function Price({ price, setPrice }: PriceProps) {
 
 	return (
 		<div>
-			<h2>Price</h2>
+			<h2>4. Name your price.</h2>
 			<div>
 				<span>{priceLabels[price[0]]}</span>
 				<span>{priceLabels[price[1]]}</span>

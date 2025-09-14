@@ -6,7 +6,7 @@ interface RatingProps {
 export default function Rating({ rating, setRating }: RatingProps) {
 	return (
 		<div>
-			<h2>Rating</h2>
+			<h2>5. What are your standards?</h2>
 			<div>
 				Minimum Rating: {rating} {rating === 1 ? "star" : "stars"}
 			</div>

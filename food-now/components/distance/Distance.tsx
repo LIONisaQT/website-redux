@@ -6,7 +6,7 @@ interface DistanceProps {
 export default function Distance({ distance, setDistance }: DistanceProps) {
 	return (
 		<div>
-			<h2>Distance</h2>
+			<h2>3. How far do you wanna go?</h2>
 			<div>
 				Maximum distance: {distance / 1000} km/
 				{(distance * 0.000621371).toFixed(2)}mi
