@@ -34,15 +34,13 @@ export default function Modal({ isLoading, results }: LoadingProps) {
 				placeId: restaurant.place_id,
 				fields: [
 					"name",
-					"formatted_address",
+					"vicinity",
 					"geometry",
 					"rating",
 					"user_ratings_total",
 					"reviews",
 					"photos",
-					"website",
 					"opening_hours",
-					"price_level",
 				],
 			};
 
@@ -122,14 +120,6 @@ export default function Modal({ isLoading, results }: LoadingProps) {
 						<div className="result">
 							<p>Your randomly selected pick:</p>
 							<div className="result-data">
-								<h1>{selected.name}</h1>
-								<p>{selected.vicinity}</p>
-								<p>
-									{selected.rating}
-									{selected.user_ratings_total && (
-										<span> ({selected.user_ratings_total})</span>
-									)}
-								</p>
 								{selected.photos && selected.photos.length > 0 && (
 									<div className="photo-container">
 										<img
@@ -138,6 +128,14 @@ export default function Modal({ isLoading, results }: LoadingProps) {
 										/>
 									</div>
 								)}
+								<h1>{selected.name}</h1>
+								<p>{selected.vicinity}</p>
+								<p>
+									{selected.rating}
+									{selected.user_ratings_total && (
+										<span> ({selected.user_ratings_total})</span>
+									)}
+								</p>
 								<a
 									href={getMapLink()}
 									target="_blank"
