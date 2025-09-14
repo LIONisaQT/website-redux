@@ -1,3 +1,5 @@
+import CustomSlider from "../custom-slider/CustomSlider";
+
 interface RatingProps {
 	rating: number;
 	setRating: React.Dispatch<React.SetStateAction<number>>;
@@ -5,20 +7,21 @@ interface RatingProps {
 
 export default function Rating({ rating, setRating }: RatingProps) {
 	return (
-		<div>
-			<h2>5. What are your standards?</h2>
-			<div>
-				Minimum Rating: {rating} {rating === 1 ? "star" : "stars"}
+		<section className="sliders-section-container">
+			<h2 className="title">5. What are your standards?</h2>
+			<div className="body">
+				<div>
+					Minimum Rating: {rating} {rating === 1 ? "star" : "stars"}
+				</div>
+				<CustomSlider
+					min={1}
+					max={5}
+					step={1}
+					value={rating}
+					onChange={setRating}
+				/>
+				{/* <div>{"★".repeat(rating) + "☆".repeat(maxRating - rating)}</div> */}
 			</div>
-			<input
-				type="range"
-				min={1}
-				max={5}
-				step={1}
-				value={rating}
-				onChange={(e) => setRating(parseInt(e.target.value))}
-			/>
-			{/* <div>{"★".repeat(rating) + "☆".repeat(maxRating - rating)}</div> */}
-		</div>
+		</section>
 	);
 }

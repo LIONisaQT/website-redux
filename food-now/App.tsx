@@ -164,7 +164,7 @@ function App() {
 					>
 						Location
 					</button>
-					<section>
+					<section className="sliders-body">
 						<Distance distance={distance} setDistance={setDistance} />
 						<Price price={price} setPrice={setPrice} />
 						<Rating rating={rating} setRating={setRating} />

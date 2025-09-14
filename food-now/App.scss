@@ -34,5 +34,26 @@
 				flex-direction: row;
 			}
 		}
+
+		.sliders-body {
+			display: flex;
+			flex-direction: column;
+			gap: 20px;
+
+			.sliders-section-container {
+				display: flex;
+				flex-direction: column;
+
+				.title {
+					padding-bottom: 16px;
+				}
+
+				.body {
+					display: flex;
+					flex-direction: column;
+					gap: 8px;
+				}
+			}
+		}
 	}
 }
