@@ -1,3 +1,5 @@
+@import url(/food-now/colors.css);
+
 .range-body {
 	// TODO: Range component's thumbs can exceed width of container, pls fix
 
@@ -19,6 +21,6 @@
 		width: 20px;
 		height: 20px;
 		border-radius: 50%;
-		background-color: #6272a4;
+		background-color: var(--light);
 	}
 }
