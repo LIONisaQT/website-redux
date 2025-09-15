@@ -169,7 +169,7 @@ export default function Modal({ isLoading, results, onRestart }: LoadingProps) {
 										rel="noopener noreferrer"
 									>
 										<img src="https://upload.wikimedia.org/wikipedia/commons/a/aa/Google_Maps_icon_%282020%29.svg" />
-										Open in Maps
+										<p>Open in Maps</p>
 									</a>
 									<a
 										className="ext-link-button"
@@ -178,7 +178,7 @@ export default function Modal({ isLoading, results, onRestart }: LoadingProps) {
 										rel="noopener noreferrer"
 									>
 										<img src="https://companieslogo.com/img/orig/YELP-d704c977.png?t=1720244494" />
-										Open in Yelp
+										<p>Open in Yelp</p>
 									</a>
 								</section>
 							</div>

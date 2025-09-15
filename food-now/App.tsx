@@ -181,6 +181,7 @@ function App() {
 						<section className="check-open">
 							<input
 								type="checkbox"
+								className="checkbox"
 								checked={checkOpen}
 								onChange={() => setCheckOpen(!checkOpen)}
 							/>

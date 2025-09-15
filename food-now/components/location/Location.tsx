@@ -106,14 +106,13 @@ export default function Location({ setLatLng }: LocationProps) {
 			/>
 			{message && (
 				<p
-					style={{
-						color:
-							message.includes("Error") ||
-							message.includes("blocked") ||
-							message.includes("denied")
-								? "red"
-								: "green",
-					}}
+					className={
+						message.includes("Error") ||
+						message.includes("blocked") ||
+						message.includes("denied")
+							? "error-text"
+							: "success-text"
+					}
 				>
 					{message}
 				</p>

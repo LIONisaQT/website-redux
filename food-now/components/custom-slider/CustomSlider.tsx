@@ -18,8 +18,8 @@ export default function CustomSlider({
 	step = 1,
 	value,
 	onChange,
-	filledColor = "#548BF4",
-	emptyColor = "#e6e6e6",
+	filledColor = "#6272a4",
+	emptyColor = "#f8f8f2",
 }: SliderProps) {
 	const pct = Math.round(((value - min) / (max - min)) * 100);
 	const background = `linear-gradient(to right, ${filledColor} ${pct}%, ${emptyColor} ${pct}%)`;

@@ -1,3 +1,5 @@
+@import url(./colors.css);
+
 .food-now {
 	max-width: 1000px;
 	margin: 0 auto;
@@ -66,9 +68,9 @@
 	}
 
 	.ext-link-button {
-		background: #eee;
+		background: var(--light);
 		text-decoration: none;
-		color: black;
+		color: var(--darkest);
 		font-weight: normal;
 		padding: 8px 16px;
 		display: inline-flex;
@@ -93,5 +95,17 @@
 		font-size: 14pt;
 		transition: all 0.5s ease;
 		cursor: pointer;
+	}
+
+	.checkbox {
+		accent-color: var(--dark);
+	}
+
+	.error-text {
+		color: var(--red);
+	}
+
+	.success-text {
+		color: var(--green);
 	}
 }

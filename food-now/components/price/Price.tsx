@@ -41,7 +41,7 @@ export default function Price({ price, setPrice }: PriceProps) {
 								style={{
 									background: getTrackBackground({
 										values: price,
-										colors: ["#ccc", "#548BF4", "#ccc"],
+										colors: ["#f8f8f2", "#6272a4", "#f8f8f2"],
 										min: MIN,
 										max: MAX,
 									}),

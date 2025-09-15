@@ -1,3 +1,5 @@
+@import url(/food-now/colors.css);
+
 .loading-container {
 	position: fixed;
 	top: 0;
@@ -26,14 +28,13 @@
 		transform: translate(-50%, -150%);
 		/* start above screen */
 		z-index: 101;
-		background-color: black;
+		background-color: var(--darkest);
 		width: 100%;
 		height: 100%;
 		box-sizing: border-box;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		color: white;
 		font-weight: bold;
 		border-radius: 8px;
 		opacity: 0;
@@ -75,22 +76,22 @@
 
 				.review {
 					.author {
-						color: red;
+						color: var(--red);
 					}
 
 					.rating {
-						color: greenyellow;
+						color: var(--green);
 					}
 
 					.time {
-						color: gray;
+						color: var(--dark);
 					}
 
 					.review-text-wrapper {
 						margin-top: 4px;
 						max-height: calc(150px + 16px);
 						border-radius: 8px;
-						background-color: gray;
+						background-color: var(--darker);
 						overflow: hidden;
 						padding: 8px;
 						box-sizing: border-box;
@@ -100,7 +101,7 @@
 							overflow-y: auto;
 							max-height: 150px;
 							line-height: 1.4;
-							scrollbar-color: white transparent;
+							scrollbar-color: var(--light) transparent;
 						}
 					}
 				}
@@ -125,11 +126,13 @@
 					border: none;
 					font-size: 12pt;
 					transition: all 0.5s ease;
+					background-color: var(--light);
+					color: var(--darkest);
 					cursor: pointer;
 
 					&:disabled {
 						background: gray;
-						color: #ddd;
+						// color: #ddd;
 						cursor: not-allowed;
 					}
 				}
