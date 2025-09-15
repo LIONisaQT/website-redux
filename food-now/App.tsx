@@ -70,7 +70,7 @@ function App() {
 			setTimeout(() => {
 				setResults(JSON.parse(results));
 				setLoading(false);
-			}, 1000);
+			}, 100000);
 			return;
 		}
 

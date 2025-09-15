@@ -13,7 +13,7 @@
 		position: fixed;
 		width: 100%;
 		box-sizing: border-box;
-		background-color: var(--dark);
+		background-color: var(--red);
 		top: 0;
 		left: 0;
 		padding: 16px 8px;
@@ -52,9 +52,9 @@
 				border: none;
 				font-size: clamp(0.875rem, 2.5vw, 1rem);
 				line-height: 1.5;
-				transition: all 0.5s ease;
+				transition: all 0.2s ease;
 				cursor: pointer;
-				background: var(--dark);
+				background: var(--cyan);
 				color: var(--light);
 
 				&:disabled {
@@ -105,7 +105,7 @@
 	}
 
 	.ext-link-button {
-		background: var(--dark);
+		background: var(--cyan);
 		text-decoration: none;
 		font-weight: normal;
 		padding: 8px 16px;
@@ -137,7 +137,7 @@
 		line-height: 1.2;
 		transition: all 0.5s ease;
 		cursor: pointer;
-		background-color: var(--dark);
+		background-color: var(--cyan);
 		color: var(--light);
 
 		&:disabled {
@@ -148,7 +148,7 @@
 	}
 
 	.checkbox {
-		accent-color: var(--dark);
+		accent-color: var(--cyan);
 	}
 
 	.error-text {

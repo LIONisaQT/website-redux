@@ -28,12 +28,9 @@
 	width: 20px;
 	height: 20px;
 	border-radius: 50%;
-	background: var(--light);
-	border: 3px solid var(--dark);
-	/* thumb border color */
-	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+	background: var(--cyan);
+	border: 0;
 	margin-top: -5px;
-	/* center the thumb on the track */
 	cursor: grab;
 }
 
@@ -48,9 +45,8 @@
 	width: 20px;
 	height: 20px;
 	border-radius: 50%;
-	background: var(--light);
+	background: var(--cyan);
 	border: 0;
-	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 	cursor: grab;
 }
 
@@ -76,9 +72,8 @@
 	width: 20px;
 	height: 20px;
 	border-radius: 50%;
-	background: var(--light);
-	border: 3px solid var(--dark);
-	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+	background: var(--cyan);
+	border: 0;
 	cursor: grab;
 }
 
@@ -86,7 +81,5 @@
 .range:focus::-webkit-slider-thumb,
 .range:focus::-moz-range-thumb,
 .range:focus::-ms-thumb {
-	box-shadow: 0 0 0 6px rgba(43, 108, 176, 0.15);
 	cursor: grabbing;
-	/* halo */
 }

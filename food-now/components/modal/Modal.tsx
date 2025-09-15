@@ -133,7 +133,7 @@ export default function Modal({ isLoading, results, onRestart }: LoadingProps) {
 								<section className="details">
 									<p>{selected.vicinity}</p>
 									<p>
-										{selected.rating}
+										{selected.rating}★
 										{selected.user_ratings_total && (
 											<span> ({selected.user_ratings_total} reviews)</span>
 										)}
@@ -189,7 +189,7 @@ export default function Modal({ isLoading, results, onRestart }: LoadingProps) {
 									disabled={debounceTimer > 0 || loadingDetails}
 								>
 									{debounceTimer > 0
-										? `Request a different place in ${debounceTimer}s`
+										? `Re-roll avaiable ${debounceTimer}s`
 										: "Give me a different place!"}
 								</button>
 								<button className="secondary" onClick={onRestart}>
