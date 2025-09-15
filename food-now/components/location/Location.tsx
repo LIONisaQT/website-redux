@@ -91,7 +91,7 @@ export default function Location({ setLatLng }: LocationProps) {
 			</button>
 			{/* {location && ( */}
 			<section className="location-text-container">
-				<p className="location-label">Your location:</p>
+				<h3 className="location-label">Your location:</h3>
 				<p className="location-text">
 					{location ?? "Tap the pin to get your location."}
 				</p>
