@@ -137,6 +137,9 @@ function App() {
 
 	return (
 		<div className="food-now">
+			<div className="banner">
+				<h1>Food Now!</h1>
+			</div>
 			<section className="criteria">
 				<section className="criteria-section cuisine">
 					<Cuisine

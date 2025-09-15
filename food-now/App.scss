@@ -6,13 +6,24 @@
 	display: flex;
 	flex-direction: column;
 
+	.banner {
+		position: fixed;
+		width: 100%;
+		background-color: var(--darker);
+		top: 0;
+		padding: 4px 8px;
+		text-align: center;
+		font-size: larger;
+		box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+	}
+
 	.criteria {
 		display: flex;
 		flex-direction: column;
 
 		.criteria-section {
-			height: calc(100vh - 80px);
-			padding: 40px 8px;
+			height: calc(100vh - 120px);
+			padding: 80px 8px 40px;
 			display: flex;
 			flex-direction: column;
 			justify-content: space-between;
