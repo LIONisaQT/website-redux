@@ -22,3 +22,7 @@ h2 {
 	margin: 0;
 	overflow: hidden;
 }
+
+p {
+	font-weight: normal;
+}

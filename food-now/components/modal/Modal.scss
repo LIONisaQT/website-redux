@@ -75,16 +75,16 @@
 				}
 
 				.review {
+					span {
+						font-weight: bold;
+					}
+
 					.author {
 						color: var(--red);
 					}
 
 					.rating {
 						color: var(--green);
-					}
-
-					.time {
-						color: var(--dark);
 					}
 
 					.review-text-wrapper {
