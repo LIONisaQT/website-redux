@@ -28,6 +28,10 @@
 			flex-direction: column;
 			justify-content: space-between;
 
+			.title {
+				text-align: center;
+			}
+
 			.section-button {
 				flex: 0 0 auto;
 				width: auto;
@@ -49,6 +53,7 @@
 
 			.check-open {
 				padding-top: 20px;
+				padding-left: 24px;
 				display: flex;
 				flex-direction: row;
 				gap: 4px;

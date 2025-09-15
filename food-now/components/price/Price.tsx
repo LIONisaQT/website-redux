@@ -11,16 +11,16 @@ export default function Price({ price, setPrice }: PriceProps) {
 	const MIN = 1;
 	const MAX = 4;
 	const priceLabels = [
-		"Free (0)", // Realistically this never happens, but it's here for completeness
-		"Inexpensive ($)",
-		"Moderate ($$)",
-		"Expensive ($$$)",
-		"Very Expensive ($$$$)",
+		"Free", // Realistically this never happens, but it's here for completeness
+		"Inexpensive",
+		"Moderate",
+		"Expensive",
+		"Very Expensive",
 	];
 
 	return (
 		<section className="sliders-section-container">
-			<h2 className="title">b. Name your price.</h2>
+			<h2 className="title">Name your price.</h2>
 			<div className="body range-body">
 				<div className="range-label">
 					<span>{priceLabels[price[0]]}</span>

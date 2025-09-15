@@ -64,9 +64,11 @@ export default function Cuisine({
 	selectedCuisines,
 	onCuisineClicked,
 }: CuisineProps) {
+	const maxCuisines = 4;
+
 	return (
 		<section className="options-container">
-			<h2>1. Pick at least 1 option.</h2>
+			<h2>{`Pick 1-${maxCuisines} options.`}</h2>
 			<div className="options-grid">
 				{defaultOptions.map((option) => {
 					const isSelected = selectedCuisines.includes(option.value);
