@@ -9,12 +9,13 @@
 	color: var(--light);
 
 	.banner {
+		font-family: 'Sriracha', sans-serif;
 		position: fixed;
 		width: 100%;
 		box-sizing: border-box;
 		background-color: var(--dark);
 		top: 0;
-		padding: 8px 8px;
+		padding: 0px 8px;
 		text-align: center;
 		font-size: larger;
 		box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
@@ -43,6 +44,7 @@
 			}
 
 			.section-button {
+				font-family: 'Lexend', sans-serif;
 				flex: 0 0 auto;
 				width: auto;
 				padding: 8px 16px;
@@ -126,6 +128,7 @@
 	}
 
 	.food-now-button {
+		font-family: 'Lexend', sans-serif;
 		padding: 8px 16px;
 		border-radius: 32px;
 		border: none;

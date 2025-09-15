@@ -156,7 +156,7 @@ export default function Cuisine({
 }: CuisineProps) {
 	return (
 		<>
-			<h2>{`Pick 1-${maxCuisines} options.`}</h2>
+			<h2 className="section-title">{`Pick 1-${maxCuisines} options.`}</h2>
 			<section className="options-container">
 				<div className="options-grid">
 					{defaultOptions.map((option) => {

@@ -1,6 +1,7 @@
 @import url("./colors.css");
 
 :root {
+	font-family: "Lexend", sans-serif;
 	font-synthesis: none;
 	font-optical-sizing: auto;
 	text-rendering: optimizeLegibility;
