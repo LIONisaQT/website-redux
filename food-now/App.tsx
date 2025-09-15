@@ -42,14 +42,14 @@ function App() {
 		setResults([]);
 		setError(null);
 
-		// const results = localStorage.getItem("cachedResults");
-		// if (results) {
-		// 	setTimeout(() => {
-		// 		setResults(JSON.parse(results));
-		// 		setLoading(false);
-		// 	}, 1000);
-		// 	return;
-		// }
+		const results = localStorage.getItem("cachedResults");
+		if (results) {
+			setTimeout(() => {
+				setResults(JSON.parse(results));
+				setLoading(false);
+			}, 1000);
+			return;
+		}
 
 		if (!placesService) {
 			setError("PlacesService not ready yet.");
