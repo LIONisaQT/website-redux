@@ -1,7 +1,9 @@
+import { CuisineType } from "../../App";
 import "./Cuisine.scss";
 export interface CuisineOption {
 	name: string;
 	value: string;
+	type?: string;
 	image: string;
 }
 
@@ -17,6 +19,13 @@ const defaultOptions: CuisineOption[] = [
 		value: "american_restaurant",
 		image:
 			"https://res.cloudinary.com/hz3gmuqw6/image/upload/c_fill,f_auto,q_60,w_750/v1/classpop/679a768f61781",
+	},
+	{
+		name: "Boba",
+		value: "bubble tea",
+		type: "cafe",
+		image:
+			"https://www.spoton.com/blog/content/images/size/w1200/2024/07/1.-what-is-boba-bubble-tea-boba-tea-milk-tea.jpeg",
 	},
 	{
 		name: "Breakfast",
@@ -39,6 +48,7 @@ const defaultOptions: CuisineOption[] = [
 	{
 		name: "Cafes",
 		value: "cafe",
+		type: "cafe",
 		image:
 			"https://stepoutbuffalo.com/wp-content/uploads/2022/11/Coffee-Stone-Cafe-Photo-courtesy-of-Coffee-Stone-Cafe5.jpg",
 	},
@@ -126,12 +136,6 @@ const defaultOptions: CuisineOption[] = [
 			"https://ik.imagekit.io/munchery/blog/tr:w-768/the-10-most-iconic-thai-dishes-and-how-to-make-them-at-home.jpeg",
 	},
 	{
-		name: "Vegetarian",
-		value: "vegetarian_restaurant",
-		image:
-			"https://images.everydayhealth.com/images/diet-nutrition/what-is-a-vegan-diet-benefits-food-list-beginners-guide-alt-1440x810.jpg?w=508",
-	},
-	{
 		name: "Vietnamese",
 		value: "vietnamese_restaurant",
 		image:
@@ -140,8 +144,8 @@ const defaultOptions: CuisineOption[] = [
 ];
 
 interface CuisineProps {
-	selectedCuisines: string[];
-	onCuisineClicked: (value: string) => void;
+	selectedCuisines: CuisineType[];
+	onCuisineClicked: ({ keyword, type }) => void;
 	maxCuisines: number;
 }
 
@@ -156,12 +160,19 @@ export default function Cuisine({
 			<section className="options-container">
 				<div className="options-grid">
 					{defaultOptions.map((option) => {
-						const isSelected = selectedCuisines.includes(option.value);
+						const isSelected = selectedCuisines.find(
+							(c) => c.keyword === option.value
+						);
 						return (
 							<div
 								key={option.value}
 								className={`option-card ${isSelected ? "selected" : ""}`}
-								onClick={() => onCuisineClicked(option.value)}
+								onClick={() =>
+									onCuisineClicked({
+										keyword: option.value,
+										type: option.type ?? "restaurant",
+									})
+								}
 							>
 								<img
 									src={option.image}

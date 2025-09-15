@@ -8,13 +8,18 @@ import Rating from "./components/rating/Rating";
 import Distance from "./components/distance/Distance";
 import Modal from "./components/modal/Modal";
 
+export interface CuisineType {
+	keyword: string;
+	type: "restaurant" | "cafe";
+}
+
 function App() {
 	const [placesService, setPlacesService] =
 		useState<google.maps.places.PlacesService | null>(null);
 	const [results, setResults] = useState<google.maps.places.PlaceResult[]>([]);
 	const [error, setError] = useState<string | null>(null);
 	const [loading, setLoading] = useState(false);
-	const [cuisines, setCuisines] = useState<string[]>([]);
+	const [cuisines, setCuisines] = useState<CuisineType[]>([]);
 	const maxCuisines = 4;
 	const [latLng, setLatLng] = useState<google.maps.LatLng | null>(null);
 	const [distance, setDistance] = useState(5000); // meters
@@ -68,8 +73,8 @@ function App() {
 					const request: google.maps.places.PlaceSearchRequest = {
 						location: latLng,
 						radius: distance,
-						type: "restaurant",
-						keyword: cuisine,
+						type: cuisine.type ?? "restaurant",
+						keyword: cuisine.keyword,
 						minPriceLevel: price[0],
 						maxPriceLevel: price[1],
 						openNow: checkOpen,
@@ -100,19 +105,17 @@ function App() {
 		}
 	};
 
-	const onCuisineClicked = (value: string) => {
-		if (cuisines.includes(value)) {
-			setCuisines((prev) => prev.filter((item) => item !== value));
+	const onCuisineClicked = (cuisine: CuisineType) => {
+		const exists = cuisines.find((c) => c.keyword === cuisine.keyword);
+
+		if (exists) {
+			setCuisines((prev) => prev.filter((c) => c.keyword !== cuisine.keyword));
 			return;
 		}
 
 		if (cuisines.length >= maxCuisines) return;
 
-		setCuisines((prev) =>
-			prev.includes(value)
-				? prev.filter((item) => item !== value)
-				: [...prev, value]
-		);
+		setCuisines((prev) => [...prev, cuisine]);
 	};
 
 	const onPrevSectionClicked = (event: React.MouseEvent<HTMLButtonElement>) => {
