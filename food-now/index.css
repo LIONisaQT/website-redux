@@ -7,9 +7,6 @@
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 
-	background: var(--darkest);
-	color: var(--light);
-
 	-webkit-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
@@ -22,8 +19,10 @@ h2,
 h3 {
 	margin: 0;
 	overflow: hidden;
+	color: var(--light);
 }
 
 p {
 	font-weight: normal;
+	color: var(--light);
 }

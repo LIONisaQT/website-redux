@@ -41,6 +41,7 @@ export default function Price({ price, setPrice }: PriceProps) {
 								style={{
 									background: getTrackBackground({
 										values: price,
+										// * This needs to be updated manually whenever CSS colors change
 										colors: ["#f8f8f2", "#6272a4", "#f8f8f2"],
 										min: MIN,
 										max: MAX,

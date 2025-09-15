@@ -5,6 +5,8 @@
 	margin: 0 auto;
 	display: flex;
 	flex-direction: column;
+	background: var(--darkest);
+	color: var(--light);
 
 	.banner {
 		position: fixed;
@@ -47,6 +49,14 @@
 				font-size: 12pt;
 				transition: all 0.5s ease;
 				cursor: pointer;
+				background: var(--dark);
+				color: var(--light);
+
+				&:disabled {
+					background: var(--darker);
+					color: var(--dark);
+					cursor: not-allowed;
+				}
 			}
 
 			.prev {
@@ -90,9 +100,8 @@
 	}
 
 	.ext-link-button {
-		background: var(--light);
+		background: var(--dark);
 		text-decoration: none;
-		color: var(--darkest);
 		font-weight: normal;
 		padding: 8px 16px;
 		display: inline-flex;
@@ -108,6 +117,10 @@
 		img {
 			height: 16pt;
 		}
+
+		p {
+			color: var(--light);
+		}
 	}
 
 	.food-now-button {
@@ -117,6 +130,14 @@
 		font-size: 14pt;
 		transition: all 0.5s ease;
 		cursor: pointer;
+		background-color: var(--dark);
+		color: var(--light);
+
+		&:disabled {
+			background-color: var(--darker);
+			color: var(--dark);
+			cursor: not-allowed;
+		}
 	}
 
 	.checkbox {

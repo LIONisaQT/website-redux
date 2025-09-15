@@ -87,6 +87,10 @@
 						color: var(--green);
 					}
 
+					.time {
+						color: var(--dark);
+					}
+
 					.review-text-wrapper {
 						margin-top: 4px;
 						max-height: calc(150px + 16px);
@@ -126,13 +130,13 @@
 					border: none;
 					font-size: 12pt;
 					transition: all 0.5s ease;
-					background-color: var(--light);
-					color: var(--darkest);
+					background-color: var(--dark);
+					color: var(--light);
 					cursor: pointer;
 
 					&:disabled {
-						background: gray;
-						// color: #ddd;
+						background: var(--darker);
+						color: var(--dark);
 						cursor: not-allowed;
 					}
 				}

@@ -28,6 +28,23 @@ function App() {
 	const [checkOpen, setCheckOpen] = useState(true);
 
 	useEffect(() => {
+		const prefersDark = window.matchMedia(
+			"(prefers-color-scheme: dark)"
+		).matches;
+
+		// Optional: use time-based logic if no system preference
+		const hour = new Date().getHours();
+		const isNight = hour < 6 || hour >= 18; // 6 PM – 6 AM
+
+		// Decide initial theme
+		const useDark = prefersDark || isNight;
+
+		if (useDark) {
+			document.body.classList.remove("light-mode");
+		} else {
+			document.body.classList.add("light-mode");
+		}
+
 		const loader = new Loader({
 			apiKey: import.meta.env.VITE_GMAPS_API_KEY,
 			version: "weekly",
