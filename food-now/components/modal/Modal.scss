@@ -40,8 +40,21 @@
 		opacity: 0;
 		transition: transform 0.4s ease, opacity 0.4s ease;
 
-		.loading-image {
-			width: 100vw;
+		.loading-text {
+			font-size: 1.75rem;
+			animation: pulse 1.5s ease-in-out infinite;
+		}
+
+		@keyframes pulse {
+
+			0%,
+			100% {
+				opacity: 0.4;
+			}
+
+			50% {
+				opacity: 1;
+			}
 		}
 
 		.result {

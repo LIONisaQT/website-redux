@@ -115,10 +115,7 @@ export default function Modal({ isLoading, results, onRestart }: LoadingProps) {
 			<div className="background" />
 			<div className="modal">
 				{isLoading || loadingDetails ? (
-					<img
-						className="loading-image"
-						src="https://static.wikia.nocookie.net/zenless-zone-zero/images/b/bb/Bangboo_Net_Loading.gif"
-					/>
+					<p className="loading-text">Fetching restaurants...</p>
 				) : (
 					selected && (
 						<div className="result">
