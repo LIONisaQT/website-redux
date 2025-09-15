@@ -119,8 +119,8 @@ export default function Modal({ isLoading, results, onRestart }: LoadingProps) {
 				) : (
 					selected && (
 						<div className="result">
-							<h2 className="random-text">Your randomly selected pick:</h2>
 							<div className="result-data">
+								<h2 className="random-text">Your randomly selected pick:</h2>
 								{selected.photos && selected.photos.length > 0 && (
 									<div className="photo-container">
 										<img
@@ -131,7 +131,7 @@ export default function Modal({ isLoading, results, onRestart }: LoadingProps) {
 								)}
 								<h1 className="name">{selected.name}</h1>
 								<section className="details">
-									<p>{selected.vicinity}</p>
+									<p className="vicinity">{selected.vicinity}</p>
 									<p>
 										{selected.rating}★
 										{selected.user_ratings_total && (
@@ -142,15 +142,14 @@ export default function Modal({ isLoading, results, onRestart }: LoadingProps) {
 								{selected.reviews?.[0] && (
 									<section className="review">
 										<p>
-											Here's a recent review by{" "}
 											<span className="author">
-												{selected.reviews[0].author_name}
-											</span>
-											, who rated the place with{" "}
+												{selected.reviews[0].author_name.split(" ")[0]}
+											</span>{" "}
+											rated{" "}
 											<span className="rating">
-												{selected.reviews[0].rating} stars
+												{selected.reviews[0].rating}★
 											</span>
-											{", "}
+											{", and wrote "}
 											<span className="time">
 												{selected.reviews[0].relative_time_description}
 											</span>

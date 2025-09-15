@@ -16,12 +16,13 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
-		background-color: rgba(0, 0, 0, 0.8);
 		opacity: 0;
 		transition: opacity 0.3s ease;
 	}
 
 	.modal {
+		max-width: 600px;
+		margin: 0 auto;
 		position: absolute;
 		top: 50%;
 		left: 50%;
@@ -60,7 +61,7 @@
 		.result {
 			width: 100%;
 			height: 100%;
-			padding: 120px 24px 36px;
+			padding: 80px 24px 36px;
 			box-sizing: border-box;
 			overflow: hidden;
 			display: flex;
@@ -68,16 +69,13 @@
 			align-items: center;
 			gap: 20px;
 
-			.random-text {
-				margin-bottom: auto;
-			}
-
 			.result-data {
 				flex-grow: 1;
 				display: flex;
 				flex-direction: column;
 				justify-content: center;
 				gap: 8px;
+				width: 100%;
 
 				.photo-container {
 					width: 100%;
@@ -94,11 +92,24 @@
 				}
 
 				.name {
-					height: 2rem;
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					display: block;
+					max-width: 100%;
+					line-height: 1.25;
 				}
 
 				.details {
 					padding: 0 12px;
+
+					.vicinity {
+						white-space: nowrap;
+						overflow: hidden;
+						text-overflow: ellipsis;
+						display: block;
+						max-width: 100%;
+					}
 				}
 
 				.review {
@@ -120,7 +131,7 @@
 
 					.review-text-wrapper {
 						margin-top: 4px;
-						max-height: calc(150px + 16px);
+						max-height: calc(15dvh + 16px);
 						border-radius: 8px;
 						background-color: var(--darker);
 						overflow: hidden;
@@ -130,7 +141,7 @@
 						.review-text {
 							padding: 0px 8px;
 							overflow-y: auto;
-							max-height: 150px;
+							max-height: 15dvh;
 							line-height: 1.4;
 							scrollbar-color: var(--light) transparent;
 						}
