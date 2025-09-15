@@ -101,6 +101,11 @@ function App() {
 	};
 
 	const onCuisineClicked = (value: string) => {
+		if (cuisines.includes(value)) {
+			setCuisines((prev) => prev.filter((item) => item !== value));
+			return;
+		}
+
 		if (cuisines.length >= maxCuisines) return;
 
 		setCuisines((prev) =>
