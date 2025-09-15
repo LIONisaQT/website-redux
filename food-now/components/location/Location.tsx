@@ -1,5 +1,5 @@
 import "./Location.scss";
-import { useState, useRef, useEffect, Dispatch, SetStateAction } from "react";
+import { useState, useEffect, Dispatch, SetStateAction } from "react";
 
 interface LocationProps {
 	setLatLng: Dispatch<SetStateAction<google.maps.LatLng | null>>;
@@ -7,7 +7,7 @@ interface LocationProps {
 
 export default function Location({ setLatLng }: LocationProps) {
 	const [message, setMessage] = useState<string | null>(null);
-	const inputRef = useRef<HTMLInputElement>(null);
+	const [location, setLocation] = useState<string | null>(null);
 
 	useEffect(() => {
 		let permissionStatus: PermissionStatus | null = null;
@@ -55,15 +55,13 @@ export default function Location({ setLatLng }: LocationProps) {
 			const geocoder = new google.maps.Geocoder();
 			const latLng = new google.maps.LatLng(latitude, longitude);
 
-			if (inputRef.current) {
-				geocoder.geocode({ location: latLng }, (results, status) => {
-					if (status === "OK" && results && results[0]) {
-						inputRef.current!.value = results[0].formatted_address;
-					} else {
-						inputRef.current!.value = `Lat: ${latitude}, Lng: ${longitude}`;
-					}
-				});
-			}
+			geocoder.geocode({ location: latLng }, (results, status) => {
+				if (status === "OK" && results && results[0]) {
+					setLocation(results[0].formatted_address);
+				} else {
+					setLocation(`Lat: ${latitude}, Lng: ${longitude}`);
+				}
+			});
 
 			setLatLng(latLng);
 			setMessage("Location filled successfully.");
@@ -85,25 +83,20 @@ export default function Location({ setLatLng }: LocationProps) {
 		);
 	};
 
-	const onLocationTextClick = () => {
-		setMessage("Sorry, manual address entry denied for now.");
-	};
-
 	return (
 		<section className="location-container">
-			<h2>2. WYA?</h2>
-			<p>Tap to fill in your location.</p>
+			<h2>WYA?</h2>
 			<button className="locator-button" onClick={handleGetLocation}>
 				📍
 			</button>
-			<input
-				className="location-text"
-				type="text"
-				placeholder="Location"
-				ref={inputRef}
-				readOnly
-				onClick={onLocationTextClick}
-			/>
+			{/* {location && ( */}
+			<section className="location-text-container">
+				<p className="location-label">Your location:</p>
+				<p className="location-text">
+					{location ?? "Tap the pin to get your location."}
+				</p>
+			</section>
+			{/* )} */}
 			{message && (
 				<p
 					className={
