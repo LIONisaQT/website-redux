@@ -26,7 +26,13 @@
 			padding: 80px 8px 40px;
 			display: flex;
 			flex-direction: column;
-			justify-content: space-between;
+			gap: 16px;
+
+			>section {
+				flex: 1;
+				min-height: 0;
+				justify-content: center;
+			}
 
 			.title {
 				text-align: center;
