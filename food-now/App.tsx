@@ -130,6 +130,7 @@ function App() {
 	};
 
 	const onRestartClicked = () => {
+		setCuisines([]);
 		setResults([]);
 		window.scrollTo(0, 0);
 	};
