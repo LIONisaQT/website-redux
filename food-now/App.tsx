@@ -15,6 +15,7 @@ function App() {
 	const [error, setError] = useState<string | null>(null);
 	const [loading, setLoading] = useState(false);
 	const [cuisines, setCuisines] = useState<string[]>([]);
+	const maxCuisines = 4;
 	const [latLng, setLatLng] = useState<google.maps.LatLng | null>(null);
 	const [distance, setDistance] = useState(5000); // meters
 	const [price, setPrice] = useState([1, 3]);
@@ -100,6 +101,8 @@ function App() {
 	};
 
 	const onCuisineClicked = (value: string) => {
+		if (cuisines.length >= maxCuisines) return;
+
 		setCuisines((prev) =>
 			prev.includes(value)
 				? prev.filter((item) => item !== value)
@@ -145,6 +148,7 @@ function App() {
 					<Cuisine
 						selectedCuisines={cuisines}
 						onCuisineClicked={onCuisineClicked}
+						maxCuisines={maxCuisines}
 					/>
 					<button
 						className="section-button next"

@@ -50,10 +50,6 @@
 		pointer-events: none;
 	}
 
-	&:hover {
-		transform: translateY(-4px);
-	}
-
 	&.selected {
 		border-color: white;
 

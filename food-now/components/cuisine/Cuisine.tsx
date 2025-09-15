@@ -58,14 +58,14 @@ const defaultOptions: CuisineOption[] = [
 interface CuisineProps {
 	selectedCuisines: string[];
 	onCuisineClicked: (value: string) => void;
+	maxCuisines: number;
 }
 
 export default function Cuisine({
 	selectedCuisines,
 	onCuisineClicked,
+	maxCuisines,
 }: CuisineProps) {
-	const maxCuisines = 4;
-
 	return (
 		<section className="options-container">
 			<h2>{`Pick 1-${maxCuisines} options.`}</h2>
