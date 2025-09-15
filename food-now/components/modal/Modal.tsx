@@ -115,7 +115,10 @@ export default function Modal({ isLoading, results, onRestart }: LoadingProps) {
 			<div className="background" />
 			<div className="modal">
 				{isLoading || loadingDetails ? (
-					<p>Fetching restaurants...</p>
+					<img
+						className="loading-image"
+						src="https://static.wikia.nocookie.net/zenless-zone-zero/images/b/bb/Bangboo_Net_Loading.gif"
+					/>
 				) : (
 					selected && (
 						<div className="result">
@@ -189,7 +192,7 @@ export default function Modal({ isLoading, results, onRestart }: LoadingProps) {
 									disabled={debounceTimer > 0 || loadingDetails}
 								>
 									{debounceTimer > 0
-										? `Re-roll avaiable ${debounceTimer}s`
+										? `Re-roll avaiable in ${debounceTimer}s`
 										: "Give me a different place!"}
 								</button>
 								<button className="secondary" onClick={onRestart}>
