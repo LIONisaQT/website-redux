@@ -8,7 +8,7 @@ interface RatingProps {
 export default function Rating({ rating, setRating }: RatingProps) {
 	return (
 		<section className="sliders-section-container">
-			<h2 className="title">5. What are your standards?</h2>
+			<h2 className="title">c. What are your standards?</h2>
 			<div className="body">
 				<div>
 					Minimum Rating: {rating} {rating === 1 ? "star" : "stars"}

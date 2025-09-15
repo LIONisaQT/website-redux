@@ -147,7 +147,7 @@ function App() {
 						onClick={onNextSectionClicked}
 						disabled={cuisines.length === 0}
 					>
-						Location
+						2. Location
 					</button>
 				</section>
 				<section className="criteria-section location">
@@ -155,7 +155,7 @@ function App() {
 						className="section-button prev"
 						onClick={onPrevSectionClicked}
 					>
-						Cuisines
+						1. Cuisines
 					</button>
 					<Location setLatLng={setLatLng} />
 					<button
@@ -163,7 +163,7 @@ function App() {
 						onClick={onNextSectionClicked}
 						disabled={latLng === null}
 					>
-						Extras
+						3. Extras
 					</button>
 				</section>
 				<section className="criteria-section sliders">
@@ -171,7 +171,7 @@ function App() {
 						className="section-button prev"
 						onClick={onPrevSectionClicked}
 					>
-						Location
+						2. Location
 					</button>
 					<section className="sliders-body">
 						<Distance distance={distance} setDistance={setDistance} />

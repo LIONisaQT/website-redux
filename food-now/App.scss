@@ -18,6 +18,12 @@
 			.section-button {
 				flex: 0 0 auto;
 				width: auto;
+				padding: 8px 16px;
+				border-radius: 32px;
+				border: none;
+				font-size: 12pt;
+				transition: all 0.5s ease;
+				cursor: pointer;
 			}
 
 			.prev {
@@ -78,5 +84,14 @@
 		img {
 			height: 16pt;
 		}
+	}
+
+	.food-now-button {
+		padding: 8px 16px;
+		border-radius: 32px;
+		border: none;
+		font-size: 14pt;
+		transition: all 0.5s ease;
+		cursor: pointer;
 	}
 }
