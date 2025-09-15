@@ -50,7 +50,8 @@
 			top: 40%;
 			left: 50%;
 			transform: translate(-50%, -40%);
-			font-size: 32px;
+			font-size: clamp(1.75rem, 6vw, 2.5rem);
+			line-height: 1.1;
 			color: white;
 			text-shadow: 0 0 6px rgba(0, 0, 0, 0.7);
 			pointer-events: none;

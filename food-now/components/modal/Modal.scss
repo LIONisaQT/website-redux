@@ -129,7 +129,8 @@
 					padding: 8px 16px;
 					border-radius: 32px;
 					border: none;
-					font-size: 12pt;
+					font-size: clamp(0.875rem, 2.5vw, 1rem);
+					line-height: 1.5;
 					transition: all 0.5s ease;
 					background-color: var(--dark);
 					color: var(--light);
