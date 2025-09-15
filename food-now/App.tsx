@@ -129,6 +129,11 @@ function App() {
 		}
 	};
 
+	const onRestartClicked = () => {
+		setResults([]);
+		window.scrollTo(0, 0);
+	};
+
 	return (
 		<div className="food-now">
 			<section className="criteria">
@@ -195,7 +200,11 @@ function App() {
 					<p>{error}</p>
 				</section>
 			)}
-			<Modal isLoading={loading} results={results} />
+			<Modal
+				isLoading={loading}
+				results={results}
+				onRestart={onRestartClicked}
+			/>
 		</div>
 	);
 }

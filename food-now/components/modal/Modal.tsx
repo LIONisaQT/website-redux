@@ -6,9 +6,10 @@ const DEBOUNCE_TIMER = 3;
 interface LoadingProps {
 	isLoading: boolean;
 	results: google.maps.places.PlaceResult[];
+	onRestart: () => void;
 }
 
-export default function Modal({ isLoading, results }: LoadingProps) {
+export default function Modal({ isLoading, results, onRestart }: LoadingProps) {
 	const [selected, setSelected] =
 		useState<google.maps.places.PlaceResult | null>(null);
 	const [loadingDetails, setLoadingDetails] = useState(false);
@@ -191,7 +192,9 @@ export default function Modal({ isLoading, results }: LoadingProps) {
 										? `Request a different place in ${debounceTimer}s`
 										: "Give me a different place!"}
 								</button>
-								<button className="secondary">Restart</button>
+								<button className="secondary" onClick={onRestart}>
+									Restart
+								</button>
 							</section>
 						</div>
 					)
