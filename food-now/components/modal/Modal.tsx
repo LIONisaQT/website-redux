@@ -119,7 +119,7 @@ export default function Modal({ isLoading, results, onRestart }: LoadingProps) {
 				) : (
 					selected && (
 						<div className="result">
-							<h2>Your randomly selected pick:</h2>
+							<h2 className="random-text">Your randomly selected pick:</h2>
 							<div className="result-data">
 								{selected.photos && selected.photos.length > 0 && (
 									<div className="photo-container">
