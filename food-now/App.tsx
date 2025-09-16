@@ -174,7 +174,7 @@ function App() {
 						<h2>How this works:</h2>
 						<ol className="instructions">
 							<li>
-								<p>Step 0: Have a bunch of ideas for where to go</p>
+								<p>Step 0: Have no ideas for where to eat</p>
 							</li>
 							<li>
 								<p>Step 1: Select cuisines</p>
