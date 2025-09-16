@@ -93,12 +93,37 @@ export default function Modal({ isLoading, results, onRestart }: LoadingProps) {
 		return () => clearInterval(interval);
 	}, [debounceTimer]);
 
-	const getMapLink = () =>
-		selected?.place_id
-			? `https://www.google.com/maps/place/?q=place_id:${selected.place_id}`
-			: selected?.geometry?.location
-			? `https://www.google.com/maps/search/?api=1&query=${selected.geometry.location.lat()},${selected.geometry.location.lng()}`
-			: "#";
+	const getMapLink = () => {
+		if (!selected) return "#";
+
+		const latLng = selected.geometry?.location;
+		const name = encodeURIComponent(selected.name || "");
+
+		const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+		if (isMobile) {
+			if (latLng) {
+				// Geo URI with coordinates
+				return `geo:${latLng.lat()},${latLng.lng()}?q=${latLng.lat()},${latLng.lng()}(${name})`;
+			} else {
+				// Fallback: query by name only
+				return `geo:0,0?q=${name}`;
+			}
+		}
+
+		if (selected.place_id) {
+			// Desktop or non-mobile: use place_id
+			return `https://www.google.com/maps/search/?api=1&query=${name}&query_place_id=${selected.place_id}`;
+		}
+
+		if (latLng) {
+			// Desktop fallback: coordinates only
+			return `https://www.google.com/maps/search/?api=1&query=${latLng.lat()},${latLng.lng()}`;
+		}
+
+		// Last resort
+		return "#";
+	};
 
 	const getYelpLink = (place: google.maps.places.PlaceResult): string => {
 		const name = place.name || "";
