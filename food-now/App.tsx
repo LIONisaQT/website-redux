@@ -259,7 +259,13 @@ function App() {
 						onClick={searchNearbyRestaurants}
 						disabled={!placesService || cuisines.length === 0 || loading}
 					>
-						Get Food Now!
+						{cuisines.length === 0
+							? "No cuisines selected!"
+							: !placesService
+							? "Couldn't get location."
+							: loading
+							? "Getting restaurants..."
+							: "Get Food Now!"}
 					</button>
 				</section>
 			</section>
