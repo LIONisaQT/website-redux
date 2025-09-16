@@ -107,6 +107,36 @@ export default function Modal({ isLoading, results, onRestart }: LoadingProps) {
 		return `https://www.yelp.com/search?find_desc=${query}`;
 	};
 
+	const renderClosingTime = () => {
+		if (!selected) return;
+
+		const today = new Date().getDay(); // Sunday = 0, Monday = 1, ...
+		const todayPeriod = selected.opening_hours?.periods?.find(
+			(period) => period.open?.day === today
+		);
+
+		if (!todayPeriod) return null;
+
+		// If there's no close, assume it's open 24 hours
+		if (!todayPeriod.close) {
+			return <span>Open 24 hours</span>;
+		}
+
+		// Format time (e.g., "1730" → "5:30 PM")
+		const formatTime = (time: string) => {
+			const hours = parseInt(time.substring(0, 2), 10);
+			const minutes = time.substring(2) || "00";
+			const date = new Date();
+			date.setHours(hours, parseInt(minutes, 10));
+			return date.toLocaleTimeString([], {
+				hour: "numeric",
+				minute: "2-digit",
+			});
+		};
+
+		return <span>Closes @ {formatTime(todayPeriod.close.time)}</span>;
+	};
+
 	return (
 		<div
 			className={`loading-container ${
@@ -137,7 +167,8 @@ export default function Modal({ isLoading, results, onRestart }: LoadingProps) {
 										{selected.rating}★
 										{selected.user_ratings_total && (
 											<span> ({selected.user_ratings_total} reviews)</span>
-										)}
+										)}{" "}
+										| {renderClosingTime()}
 									</p>
 								</section>
 								{selected.reviews?.[0] && (
