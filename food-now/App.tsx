@@ -22,9 +22,9 @@ function App() {
 	const [cuisines, setCuisines] = useState<CuisineType[]>([]);
 	const maxCuisines = 4;
 	const [latLng, setLatLng] = useState<google.maps.LatLng | null>(null);
-	const [distance, setDistance] = useState(5000); // meters
+	const [distance, setDistance] = useState(10000); // meters
 	const [price, setPrice] = useState([1, 3]);
-	const [rating, setRating] = useState(3);
+	const [rating, setRating] = useState(4);
 	const [checkOpen, setCheckOpen] = useState(true);
 
 	useEffect(() => {
