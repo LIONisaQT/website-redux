@@ -28,6 +28,8 @@ function App() {
 	const [checkOpen, setCheckOpen] = useState(true);
 
 	useEffect(() => {
+		window.scrollTo(0, 0);
+
 		const prefersDark = window.matchMedia(
 			"(prefers-color-scheme: dark)"
 		).matches;
