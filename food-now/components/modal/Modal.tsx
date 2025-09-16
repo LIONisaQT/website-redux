@@ -42,6 +42,7 @@ export default function Modal({ isLoading, results, onRestart }: LoadingProps) {
 					"reviews",
 					"photos",
 					"opening_hours",
+					"place_id",
 				],
 			};
 
