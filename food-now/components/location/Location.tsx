@@ -8,6 +8,7 @@ interface LocationProps {
 export default function Location({ setLatLng }: LocationProps) {
 	const [message, setMessage] = useState<string | null>(null);
 	const [location, setLocation] = useState<string | null>(null);
+	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
 		let permissionStatus: PermissionStatus | null = null;
@@ -51,6 +52,9 @@ export default function Location({ setLatLng }: LocationProps) {
 			return;
 		}
 
+		setLoading(true);
+		setMessage("Getting location...");
+
 		const fillLocation = (latitude: number, longitude: number) => {
 			const geocoder = new google.maps.Geocoder();
 			const latLng = new google.maps.LatLng(latitude, longitude);
@@ -65,6 +69,7 @@ export default function Location({ setLatLng }: LocationProps) {
 
 			setLatLng(latLng);
 			setMessage("Location filled successfully.");
+			setLoading(false);
 		};
 
 		const handleError = (err: GeolocationPositionError) => {
@@ -75,6 +80,7 @@ export default function Location({ setLatLng }: LocationProps) {
 			} else {
 				setMessage(`Error getting location: ${err.message}`);
 			}
+			setLoading(false);
 		};
 
 		navigator.geolocation.getCurrentPosition(
@@ -86,9 +92,14 @@ export default function Location({ setLatLng }: LocationProps) {
 	return (
 		<section className="location-container">
 			<h2>WYA?</h2>
-			<button className="locator-button" onClick={handleGetLocation}>
-				📍
+			<button
+				className={`locator-button ${loading ? "loading" : ""}`}
+				onClick={handleGetLocation}
+				disabled={loading}
+			>
+				{loading ? "⏳" : "📍"}
 			</button>
+
 			<section className="location-text-container">
 				<h3 className="location-label">Your location:</h3>
 				<p className="location-text">

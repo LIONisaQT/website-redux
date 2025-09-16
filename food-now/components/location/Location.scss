@@ -11,6 +11,15 @@
 		border: 0;
 		font-size: 3rem;
 		cursor: pointer;
+
+		&:disabled {
+			cursor: not-allowed;
+			opacity: 0.7;
+		}
+
+		&.loading {
+			animation: spin 1s linear infinite;
+		}
 	}
 
 	.location-text-container {
@@ -39,5 +48,15 @@
 		button {
 			flex: 0 0 auto;
 		}
+	}
+}
+
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+
+	to {
+		transform: rotate(360deg);
 	}
 }
