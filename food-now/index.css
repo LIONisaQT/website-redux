@@ -8,7 +8,7 @@
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 
-	background-color: var(--light);
+	background-color: var(--darker);
 
 	-webkit-user-select: none;
 	-ms-user-select: none;
