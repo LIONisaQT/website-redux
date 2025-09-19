@@ -8,10 +8,10 @@ interface DistanceProps {
 export default function Distance({ distance, setDistance }: DistanceProps) {
 	return (
 		<section className="sliders-section-container">
-			<h2 className="title">How far do you wanna go?</h2>
+			<h2 className="title">How far?</h2>
 			<div className="body">
 				<div>
-					Maximum distance: {distance / 1000} km (
+					Max distance: {distance / 1000} km (
 					{(distance * 0.000621371).toFixed(2)}mi)
 				</div>
 				<CustomSlider

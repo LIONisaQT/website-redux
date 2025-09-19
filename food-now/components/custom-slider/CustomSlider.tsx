@@ -25,7 +25,7 @@ export default function CustomSlider({
 	const background = `linear-gradient(to right, ${filledColor} ${pct}%, ${emptyColor} ${pct}%)`;
 
 	return (
-		<div>
+		<div className="custom-slider">
 			{label && (
 				<label style={{ display: "block" }}>
 					{label}: {value.toLocaleString()}

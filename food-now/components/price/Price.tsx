@@ -20,7 +20,7 @@ export default function Price({ price, setPrice }: PriceProps) {
 
 	return (
 		<section className="sliders-section-container">
-			<h2 className="title">Name your price.</h2>
+			<h2 className="title">How pricey?</h2>
 			<div className="body range-body">
 				<div className="range-label">
 					<span>{priceLabels[price[0]]}</span>
