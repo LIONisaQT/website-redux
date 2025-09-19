@@ -7,6 +7,7 @@ import Price from "./components/price/Price";
 import Rating from "./components/rating/Rating";
 import Distance from "./components/distance/Distance";
 import Modal from "./components/modal/Modal";
+import Instructions from "./components/instructions/Instructions";
 
 export interface CuisineType {
 	keyword: string;
@@ -183,29 +184,7 @@ function App() {
 				<section className="criteria-section intro">
 					<section className="intro-wrapper">
 						<h2>How this works:</h2>
-						<ol className="instructions">
-							<li>
-								<p>Step 0: Have no ideas for where to eat</p>
-							</li>
-							<li>
-								<p>Step 1: Select cuisines</p>
-							</li>
-							<li>
-								<p>Step 2: Get location</p>
-							</li>
-							<li>
-								<p>Step 3: Get max distance</p>
-							</li>
-							<li>
-								<p>Step 4: Get price range</p>
-							</li>
-							<li>
-								<p>Step 5: Get minimum rating</p>
-							</li>
-							<li>
-								<p>Step 6: Go to your restaurant</p>
-							</li>
-						</ol>
+						<Instructions />
 					</section>
 					<button
 						className="section-button next"
