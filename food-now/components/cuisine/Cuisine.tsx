@@ -1,3 +1,4 @@
+import { CSSProperties, useEffect, useRef } from "react";
 import { CuisineType } from "../../App";
 import "./Cuisine.scss";
 export interface CuisineOption {
@@ -145,7 +146,7 @@ const defaultOptions: CuisineOption[] = [
 
 interface CuisineProps {
 	selectedCuisines: CuisineType[];
-	onCuisineClicked: ({ keyword, type }) => void;
+	onCuisineClicked: (params: { keyword: string; type: string }) => void;
 	maxCuisines: number;
 }
 
@@ -154,12 +155,34 @@ export default function Cuisine({
 	onCuisineClicked,
 	maxCuisines,
 }: CuisineProps) {
+	const gridRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		const el = gridRef.current;
+		if (!el) return;
+
+		const observer = new IntersectionObserver(
+			(entries, obs) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						el.classList.add("visible");
+						obs.unobserve(entry.target);
+					}
+				});
+			},
+			{ threshold: 0.15 }
+		);
+
+		observer.observe(el);
+		return () => observer.disconnect();
+	}, []);
+
 	return (
 		<>
 			<h2 className="section-title">{`Pick 1-${maxCuisines} options.`}</h2>
 			<section className="options-container">
-				<div className="options-grid">
-					{defaultOptions.map((option) => {
+				<div className="options-grid" ref={gridRef}>
+					{defaultOptions.map((option, i) => {
 						const isSelected = selectedCuisines.find(
 							(c) => c.keyword === option.value
 						);
@@ -167,6 +190,8 @@ export default function Cuisine({
 							<div
 								key={option.value}
 								className={`option-card ${isSelected ? "selected" : ""}`}
+								// eslint-disable-next-line @typescript-eslint/no-explicit-any
+								style={{ ["--i" as any]: i } as CSSProperties}
 								onClick={() =>
 									onCuisineClicked({
 										keyword: option.value,
