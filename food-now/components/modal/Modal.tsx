@@ -144,7 +144,7 @@ export default function Modal({ isLoading, results, onRestart }: LoadingProps) {
 
 		// If there's no close, assume it's open 24 hours
 		if (!todayPeriod.close) {
-			return <span>Open 24 hours</span>;
+			return <span> | Open 24 hours</span>;
 		}
 
 		// Format time (e.g., "1730" → "5:30 PM")
@@ -159,7 +159,7 @@ export default function Modal({ isLoading, results, onRestart }: LoadingProps) {
 			});
 		};
 
-		return <span>Closes @ {formatTime(todayPeriod.close.time)}</span>;
+		return <span> | Closes @ {formatTime(todayPeriod.close.time)}</span>;
 	};
 
 	return (
@@ -192,8 +192,8 @@ export default function Modal({ isLoading, results, onRestart }: LoadingProps) {
 										{selected.rating}★
 										{selected.user_ratings_total && (
 											<span> ({selected.user_ratings_total} reviews)</span>
-										)}{" "}
-										| {renderClosingTime()}
+										)}
+										{renderClosingTime()}
 									</p>
 								</section>
 								{selected.reviews?.[0] && (
