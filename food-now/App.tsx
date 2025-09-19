@@ -112,8 +112,12 @@ function App() {
 		try {
 			const resultsArrays = await Promise.all(promises);
 			const combinedResults = resultsArrays.flat();
+
+			// Cap rating because 5* only is limiting
+			const cappedRating = rating === 5 ? 4.5 : rating;
+
 			const filteredResults = combinedResults.filter(
-				(place) => place.rating && place.rating >= rating
+				(place) => place.rating && place.rating >= cappedRating
 			);
 			setResults(filteredResults);
 			localStorage.setItem("cachedResults", JSON.stringify(filteredResults));
