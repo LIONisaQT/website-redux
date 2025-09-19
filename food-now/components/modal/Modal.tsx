@@ -4,12 +4,18 @@ import "./Modal.scss";
 const DEBOUNCE_TIMER = 3;
 
 interface LoadingProps {
+	searchFinished: boolean;
 	isLoading: boolean;
 	results: google.maps.places.PlaceResult[];
 	onRestart: () => void;
 }
 
-export default function Modal({ isLoading, results, onRestart }: LoadingProps) {
+export default function Modal({
+	searchFinished,
+	isLoading,
+	results,
+	onRestart,
+}: LoadingProps) {
 	const [selected, setSelected] =
 		useState<google.maps.places.PlaceResult | null>(null);
 	const [loadingDetails, setLoadingDetails] = useState(false);
@@ -163,15 +169,23 @@ export default function Modal({ isLoading, results, onRestart }: LoadingProps) {
 	};
 
 	return (
-		<div
-			className={`loading-container ${
-				isLoading || results.length > 0 ? "show" : ""
-			}`}
-		>
+		<div className={`loading-container ${searchFinished ? "show" : ""}`}>
 			<div className="background" />
 			<div className="modal">
 				{isLoading || loadingDetails ? (
 					<p className="loading-text">Fetching restaurants...</p>
+				) : results.length === 0 ? (
+					<div className="result">
+						<div className="no-result">
+							<h1>No results</h1>
+							<p>Try changing your search criteria.</p>
+						</div>
+						<section className="button-group">
+							<button className="secondary" onClick={onRestart}>
+								Restart
+							</button>
+						</section>
+					</div>
 				) : (
 					selected && (
 						<div className="result">

@@ -26,6 +26,7 @@ function App() {
 	const [price, setPrice] = useState([1, 3]);
 	const [rating, setRating] = useState(4);
 	const [checkOpen, setCheckOpen] = useState(true);
+	const [searchFinished, setSearchFinished] = useState(false);
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
@@ -63,6 +64,7 @@ function App() {
 	}, []);
 
 	const searchNearbyRestaurants = async () => {
+		setSearchFinished(false);
 		setLoading(true);
 		setResults([]);
 		setError(null);
@@ -125,6 +127,7 @@ function App() {
 			setError(`Search failed: ${status}`);
 		} finally {
 			setLoading(false);
+			setSearchFinished(true);
 		}
 	};
 
@@ -166,6 +169,8 @@ function App() {
 	const onRestartClicked = () => {
 		setCuisines([]);
 		setResults([]);
+		setSearchFinished(false);
+		setLoading(false);
 		window.scrollTo(0, 0);
 	};
 
@@ -281,6 +286,7 @@ function App() {
 				</section>
 			)}
 			<Modal
+				searchFinished={searchFinished}
 				isLoading={loading}
 				results={results}
 				onRestart={onRestartClicked}
