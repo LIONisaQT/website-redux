@@ -6,7 +6,7 @@ function App() {
 		<div className="fire-emblem-container">
 			<div className="video-background">
 				<ReactPlayer
-					src="./assets/fefw-trim-1-compressed.mp4"
+					src="/fire-emblem/fefw-trim-1-compressed.mp4"
 					playing
 					loop
 					controls={false}
