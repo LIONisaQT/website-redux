@@ -4,7 +4,7 @@ import "./Cuisine.scss";
 export interface CuisineOption {
 	name: string;
 	value: string;
-	type?: string;
+	type?: "restaurant" | "cafe";
 	image: string;
 }
 
@@ -146,7 +146,7 @@ const defaultOptions: CuisineOption[] = [
 
 interface CuisineProps {
 	selectedCuisines: CuisineType[];
-	onCuisineClicked: (params: { keyword: string; type: string }) => void;
+	onCuisineClicked: ({ keyword, type }: CuisineType) => void;
 	maxCuisines: number;
 }
 
