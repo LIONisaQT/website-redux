@@ -17,6 +17,7 @@ export default defineConfig({
 				solitaire: resolve(__dirname, "solitaire/index.html"),
 				"number-rogue": resolve(__dirname, "number-rogue/index.html"),
 				"food-now": resolve(__dirname, "food-now/index.html"),
+				"fire-emblem": resolve(__dirname, "fire-emblem/index.html"),
 			},
 		},
 	},
