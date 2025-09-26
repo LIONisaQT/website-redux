@@ -9,7 +9,13 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 // https://vite.dev/config/
 export default defineConfig({
 	plugins: [svgr(), react()],
+	optimizeDeps: {
+		include: ["@dnd-kit/core", "@dnd-kit/sortable", "@dnd-kit/modifiers"],
+	},
 	build: {
+		commonjsOptions: {
+			include: [/node_modules/],
+		},
 		rollupOptions: {
 			input: {
 				main: resolve(__dirname, "index.html"),
@@ -18,6 +24,7 @@ export default defineConfig({
 				"number-rogue": resolve(__dirname, "number-rogue/index.html"),
 				"food-now": resolve(__dirname, "food-now/index.html"),
 				"fire-emblem": resolve(__dirname, "fire-emblem/index.html"),
+				"dragon-boat": resolve(__dirname, "dragon-boat/index.html"),
 			},
 		},
 	},
