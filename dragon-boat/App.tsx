@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
 	DndContext,
 	DragEndEvent,
@@ -61,13 +61,6 @@ export default function App() {
 	);
 	const [drum, setDrum] = useState<Paddler | null>(null);
 	const [steer, setSteer] = useState<Paddler | null>(null);
-
-	const [dragging, setDragging] = useState(false);
-
-	const { setNodeRef } = useDroppable({
-		id: "roster-drop-zone",
-		data: { details: "roster-drop-zone", position: 0, location: "roster" },
-	});
 
 	const [centerMass, setCenterMass] = useState(5);
 
@@ -137,16 +130,17 @@ export default function App() {
 			?.location as PaddlerLocation;
 		const currentPosition = event.active.data.current?.position as number;
 
-		console.log("OVER:", over);
 		const destination = over?.data.current;
 
-		if (!destination) return;
+		// Return paddler back to roster
+		if (!destination) {
+			removeMap[currentLocation]?.(paddler, currentPosition ?? 0);
+			addMap["roster"]?.(paddler, roster.length);
+			return;
+		}
 
 		const newLocation = destination.location as PaddlerLocation;
 		const newPosition = destination.position as number;
-
-		console.log("INCOMING:", paddler, currentLocation, currentPosition);
-		console.log("TARGET:", newLocation, newPosition);
 
 		const getTarget = (loc: PaddlerLocation) => {
 			switch (loc) {
@@ -354,18 +348,12 @@ export default function App() {
 									details={paddler}
 									position={i}
 									location="left"
-									onDrag={setDragging}
 								/>
 							))}
 						</div>
 						<div className="center">
 							<div className="drum">
-								<PaddlerCard
-									details={drum}
-									position={"drum"}
-									location="drum"
-									onDrag={setDragging}
-								/>
+								<PaddlerCard details={drum} position={"drum"} location="drum" />
 							</div>
 							<div className="boat-stats">
 								<section>
@@ -385,7 +373,6 @@ export default function App() {
 									details={steer}
 									position={"steer"}
 									location="steer"
-									onDrag={setDragging}
 								/>
 							</div>
 						</div>
@@ -396,7 +383,6 @@ export default function App() {
 									details={paddler}
 									position={i}
 									location="right"
-									onDrag={setDragging}
 								/>
 							))}
 						</div>
@@ -409,22 +395,12 @@ export default function App() {
 						<button onClick={sortRosterBySide}>Sort by side</button>
 					</section>
 					<div className="roster">
-						<div
-							ref={setNodeRef}
-							id="roster-drop-zone"
-							className={`drag-target ${dragging ? "visible" : ""}`}
-						>
-							<p className="drag-text">
-								Drag paddler here to return to roster.
-							</p>
-						</div>
 						{roster.map((paddler, i) => (
 							<PaddlerCard
 								key={`${paddler.name}-${i}`}
 								details={paddler}
 								position={i}
 								location="roster"
-								onDrag={setDragging}
 							/>
 						))}
 					</div>
@@ -438,16 +414,16 @@ interface PaddlerProps {
 	details: Paddler | null;
 	location: PaddlerLocation;
 	position?: number | "drum" | "steer";
-	onDrag: Dispatch<SetStateAction<boolean>>;
 }
 
-function PaddlerCard({ details, position, location, onDrag }: PaddlerProps) {
+function PaddlerCard({ details, position, location }: PaddlerProps) {
 	const {
 		attributes,
 		listeners,
 		setNodeRef: setDraggableNodeRef,
 		transform,
 		isDragging,
+		over,
 	} = useDraggable({
 		id: `${
 			details
@@ -478,15 +454,11 @@ function PaddlerCard({ details, position, location, onDrag }: PaddlerProps) {
 		setDroppableNodeRef(node);
 	};
 
-	useEffect(() => {
-		onDrag(isDragging);
-	}, [isDragging, onDrag]);
-
 	return (
 		<div
 			ref={setNodeRef}
 			className={`paddler-card ${details ? "details" : "empty"} ${
-				isDragging ? "dragging" : ""
+				isDragging ? `dragging ${over ? "" : "return"}` : ""
 			} ${isOver ? "dragged-over" : ""}`}
 			style={style}
 			{...listeners}

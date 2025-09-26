@@ -162,10 +162,15 @@
 }
 
 .dragging {
-	opacity: 0.2;
+	opacity: 0.8;
 }
 
 .dragged-over {
+	opacity: 0.5;
 	background-color: var(--cyan);
 	color: var(--darkest);
+}
+
+.return {
+	background-color: var(--red);
 }
