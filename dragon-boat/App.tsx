@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
+import {
+	draggable,
+	dropTargetForElements,
+} from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import "./App.scss";
 
 type Paddler = {
@@ -97,6 +100,7 @@ interface PaddlerProps {
 function PaddlerCard({ details, position }: PaddlerProps) {
 	const ref = useRef(null);
 	const [dragging, setDragging] = useState(false);
+	const [isDraggedOver, setIsDraggedOver] = useState(false);
 
 	useEffect(() => {
 		if (!ref.current) return;
@@ -111,12 +115,26 @@ function PaddlerCard({ details, position }: PaddlerProps) {
 		});
 	}, [details]);
 
+	useEffect(() => {
+		if (!ref.current) return;
+		if (details) return;
+
+		const el = ref.current;
+
+		return dropTargetForElements({
+			element: el,
+			onDragEnter: () => setIsDraggedOver(true),
+			onDragLeave: () => setIsDraggedOver(false),
+			onDrop: () => setIsDraggedOver(false),
+		});
+	}, [details]);
+
 	return (
 		<div
 			ref={ref}
 			className={`paddler-card ${details ? "details" : "empty"} ${
 				dragging ? "dragging" : ""
-			}`}
+			} ${isDraggedOver ? "dragged-over" : ""}`}
 		>
 			{details ? (
 				<>

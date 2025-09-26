@@ -83,3 +83,8 @@
 .dragging {
 	opacity: 0.2;
 }
+
+.dragged-over {
+	background-color: var(--cyan);
+	color: var(--darkest);
+}
