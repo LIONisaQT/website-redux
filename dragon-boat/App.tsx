@@ -14,6 +14,8 @@ type Paddler = {
 
 type PaddlerLocation = "left" | "right" | "drum" | "steer" | "roster";
 
+type SideArray = (Paddler | null)[];
+
 const sampleCrew: Paddler[] = [
 	{ name: "Ryan", side: "both", weight: 150 },
 	{ name: "Alex", side: "left", weight: 176 },
@@ -50,8 +52,12 @@ const sampleCrew: Paddler[] = [
 export default function App() {
 	const [rowSize] = useState(10);
 	const [roster, setRoster] = useState<Paddler[]>([]);
-	const [leftSide, setLeftSide] = useState<Paddler[]>([]);
-	const [rightSide, setRightSide] = useState<Paddler[]>([]);
+	const [leftSide, setLeftSide] = useState<SideArray>(
+		Array(rowSize).fill(null)
+	);
+	const [rightSide, setRightSide] = useState<SideArray>(
+		Array(rowSize).fill(null)
+	);
 	const [drum, setDrum] = useState<Paddler | null>(null);
 	const [steer, setSteer] = useState<Paddler | null>(null);
 
@@ -62,11 +68,26 @@ export default function App() {
 		setRoster(sampleCrew);
 	}, []);
 
-	const removeMap = useMemo<Record<PaddlerLocation, (p: Paddler) => void>>(
+	const removeMap = useMemo<
+		Record<PaddlerLocation, (p: Paddler, pos: number) => void>
+	>(
 		() => ({
-			left: (p) => setLeftSide((prev) => prev.filter((x) => x.name !== p.name)),
-			right: (p) =>
-				setRightSide((prev) => prev.filter((x) => x.name !== p.name)),
+			left: (_p, pos) => {
+				if (pos === undefined) return;
+				setLeftSide((prev) => {
+					const copy = [...prev];
+					copy[pos] = null;
+					return copy;
+				});
+			},
+			right: (_p, pos) => {
+				if (pos === undefined) return;
+				setRightSide((prev) => {
+					const copy = [...prev];
+					copy[pos] = null;
+					return copy;
+				});
+			},
 			drum: () => setDrum(null),
 			steer: () => setSteer(null),
 			roster: (p) => setRoster((prev) => prev.filter((x) => x.name !== p.name)),
@@ -74,10 +95,26 @@ export default function App() {
 		[setLeftSide, setRightSide, setDrum, setSteer, setRoster]
 	);
 
-	const addMap = useMemo<Record<PaddlerLocation, (p: Paddler) => void>>(
+	const addMap = useMemo<
+		Record<PaddlerLocation, (p: Paddler, targetPos: number) => void>
+	>(
 		() => ({
-			left: (p) => setLeftSide((prev) => [...prev, p]),
-			right: (p) => setRightSide((prev) => [...prev, p]),
+			left: (p, targetPos) => {
+				if (targetPos === undefined) return;
+				setLeftSide((prev) => {
+					const copy = [...prev];
+					copy[targetPos] = p;
+					return copy;
+				});
+			},
+			right: (p, targetPos) => {
+				if (targetPos === undefined) return;
+				setRightSide((prev) => {
+					const copy = [...prev];
+					copy[targetPos] = p;
+					return copy;
+				});
+			},
 			drum: (p) => setDrum(p),
 			steer: (p) => setSteer(p),
 			roster: (p) => setRoster((prev) => [...prev, p]),
@@ -93,14 +130,16 @@ export default function App() {
 
 				const paddler = source.data.details as Paddler;
 				const currentLocation = source.data.location as PaddlerLocation;
+				const currentPosition = source.data.position as number;
 				const destination = location.current.dropTargets[0];
 
 				if (!destination) return;
 
 				const newLocation = destination.data.location as PaddlerLocation;
+				const newPosition = destination.data.position as number;
 
-				removeMap[currentLocation]?.(paddler);
-				addMap[newLocation]?.(paddler);
+				removeMap[currentLocation]?.(paddler, currentPosition - 1);
+				addMap[newLocation]?.(paddler, newPosition - 1);
 			},
 		});
 	}, [addMap, removeMap]);
@@ -126,16 +165,8 @@ export default function App() {
 						<div className="left paddlers">
 							{leftSide.map((paddler, i) => (
 								<PaddlerCard
-									key={`${paddler.name}-${i}`}
+									key={`${paddler?.name}-${i}`}
 									details={paddler}
-									position={i + 1}
-									location="left"
-								/>
-							))}
-							{Array.from({ length: rowSize - leftSide.length }).map((_, i) => (
-								<PaddlerCard
-									details={null}
-									key={"left-" + i}
 									position={i + 1}
 									location="left"
 								/>
@@ -156,22 +187,12 @@ export default function App() {
 						<div className="right paddlers">
 							{rightSide.map((paddler, i) => (
 								<PaddlerCard
-									key={`${paddler.name}-${i}`}
+									key={`${paddler?.name}-${i}`}
 									details={paddler}
 									position={i + 1}
 									location="right"
 								/>
 							))}
-							{Array.from({ length: rowSize - rightSide.length }).map(
-								(_, i) => (
-									<PaddlerCard
-										details={null}
-										key={"right-" + i}
-										position={i + 1}
-										location="right"
-									/>
-								)
-							)}
 						</div>
 					</div>
 				</section>
@@ -219,11 +240,11 @@ function PaddlerCard({ details, position, location }: PaddlerProps) {
 
 		return draggable({
 			element: el,
-			getInitialData: () => ({ details, location }),
+			getInitialData: () => ({ details, location, position }),
 			onDragStart: () => setDragging(true),
 			onDrop: () => setDragging(false),
 		});
-	}, [details, location]);
+	}, [details, location, position]);
 
 	useEffect(() => {
 		if (!ref.current) return;
@@ -233,12 +254,12 @@ function PaddlerCard({ details, position, location }: PaddlerProps) {
 
 		return dropTargetForElements({
 			element: el,
-			getData: () => ({ details, location }),
+			getData: () => ({ details, location, position }),
 			onDragEnter: () => setIsDraggedOver(true),
 			onDragLeave: () => setIsDraggedOver(false),
 			onDrop: () => setIsDraggedOver(false),
 		});
-	}, [details, location]);
+	}, [details, location, position]);
 
 	return (
 		<div
