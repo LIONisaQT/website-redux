@@ -4,7 +4,6 @@ import {
 	dropTargetForElements,
 	monitorForElements,
 } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
-import TouchEmulator from "touch-emulator";
 import "./App.scss";
 
 type Paddler = {
@@ -66,12 +65,6 @@ export default function App() {
 	const rosterRef = useRef<HTMLDivElement>(null);
 
 	const [centerMass, setCenterMass] = useState(5);
-
-	useEffect(() => {
-		if ("ontouchstart" in window) {
-			new TouchEmulator();
-		}
-	}, []);
 
 	useEffect(() => {
 		setRoster(sampleCrew);
