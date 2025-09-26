@@ -251,8 +251,17 @@ export default function App() {
 			...rightSide.filter((p): p is Paddler => p !== null),
 		];
 
+		// Sort paddlers by weight since heavier weights influence center of mass more
 		const sortedPaddlers = [...available].sort((a, b) => b.weight - a.weight);
 
+		/**
+		 * Greedy algorithm to find optimal position for a paddler.
+		 *
+		 * Fills seat, then checks weight balance + center of mass of the boat.
+		 *
+		 * Lower score is better, since that means placing a paddler there gets the
+		 * boat closer to desired target.
+		 */
 		for (const paddler of sortedPaddlers) {
 			const candidatePositions: Array<{
 				side: "left" | "right" | "both";
