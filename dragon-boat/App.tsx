@@ -306,6 +306,21 @@ export default function App() {
 		setRoster(available);
 	};
 
+	const sortRosterByWeight = () => {
+		setRoster((prev) => [...prev].sort((a, b) => b.weight - a.weight));
+	};
+
+	const sortRosterBySide = () => {
+		const sideOrder: Record<"left" | "right" | "both", number> = {
+			left: 0,
+			both: 1,
+			right: 2,
+		};
+		setRoster((prev) =>
+			[...prev].sort((a, b) => sideOrder[a.side] - sideOrder[b.side])
+		);
+	};
+
 	return (
 		<>
 			<h1>Dragon Boat Balancer</h1>
@@ -381,8 +396,8 @@ export default function App() {
 				<section className="roster-container">
 					<h2>Reserve</h2>
 					<section className="button-group">
-						<button>Sort by weight</button>
-						<button>Sort by side</button>
+						<button onClick={sortRosterByWeight}>Sort by weight</button>
+						<button onClick={sortRosterBySide}>Sort by side</button>
 					</section>
 					<div className="roster">
 						<div
