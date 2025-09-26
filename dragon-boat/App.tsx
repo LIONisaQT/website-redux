@@ -287,10 +287,7 @@ export default function App() {
 				}
 			}
 
-			if (candidatePositions.length === 0) {
-				console.warn("No seat available for", paddler.name);
-				continue;
-			}
+			if (candidatePositions.length === 0) continue;
 
 			candidatePositions.sort((a, b) => a.score - b.score);
 			const best = candidatePositions[0];
