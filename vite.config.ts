@@ -21,6 +21,7 @@ export default defineConfig({
 				"number-rogue": resolve(__dirname, "number-rogue/index.html"),
 				"food-now": resolve(__dirname, "food-now/index.html"),
 				"fire-emblem": resolve(__dirname, "fire-emblem/index.html"),
+				"boat-balancer": resolve(__dirname, "dragon-boat/index.html"),
 			},
 		},
 	},
