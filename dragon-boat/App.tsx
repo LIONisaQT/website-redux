@@ -293,74 +293,80 @@ export default function App() {
 
 	return (
 		<DndContext onDragEnd={handleDragEnd}>
-			<h1>Dragon Boat Balancer</h1>
+			<h1 className="title">Dragon Boat Balancer</h1>
 			<div className="balancer-main-container">
-				<section className="toggles">
-					<section className="front-back-balance">
-						<h3>Front/back balance</h3>
-						<p>Desired center of mass for boat: {centerMass}</p>
-						<input
-							type="range"
-							min={1}
-							max={10}
-							step={0.5}
-							value={centerMass}
-							onChange={(e) => setCenterMass(Number(e.target.value))}
-						/>
+				<section className="main">
+					<section className="toggles">
+						<section className="front-back-balance">
+							<h3>Front/back balance</h3>
+							<p>Desired center of mass for boat: {centerMass}</p>
+							<input
+								type="range"
+								min={1}
+								max={10}
+								step={0.5}
+								value={centerMass}
+								onChange={(e) => setCenterMass(Number(e.target.value))}
+							/>
+						</section>
+						<button onClick={() => generateLineup(roster, centerMass, rowSize)}>
+							Generate roster
+						</button>
 					</section>
-					<button onClick={() => generateLineup(roster, centerMass, rowSize)}>
-						Generate roster
-					</button>
-				</section>
-				<section className="boat-container">
-					<h2>Boat</h2>
-					<div className="boat">
-						<div className="left paddlers">
-							{leftSide.map((paddler, i) => (
-								<PaddlerCard
-									key={`${paddler?.name}-${i}`}
-									details={paddler}
-									position={i}
-									location="left"
-								/>
-							))}
-						</div>
-						<div className="center">
-							<div className="drum">
-								<PaddlerCard details={drum} position={"drum"} location="drum" />
+					<section className="boat-container">
+						<h2>Boat</h2>
+						<div className="boat">
+							<div className="left paddlers">
+								{leftSide.map((paddler, i) => (
+									<PaddlerCard
+										key={`${paddler?.name}-${i}`}
+										details={paddler}
+										position={i}
+										location="left"
+									/>
+								))}
 							</div>
-							<div className="boat-stats">
-								<section>
-									<h3>L/R Bal</h3>
-									<p>
-										<span>{sumSideWeight(leftSide)}</span>-
-										<span>{sumSideWeight(rightSide)}</span>
-									</p>
-								</section>
-								<section>
-									<h3>F/B Bal</h3>
-									<p>{getCenterOfMass(leftSide, rightSide)}</p>
-								</section>
+							<div className="center">
+								<div className="drum">
+									<PaddlerCard
+										details={drum}
+										position={"drum"}
+										location="drum"
+									/>
+								</div>
+								<div className="boat-stats">
+									<section>
+										<h3>L/R Bal</h3>
+										<p>
+											<span>{sumSideWeight(leftSide)}</span>-
+											<span>{sumSideWeight(rightSide)}</span>
+										</p>
+									</section>
+									<section>
+										<h3>F/B Bal</h3>
+										<p>{getCenterOfMass(leftSide, rightSide)}</p>
+									</section>
+								</div>
+								<div className="steer">
+									<PaddlerCard
+										details={steer}
+										position={"steer"}
+										location="steer"
+									/>
+								</div>
 							</div>
-							<div className="steer">
-								<PaddlerCard
-									details={steer}
-									position={"steer"}
-									location="steer"
-								/>
+							<div className="right paddlers">
+								{rightSide.map((paddler, i) => (
+									<PaddlerCard
+										key={`${paddler?.name}-${i}`}
+										details={paddler}
+										position={i}
+										location="right"
+									/>
+								))}
 							</div>
 						</div>
-						<div className="right paddlers">
-							{rightSide.map((paddler, i) => (
-								<PaddlerCard
-									key={`${paddler?.name}-${i}`}
-									details={paddler}
-									position={i}
-									location="right"
-								/>
-							))}
-						</div>
-					</div>
+					</section>
 				</section>
 				<section className="roster-container">
 					<h2>Reserve</h2>

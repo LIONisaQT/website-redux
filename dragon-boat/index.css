@@ -10,6 +10,10 @@
 	background: var(--darkest);
 	color: var(--light);
 
+	max-width: 1000px;
+	margin: 20px auto;
+	text-align: center;
+
 	-webkit-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
@@ -29,4 +33,8 @@ h3 {
 
 button {
 	cursor: pointer;
+}
+
+.title {
+	margin-bottom: 12px;
 }

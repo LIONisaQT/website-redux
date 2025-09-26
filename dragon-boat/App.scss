@@ -1,11 +1,23 @@
 @import url("./colors.css");
 
 .balancer-main-container {
-	margin: 0 auto;
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	align-items: center;
-	gap: 12px;
+	justify-content: center;
+	gap: 36px;
+
+	@media (max-width: 768px) {
+		flex-direction: column;
+		gap: 12px;
+	}
+
+	.main {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 12px;
+	}
 
 	.toggles {
 		width: 300px;
