@@ -155,6 +155,9 @@ export default function App() {
 		});
 	}, []);
 
+	const sumSideWeight = (side: SideArray): number =>
+		side.reduce((total, paddler) => total + (paddler?.weight ?? 0), 0);
+
 	return (
 		<>
 			<h1>Dragon Boat Balancer</h1>
@@ -175,6 +178,15 @@ export default function App() {
 						<div className="center">
 							<div className="drum">
 								<PaddlerCard details={drum} position={"drum"} location="drum" />
+							</div>
+							<div className="boat-stats">
+								<section>
+									<h3>L/R Bal</h3>
+									<p>
+										<span>{sumSideWeight(leftSide)}</span>-
+										<span>{sumSideWeight(rightSide)}</span>
+									</p>
+								</section>
 							</div>
 							<div className="steer">
 								<PaddlerCard
