@@ -327,6 +327,10 @@ export default function App() {
 				</section>
 				<section className="roster-container">
 					<h2>Reserve</h2>
+					<section className="button-group">
+						<button>Sort by weight</button>
+						<button>Sort by side</button>
+					</section>
 					<div className="roster">
 						<div
 							ref={rosterRef}
