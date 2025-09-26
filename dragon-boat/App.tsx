@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import {
 	draggable,
 	dropTargetForElements,
+	monitorForElements,
 } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import "./App.scss";
 
@@ -45,11 +46,39 @@ const sampleCrew: Paddler[] = [
 ];
 
 export default function App() {
-	const [crew, setCrew] = useState<Paddler[]>([]);
 	const [rowSize] = useState(10);
+	const [roster, setRoster] = useState<Paddler[]>([]);
+	const [leftSide, setLeftSide] = useState<Paddler[]>([]);
+	const [rightSide, setRightSide] = useState<Paddler[]>([]);
 
 	useEffect(() => {
-		setCrew(sampleCrew);
+		setRoster(sampleCrew);
+	}, []);
+
+	useEffect(() => {
+		return monitorForElements({
+			onDrop({ source, location }) {
+				const destination = location.current.dropTargets[0];
+				if (!destination) return;
+
+				const paddler = source.data.details as Paddler;
+				const locationDropped = destination.data.location;
+
+				switch (locationDropped) {
+					case "left":
+						setLeftSide((prev) => [...prev, paddler]);
+						setRoster((prev) => prev.filter((p) => p.name !== paddler.name));
+						break;
+					case "right":
+						setRightSide((prev) => [...prev, paddler]);
+						setRoster((prev) => prev.filter((p) => p.name !== paddler.name));
+						break;
+					default:
+						console.log("Set in some other location");
+						break;
+				}
+			},
+		});
 	}, []);
 
 	return (
@@ -60,29 +89,55 @@ export default function App() {
 					<h2>Boat</h2>
 					<div className="boat">
 						<div className="left paddlers">
-							{Array.from({ length: rowSize }).map((_, i) => (
-								<PaddlerCard key={"left-" + i} position={i + 1} />
+							{leftSide.map((paddler, i) => (
+								<PaddlerCard
+									key={`${paddler.name}-${i}`}
+									details={paddler}
+									position={i + 1}
+									location="left"
+								/>
+							))}
+							{Array.from({ length: rowSize - leftSide.length }).map((_, i) => (
+								<PaddlerCard
+									key={"left-" + i}
+									position={i + 1}
+									location="left"
+								/>
 							))}
 						</div>
 						<div className="center">
 							<div className="drum">
-								<PaddlerCard position={"drum"} />
+								<PaddlerCard position={"drum"} location="drum" />
 							</div>
 							<div className="steer">
-								<PaddlerCard position={"steer"} />
+								<PaddlerCard position={"steer"} location="steer" />
 							</div>
 						</div>
 						<div className="right paddlers">
-							{Array.from({ length: rowSize }).map((_, i) => (
-								<PaddlerCard key={"right-" + i} position={i + 1} />
+							{rightSide.map((paddler, i) => (
+								<PaddlerCard
+									key={`${paddler.name}-${i}`}
+									details={paddler}
+									position={i + 1}
+									location="right"
+								/>
 							))}
+							{Array.from({ length: rowSize - rightSide.length }).map(
+								(_, i) => (
+									<PaddlerCard
+										key={"right-" + i}
+										position={i + 1}
+										location="right"
+									/>
+								)
+							)}
 						</div>
 					</div>
 				</section>
 				<section className="roster-container">
 					<h2>Reserve</h2>
 					<div className="roster">
-						{crew.map((paddler, i) => (
+						{roster.map((paddler, i) => (
 							<PaddlerCard key={`${paddler.name}-${i}`} details={paddler} />
 						))}
 					</div>
@@ -95,9 +150,10 @@ export default function App() {
 interface PaddlerProps {
 	details?: Paddler;
 	position?: number | "drum" | "steer";
+	location?: "left" | "right" | "drum" | "steer";
 }
 
-function PaddlerCard({ details, position }: PaddlerProps) {
+function PaddlerCard({ details, position, location }: PaddlerProps) {
 	const ref = useRef(null);
 	const [dragging, setDragging] = useState(false);
 	const [isDraggedOver, setIsDraggedOver] = useState(false);
@@ -110,6 +166,7 @@ function PaddlerCard({ details, position }: PaddlerProps) {
 
 		return draggable({
 			element: el,
+			getInitialData: () => ({ details }),
 			onDragStart: () => setDragging(true),
 			onDrop: () => setDragging(false),
 		});
@@ -123,11 +180,12 @@ function PaddlerCard({ details, position }: PaddlerProps) {
 
 		return dropTargetForElements({
 			element: el,
+			getData: () => ({ details, location }),
 			onDragEnter: () => setIsDraggedOver(true),
 			onDragLeave: () => setIsDraggedOver(false),
 			onDrop: () => setIsDraggedOver(false),
 		});
-	}, [details]);
+	}, [details, location]);
 
 	return (
 		<div
