@@ -160,7 +160,7 @@ export default function App() {
 	const sumSideWeight = (side: SideArray): number =>
 		side.reduce((total, paddler) => total + (paddler?.weight ?? 0), 0);
 
-	const getCenterOfMass = (left: SideArray, right: SideArray) => {
+	const getCenterOfMass = (left: SideArray, right: SideArray): number => {
 		let weightedSum = 0;
 		let totalWeight = 0;
 
@@ -179,9 +179,78 @@ export default function App() {
 			}
 		}
 
-		if (totalWeight === 0) return "null";
+		if (totalWeight === 0) return 0;
 
-		return (weightedSum / totalWeight + 1).toFixed(2);
+		return Number((weightedSum / totalWeight + 1).toFixed(2));
+	};
+
+	const generateLineup = (
+		roster: Paddler[],
+		targetRow: number,
+		numRows: number
+	) => {
+		const left: SideArray = Array(numRows).fill(null);
+		const right: SideArray = Array(numRows).fill(null);
+
+		let available = [
+			...roster,
+			...leftSide.filter((p): p is Paddler => p !== null),
+			...rightSide.filter((p): p is Paddler => p !== null),
+		];
+
+		const sortedPaddlers = [...available].sort((a, b) => b.weight - a.weight);
+
+		for (const paddler of sortedPaddlers) {
+			const candidatePositions: Array<{
+				side: "left" | "right" | "both";
+				index: number;
+				score: number;
+			}> = [];
+
+			for (let i = 0; i < numRows; i++) {
+				if ((paddler.side === "left" || paddler.side === "both") && !left[i]) {
+					const tempLeft = [...left];
+					tempLeft[i] = paddler;
+					const balance = Math.abs(
+						sumSideWeight(tempLeft) - sumSideWeight(right)
+					);
+					const com = getCenterOfMass(tempLeft, right);
+					const score = balance + Math.abs(com - targetRow);
+					candidatePositions.push({ side: "left", index: i, score });
+				}
+
+				if (
+					(paddler.side === "right" || paddler.side === "both") &&
+					!right[i]
+				) {
+					const tempRight = [...right];
+					tempRight[i] = paddler;
+					const balance = Math.abs(
+						sumSideWeight(left) - sumSideWeight(tempRight)
+					);
+					const com = getCenterOfMass(left, tempRight);
+					const score = balance + Math.abs(com - targetRow);
+					candidatePositions.push({ side: "right", index: i, score });
+				}
+			}
+
+			if (candidatePositions.length === 0) {
+				console.warn("No seat available for", paddler.name);
+				continue;
+			}
+
+			candidatePositions.sort((a, b) => a.score - b.score);
+			const best = candidatePositions[0];
+
+			if (best.side === "left") left[best.index] = paddler;
+			else right[best.index] = paddler;
+
+			available = available.filter((p) => p.name !== paddler.name);
+		}
+
+		setLeftSide(left);
+		setRightSide(right);
+		setRoster(available);
 	};
 
 	return (
@@ -202,6 +271,9 @@ export default function App() {
 							onChange={(e) => setCenterMass(Number(e.target.value))}
 						/>
 					</section>
+					<button onClick={() => generateLineup(roster, centerMass, rowSize)}>
+						Generate roster
+					</button>
 				</section>
 				<section className="boat-container">
 					<h2>Boat</h2>
