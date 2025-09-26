@@ -140,11 +140,64 @@ export default function App() {
 				const newLocation = destination.data.location as PaddlerLocation;
 				const newPosition = destination.data.position as number;
 
-				removeMap[currentLocation]?.(paddler, currentPosition - 1);
-				addMap[newLocation]?.(paddler, newPosition - 1);
+				const getTarget = (loc: PaddlerLocation) => {
+					switch (loc) {
+						case "left":
+							return leftSide;
+						case "right":
+							return rightSide;
+						case "roster":
+							return roster;
+						case "drum":
+							return drum ? [drum] : [null];
+						case "steer":
+							return steer ? [steer] : [null];
+					}
+				};
+
+				const destinationArray = getTarget(newLocation);
+				const existingPaddler =
+					newPosition !== undefined && !isNaN(newPosition)
+						? destinationArray[newPosition]
+						: destinationArray[0];
+
+				// Case 1: seat/drum/steer -> seat/drum/steer
+				if (
+					currentLocation !== "roster" &&
+					newLocation !== "roster" &&
+					currentLocation !== newLocation
+				) {
+					removeMap[currentLocation]?.(paddler, currentPosition ?? 0);
+
+					if (existingPaddler) {
+						removeMap[newLocation]?.(existingPaddler, newPosition ?? 0);
+						addMap[currentLocation]?.(existingPaddler, currentPosition ?? 0);
+					}
+
+					addMap[newLocation]?.(paddler, newPosition ?? 0);
+					return;
+				}
+
+				// Case 2: roster -> seat/drum/steer
+				if (currentLocation === "roster" && newLocation !== "roster") {
+					removeMap[currentLocation]?.(paddler, currentPosition);
+
+					if (existingPaddler) {
+						removeMap[newLocation]?.(existingPaddler, newPosition ?? 0);
+						// TODO: Pretty sure it just appends to the roster LOL
+						addMap["roster"]?.(existingPaddler, currentPosition);
+					}
+
+					addMap[newLocation]?.(paddler, newPosition ?? 0);
+					return;
+				}
+
+				// Case 3: fallback or same list -> same list
+				removeMap[currentLocation]?.(paddler, currentPosition);
+				addMap[newLocation]?.(paddler, newPosition);
 			},
 		});
-	}, [addMap, removeMap]);
+	}, [addMap, drum, leftSide, removeMap, rightSide, roster, steer]);
 
 	useEffect(() => {
 		if (!rosterRef.current) return;
@@ -283,7 +336,7 @@ export default function App() {
 								<PaddlerCard
 									key={`${paddler?.name}-${i}`}
 									details={paddler}
-									position={i + 1}
+									position={i}
 									location="left"
 								/>
 							))}
@@ -318,7 +371,7 @@ export default function App() {
 								<PaddlerCard
 									key={`${paddler?.name}-${i}`}
 									details={paddler}
-									position={i + 1}
+									position={i}
 									location="right"
 								/>
 							))}
@@ -344,6 +397,7 @@ export default function App() {
 							<PaddlerCard
 								key={`${paddler.name}-${i}`}
 								details={paddler}
+								position={i}
 								location="roster"
 							/>
 						))}
@@ -381,7 +435,6 @@ function PaddlerCard({ details, position, location }: PaddlerProps) {
 
 	useEffect(() => {
 		if (!ref.current) return;
-		if (details) return;
 
 		const el = ref.current;
 
@@ -404,8 +457,9 @@ function PaddlerCard({ details, position, location }: PaddlerProps) {
 			{details ? (
 				<>
 					<p className="name">
-						{position && typeof position === "number" ? (
-							<span>{position}. </span>
+						{typeof position === "number" &&
+						(location === "left" || location === "right") ? (
+							<span>{position + 1}. </span>
 						) : null}
 						{details.name}
 					</p>
