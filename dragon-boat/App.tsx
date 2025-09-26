@@ -1,6 +1,6 @@
 import "./App.scss";
 import { useEffect, useMemo, useState } from "react";
-import { DndContext, DragEndEvent } from "@dnd-kit/core";
+import { DndContext, DragEndEvent, pointerWithin } from "@dnd-kit/core";
 import { Paddler, SideArray, PaddlerLocation } from "./types";
 import { generateLineup } from "./utils/utils";
 import Boat from "./components/Boat/Boat";
@@ -147,7 +147,7 @@ export default function App() {
 	};
 
 	return (
-		<DndContext onDragEnd={handleDragEnd}>
+		<DndContext onDragEnd={handleDragEnd} collisionDetection={pointerWithin}>
 			<h1 className="title">Dragon Boat Balancer</h1>
 			<div className="balancer-main-container">
 				<section className="main">
