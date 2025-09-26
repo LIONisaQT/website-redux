@@ -64,6 +64,8 @@ export default function App() {
 	const [dragging, setDragging] = useState(false);
 	const rosterRef = useRef<HTMLDivElement>(null);
 
+	const [centerMass, setCenterMass] = useState(5);
+
 	useEffect(() => {
 		setRoster(sampleCrew);
 	}, []);
@@ -186,6 +188,21 @@ export default function App() {
 		<>
 			<h1>Dragon Boat Balancer</h1>
 			<div className="balancer-main-container">
+				<section className="toggles">
+					<h2>Toggles</h2>
+					<section className="front-back-balance">
+						<h3>Front/back balance</h3>
+						<p>Desired center of mass for boat: {centerMass}</p>
+						<input
+							type="range"
+							min={1}
+							max={10}
+							step={0.5}
+							value={centerMass}
+							onChange={(e) => setCenterMass(Number(e.target.value))}
+						/>
+					</section>
+				</section>
 				<section className="boat-container">
 					<h2>Boat</h2>
 					<div className="boat">
