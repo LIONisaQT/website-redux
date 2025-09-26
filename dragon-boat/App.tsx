@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
 	draggable,
 	dropTargetForElements,
@@ -439,6 +439,30 @@ function PaddlerCard({ details, position, location }: PaddlerProps) {
 	const ref = useRef(null);
 	const [dragging, setDragging] = useState(false);
 	const [isDraggedOver, setIsDraggedOver] = useState(false);
+	const [dragPos, setDragPos] = useState<{ x: number; y: number } | null>(null);
+
+	const handleTouchMove = useCallback(
+		(e: TouchEvent) => {
+			if (dragging && e.touches.length === 1) {
+				console.log("test");
+				setDragPos({ x: e.touches[0].clientX, y: e.touches[0].clientY });
+			}
+		},
+		[dragging]
+	);
+
+	useEffect(() => {
+		if (!dragging) return;
+
+		document.addEventListener("touchmove", handleTouchMove, { passive: false });
+		const handleTouchEnd = () => setDragPos(null);
+		document.addEventListener("touchend", handleTouchEnd);
+
+		return () => {
+			document.removeEventListener("touchmove", handleTouchMove);
+			document.removeEventListener("touchend", handleTouchEnd);
+		};
+	}, [dragging, handleTouchMove]);
 
 	useEffect(() => {
 		if (!ref.current) return;
@@ -469,37 +493,53 @@ function PaddlerCard({ details, position, location }: PaddlerProps) {
 	}, [details, location, position]);
 
 	return (
-		<div
-			ref={ref}
-			className={`paddler-card ${details ? "details" : "empty"} ${
-				dragging ? "dragging" : ""
-			} ${isDraggedOver ? "dragged-over" : ""}`}
-		>
-			{details ? (
-				<>
-					<p className="name">
-						{typeof position === "number" &&
-						(location === "left" || location === "right") ? (
-							<span>{position + 1}. </span>
-						) : null}
-						{details.name}
-					</p>
-					<div className="info">
-						<p className={`${details.side} side`}>
-							{details.side[0].toUpperCase()}
+		<>
+			<div
+				ref={ref}
+				className={`paddler-card ${details ? "details" : "empty"} ${
+					dragging ? "dragging" : ""
+				} ${isDraggedOver ? "dragged-over" : ""}`}
+			>
+				{details ? (
+					<>
+						<p className="name">
+							{typeof position === "number" &&
+							(location === "left" || location === "right") ? (
+								<span>{position + 1}. </span>
+							) : null}
+							{details.name}
 						</p>
-						<p>{details.weight}</p>
+						<div className="info">
+							<p className={`${details.side} side`}>
+								{details.side[0].toUpperCase()}
+							</p>
+							<p>{details.weight}</p>
+						</div>
+					</>
+				) : (
+					<div className="empty-slot">
+						<p>
+							{location !== "left" && location !== "right"
+								? location.charAt(0).toUpperCase() + location.slice(1)
+								: "Empty"}
+						</p>
 					</div>
-				</>
-			) : (
-				<div className="empty-slot">
-					<p>
-						{location !== "left" && location !== "right"
-							? location.charAt(0).toUpperCase() + location.slice(1)
-							: "Empty"}
-					</p>
+				)}
+			</div>
+			{dragging && dragPos && (
+				<div
+					style={{
+						position: "fixed",
+						left: dragPos.x,
+						top: dragPos.y,
+						pointerEvents: "none",
+						transform: "translate(-50%, -50%)",
+						zIndex: 1000,
+					}}
+				>
+					<p>hello there</p>
 				</div>
 			)}
-		</div>
+		</>
 	);
 }
