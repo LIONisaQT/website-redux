@@ -146,6 +146,27 @@ export default function App() {
 		setRoster(lineup.remainingRoster);
 	};
 
+	const onRecallClicked = () => {
+		setRoster((prev) => [
+			...prev,
+			...leftSide.filter((p): p is Paddler => p !== null),
+			...rightSide.filter((p): p is Paddler => p !== null),
+			...(drum ? [drum] : []),
+			...(steer ? [steer] : []),
+		]);
+
+		setLeftSide(Array(numRows).fill(null));
+		setRightSide(Array(numRows).fill(null));
+		setDrum(null);
+		setSteer(null);
+	};
+
+	const isRecallEnabled =
+		leftSide.some((p) => p !== null) ||
+		rightSide.some((p) => p !== null) ||
+		drum !== null ||
+		steer !== null;
+
 	return (
 		<DndContext onDragEnd={handleDragEnd} collisionDetection={pointerWithin}>
 			<h1 className="title">Dragon Boat Balancer</h1>
@@ -155,7 +176,12 @@ export default function App() {
 						centerMassState={[centerMass, setCenterMass]}
 						numRowsState={[numRows, setNumRows]}
 					/>
-					<button onClick={onGenerateLineupClicked}>Generate lineup</button>
+					<section className="button-group">
+						<button onClick={onGenerateLineupClicked}>Generate lineup</button>
+						<button onClick={onRecallClicked} disabled={!isRecallEnabled}>
+							Recall all paddlers
+						</button>
+					</section>
 					<Boat
 						leftSide={leftSide}
 						rightSide={rightSide}

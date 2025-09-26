@@ -17,5 +17,26 @@
 		flex-direction: column;
 		align-items: center;
 		gap: 12px;
+
+		.button-group {
+			display: flex;
+			gap: 4px;
+			width: 100%;
+
+			button {
+				flex: 1;
+			}
+		}
+	}
+}
+
+button {
+	height: 36px;
+	border: none;
+	border-radius: 32px;
+	cursor: pointer;
+
+	&:disabled {
+		cursor: not-allowed;
 	}
 }

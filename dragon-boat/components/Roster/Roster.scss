@@ -9,7 +9,12 @@
 	.button-group {
 		display: flex;
 		flex-direction: row;
-		gap: 12px;
+		gap: 4px;
+		width: 100%;
+
+		button {
+			flex: 1;
+		}
 	}
 
 	.roster {
