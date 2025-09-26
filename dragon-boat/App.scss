@@ -80,6 +80,8 @@
 				background-color: rgba(0, 50, 0, 0.8); // TODO: Add this to colors.css
 				opacity: 0;
 				pointer-events: none;
+				touch-action: none;
+				z-index: 1000;
 
 				.drag-text {
 					position: absolute;
@@ -111,6 +113,7 @@
 	justify-content: space-between;
 
 	opacity: 1;
+	touch-action: none;
 
 	.name {
 		overflow: hidden;

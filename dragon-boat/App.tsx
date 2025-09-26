@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import {
-	draggable,
-	dropTargetForElements,
-	monitorForElements,
-} from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
+	DndContext,
+	DragEndEvent,
+	useDraggable,
+	useDroppable,
+} from "@dnd-kit/core";
 import "./App.scss";
 
 type Paddler = {
@@ -62,7 +63,11 @@ export default function App() {
 	const [steer, setSteer] = useState<Paddler | null>(null);
 
 	const [dragging, setDragging] = useState(false);
-	const rosterRef = useRef<HTMLDivElement>(null);
+
+	const { setNodeRef } = useDroppable({
+		id: "roster-drop-zone",
+		data: { details: "roster-drop-zone", position: 0, location: "roster" },
+	});
 
 	const [centerMass, setCenterMass] = useState(5);
 
@@ -124,91 +129,81 @@ export default function App() {
 		[setLeftSide, setRightSide, setDrum, setSteer, setRoster]
 	);
 
-	useEffect(() => {
-		return monitorForElements({
-			onDragStart: () => setDragging(true),
-			onDrop({ source, location }) {
-				setDragging(false);
+	const handleDragEnd = (event: DragEndEvent) => {
+		const { over } = event;
 
-				const paddler = source.data.details as Paddler;
-				const currentLocation = source.data.location as PaddlerLocation;
-				const currentPosition = source.data.position as number;
-				const destination = location.current.dropTargets[0];
+		const paddler = event.active.data.current?.details as Paddler;
+		const currentLocation = event.active.data.current
+			?.location as PaddlerLocation;
+		const currentPosition = event.active.data.current?.position as number;
 
-				if (!destination) return;
+		console.log("OVER:", over);
+		const destination = over?.data.current;
 
-				const newLocation = destination.data.location as PaddlerLocation;
-				const newPosition = destination.data.position as number;
+		if (!destination) return;
 
-				const getTarget = (loc: PaddlerLocation) => {
-					switch (loc) {
-						case "left":
-							return leftSide;
-						case "right":
-							return rightSide;
-						case "roster":
-							return roster;
-						case "drum":
-							return drum ? [drum] : [null];
-						case "steer":
-							return steer ? [steer] : [null];
-					}
-				};
+		const newLocation = destination.location as PaddlerLocation;
+		const newPosition = destination.position as number;
 
-				const destinationArray = getTarget(newLocation);
-				const existingPaddler =
-					newPosition !== undefined && !isNaN(newPosition)
-						? destinationArray[newPosition]
-						: destinationArray[0];
+		console.log("INCOMING:", paddler, currentLocation, currentPosition);
+		console.log("TARGET:", newLocation, newPosition);
 
-				// Case 1: seat/drum/steer -> seat/drum/steer
-				if (
-					currentLocation !== "roster" &&
-					newLocation !== "roster" &&
-					currentLocation !== newLocation
-				) {
-					removeMap[currentLocation]?.(paddler, currentPosition ?? 0);
+		const getTarget = (loc: PaddlerLocation) => {
+			switch (loc) {
+				case "left":
+					return leftSide;
+				case "right":
+					return rightSide;
+				case "roster":
+					return roster;
+				case "drum":
+					return drum ? [drum] : [null];
+				case "steer":
+					return steer ? [steer] : [null];
+			}
+		};
 
-					if (existingPaddler) {
-						removeMap[newLocation]?.(existingPaddler, newPosition ?? 0);
-						addMap[currentLocation]?.(existingPaddler, currentPosition ?? 0);
-					}
+		const destinationArray = getTarget(newLocation);
+		const existingPaddler =
+			newPosition !== undefined && !isNaN(newPosition)
+				? destinationArray[newPosition]
+				: destinationArray[0];
 
-					addMap[newLocation]?.(paddler, newPosition ?? 0);
-					return;
-				}
+		// Case 1: seat/drum/steer -> seat/drum/steer
+		if (
+			currentLocation !== "roster" &&
+			newLocation !== "roster" &&
+			currentLocation !== newLocation
+		) {
+			removeMap[currentLocation]?.(paddler, currentPosition ?? 0);
 
-				// Case 2: roster -> seat/drum/steer
-				if (currentLocation === "roster" && newLocation !== "roster") {
-					removeMap[currentLocation]?.(paddler, currentPosition);
+			if (existingPaddler) {
+				removeMap[newLocation]?.(existingPaddler, newPosition ?? 0);
+				addMap[currentLocation]?.(existingPaddler, currentPosition ?? 0);
+			}
 
-					if (existingPaddler) {
-						removeMap[newLocation]?.(existingPaddler, newPosition ?? 0);
-						// TODO: Pretty sure it just appends to the roster LOL
-						addMap["roster"]?.(existingPaddler, currentPosition);
-					}
+			addMap[newLocation]?.(paddler, newPosition ?? 0);
+			return;
+		}
 
-					addMap[newLocation]?.(paddler, newPosition ?? 0);
-					return;
-				}
+		// Case 2: roster -> seat/drum/steer
+		if (currentLocation === "roster" && newLocation !== "roster") {
+			removeMap[currentLocation]?.(paddler, currentPosition);
 
-				// Case 3: fallback or same list -> same list
-				removeMap[currentLocation]?.(paddler, currentPosition);
-				addMap[newLocation]?.(paddler, newPosition);
-			},
-		});
-	}, [addMap, drum, leftSide, removeMap, rightSide, roster, steer]);
+			if (existingPaddler) {
+				removeMap[newLocation]?.(existingPaddler, newPosition ?? 0);
+				// TODO: Pretty sure it just appends to the roster LOL
+				addMap["roster"]?.(existingPaddler, currentPosition);
+			}
 
-	useEffect(() => {
-		if (!rosterRef.current) return;
+			addMap[newLocation]?.(paddler, newPosition ?? 0);
+			return;
+		}
 
-		const el = rosterRef.current;
-
-		return dropTargetForElements({
-			element: el,
-			getData: () => ({ location: "roster" }),
-		});
-	}, []);
+		// Case 3: fallback or same list -> same list
+		removeMap[currentLocation]?.(paddler, currentPosition);
+		addMap[newLocation]?.(paddler, newPosition);
+	};
 
 	const sumSideWeight = (side: SideArray): number =>
 		side.reduce((total, paddler) => total + (paddler?.weight ?? 0), 0);
@@ -328,7 +323,7 @@ export default function App() {
 	};
 
 	return (
-		<>
+		<DndContext onDragEnd={handleDragEnd}>
 			<h1>Dragon Boat Balancer</h1>
 			<div className="balancer-main-container">
 				<section className="toggles">
@@ -359,12 +354,18 @@ export default function App() {
 									details={paddler}
 									position={i}
 									location="left"
+									onDrag={setDragging}
 								/>
 							))}
 						</div>
 						<div className="center">
 							<div className="drum">
-								<PaddlerCard details={drum} position={"drum"} location="drum" />
+								<PaddlerCard
+									details={drum}
+									position={"drum"}
+									location="drum"
+									onDrag={setDragging}
+								/>
 							</div>
 							<div className="boat-stats">
 								<section>
@@ -384,6 +385,7 @@ export default function App() {
 									details={steer}
 									position={"steer"}
 									location="steer"
+									onDrag={setDragging}
 								/>
 							</div>
 						</div>
@@ -394,6 +396,7 @@ export default function App() {
 									details={paddler}
 									position={i}
 									location="right"
+									onDrag={setDragging}
 								/>
 							))}
 						</div>
@@ -407,7 +410,8 @@ export default function App() {
 					</section>
 					<div className="roster">
 						<div
-							ref={rosterRef}
+							ref={setNodeRef}
+							id="roster-drop-zone"
 							className={`drag-target ${dragging ? "visible" : ""}`}
 						>
 							<p className="drag-text">
@@ -420,12 +424,13 @@ export default function App() {
 								details={paddler}
 								position={i}
 								location="roster"
+								onDrag={setDragging}
 							/>
 						))}
 					</div>
 				</section>
 			</div>
-		</>
+		</DndContext>
 	);
 }
 
@@ -433,47 +438,59 @@ interface PaddlerProps {
 	details: Paddler | null;
 	location: PaddlerLocation;
 	position?: number | "drum" | "steer";
+	onDrag: Dispatch<SetStateAction<boolean>>;
 }
 
-function PaddlerCard({ details, position, location }: PaddlerProps) {
-	const ref = useRef(null);
-	const [dragging, setDragging] = useState(false);
-	const [isDraggedOver, setIsDraggedOver] = useState(false);
+function PaddlerCard({ details, position, location, onDrag }: PaddlerProps) {
+	const {
+		attributes,
+		listeners,
+		setNodeRef: setDraggableNodeRef,
+		transform,
+		isDragging,
+	} = useDraggable({
+		id: `${
+			details
+				? `paddler-${details.name}-${location}-${position}`
+				: `empty-${location}-${position}`
+		}`,
+		data: { details, position, location },
+		disabled: !details,
+	});
+
+	const style = transform
+		? {
+				transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+		  }
+		: undefined;
+
+	const { isOver, setNodeRef: setDroppableNodeRef } = useDroppable({
+		id: `${
+			details
+				? `paddler-${details.name}-${location}-${position}`
+				: `empty-${location}-${position}`
+		}`,
+		data: { details, position, location },
+	});
+
+	const setNodeRef = (node: HTMLElement | null) => {
+		setDraggableNodeRef(node);
+		setDroppableNodeRef(node);
+	};
 
 	useEffect(() => {
-		if (!ref.current) return;
-		if (!details) return;
-
-		const el = ref.current;
-
-		return draggable({
-			element: el,
-			getInitialData: () => ({ details, location, position }),
-			onDragStart: () => setDragging(true),
-			onDrop: () => setDragging(false),
-		});
-	}, [details, location, position]);
-
-	useEffect(() => {
-		if (!ref.current) return;
-
-		const el = ref.current;
-
-		return dropTargetForElements({
-			element: el,
-			getData: () => ({ details, location, position }),
-			onDragEnter: () => setIsDraggedOver(true),
-			onDragLeave: () => setIsDraggedOver(false),
-			onDrop: () => setIsDraggedOver(false),
-		});
-	}, [details, location, position]);
+		onDrag(isDragging);
+	}, [isDragging, onDrag]);
 
 	return (
 		<div
-			ref={ref}
+			ref={setNodeRef}
 			className={`paddler-card ${details ? "details" : "empty"} ${
-				dragging ? "dragging" : ""
-			} ${isDraggedOver ? "dragged-over" : ""}`}
+				isDragging ? "dragging" : ""
+			} ${isOver ? "dragged-over" : ""}`}
+			style={style}
+			{...listeners}
+			{...attributes}
 		>
 			{details ? (
 				<>
