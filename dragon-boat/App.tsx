@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
 	draggable,
 	dropTargetForElements,
@@ -11,6 +11,8 @@ type Paddler = {
 	side: "left" | "right" | "both";
 	weight: number;
 };
+
+type PaddlerLocation = "left" | "right" | "drum" | "steer" | "roster";
 
 const sampleCrew: Paddler[] = [
 	{ name: "Ryan", side: "both", weight: 150 },
@@ -60,44 +62,48 @@ export default function App() {
 		setRoster(sampleCrew);
 	}, []);
 
+	const removeMap = useMemo<Record<PaddlerLocation, (p: Paddler) => void>>(
+		() => ({
+			left: (p) => setLeftSide((prev) => prev.filter((x) => x.name !== p.name)),
+			right: (p) =>
+				setRightSide((prev) => prev.filter((x) => x.name !== p.name)),
+			drum: () => setDrum(null),
+			steer: () => setSteer(null),
+			roster: (p) => setRoster((prev) => prev.filter((x) => x.name !== p.name)),
+		}),
+		[setLeftSide, setRightSide, setDrum, setSteer, setRoster]
+	);
+
+	const addMap = useMemo<Record<PaddlerLocation, (p: Paddler) => void>>(
+		() => ({
+			left: (p) => setLeftSide((prev) => [...prev, p]),
+			right: (p) => setRightSide((prev) => [...prev, p]),
+			drum: (p) => setDrum(p),
+			steer: (p) => setSteer(p),
+			roster: (p) => setRoster((prev) => [...prev, p]),
+		}),
+		[setLeftSide, setRightSide, setDrum, setSteer, setRoster]
+	);
+
 	useEffect(() => {
 		return monitorForElements({
 			onDragStart: () => setDragging(true),
 			onDrop({ source, location }) {
 				setDragging(false);
-				const destination = location.current.dropTargets[0];
-				if (!destination) return;
 
 				const paddler = source.data.details as Paddler;
-				const locationDropped = destination.data.location;
+				const currentLocation = source.data.location as PaddlerLocation;
+				const destination = location.current.dropTargets[0];
 
-				switch (locationDropped) {
-					case "left":
-						setLeftSide((prev) => [...prev, paddler]);
-						setRoster((prev) => prev.filter((p) => p.name !== paddler.name));
-						break;
-					case "right":
-						setRightSide((prev) => [...prev, paddler]);
-						setRoster((prev) => prev.filter((p) => p.name !== paddler.name));
-						break;
-					case "drum":
-						setDrum(paddler);
-						setRoster((prev) => prev.filter((p) => p.name !== paddler.name));
-						break;
-					case "steer":
-						setSteer(paddler);
-						setRoster((prev) => prev.filter((p) => p.name !== paddler.name));
-						break;
-					case "roster":
-						setRoster((prev) => [...prev, paddler]);
-						break;
-					default:
-						console.log("Set in some other location");
-						break;
-				}
+				if (!destination) return;
+
+				const newLocation = destination.data.location as PaddlerLocation;
+
+				removeMap[currentLocation]?.(paddler);
+				addMap[newLocation]?.(paddler);
 			},
 		});
-	}, []);
+	}, [addMap, removeMap]);
 
 	useEffect(() => {
 		if (!rosterRef.current) return;
@@ -181,7 +187,11 @@ export default function App() {
 							</p>
 						</div>
 						{roster.map((paddler, i) => (
-							<PaddlerCard key={`${paddler.name}-${i}`} details={paddler} />
+							<PaddlerCard
+								key={`${paddler.name}-${i}`}
+								details={paddler}
+								location="roster"
+							/>
 						))}
 					</div>
 				</section>
@@ -192,8 +202,8 @@ export default function App() {
 
 interface PaddlerProps {
 	details: Paddler | null;
+	location: PaddlerLocation;
 	position?: number | "drum" | "steer";
-	location?: "left" | "right" | "drum" | "steer";
 }
 
 function PaddlerCard({ details, position, location }: PaddlerProps) {
@@ -209,11 +219,11 @@ function PaddlerCard({ details, position, location }: PaddlerProps) {
 
 		return draggable({
 			element: el,
-			getInitialData: () => ({ details }),
+			getInitialData: () => ({ details, location }),
 			onDragStart: () => setDragging(true),
 			onDrop: () => setDragging(false),
 		});
-	}, [details]);
+	}, [details, location]);
 
 	useEffect(() => {
 		if (!ref.current) return;
