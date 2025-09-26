@@ -441,20 +441,6 @@ function PaddlerCard({ details, position, location }: PaddlerProps) {
 	const [isDraggedOver, setIsDraggedOver] = useState(false);
 
 	useEffect(() => {
-		const handleTouchMove = (e: TouchEvent) => {
-			if (dragging) {
-				e.preventDefault();
-			}
-		};
-
-		document.addEventListener("touchmove", handleTouchMove, { passive: false });
-
-		return () => {
-			document.removeEventListener("touchmove", handleTouchMove);
-		};
-	}, [dragging]);
-
-	useEffect(() => {
 		if (!ref.current) return;
 		if (!details) return;
 
