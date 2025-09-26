@@ -9,15 +9,15 @@ import Toggles from "./components/Toggles/Toggles";
 import { sampleCrew } from "./utils/sample-crew";
 
 export default function App() {
-	const [rowSize] = useState(10);
+	const [numRows, setNumRows] = useState(10);
 	const [centerMass, setCenterMass] = useState(5);
 
 	const [roster, setRoster] = useState<Paddler[]>([]);
 	const [leftSide, setLeftSide] = useState<SideArray>(
-		Array(rowSize).fill(null)
+		Array(numRows).fill(null)
 	);
 	const [rightSide, setRightSide] = useState<SideArray>(
-		Array(rowSize).fill(null)
+		Array(numRows).fill(null)
 	);
 	const [drum, setDrum] = useState<Paddler | null>(null);
 	const [steer, setSteer] = useState<Paddler | null>(null);
@@ -139,7 +139,7 @@ export default function App() {
 			...rightSide.filter((p): p is Paddler => p !== null),
 		];
 
-		const lineup = generateLineup(available, centerMass, rowSize);
+		const lineup = generateLineup(available, centerMass, numRows);
 
 		setLeftSide(lineup.left);
 		setRightSide(lineup.right);
@@ -151,14 +151,17 @@ export default function App() {
 			<h1 className="title">Dragon Boat Balancer</h1>
 			<div className="balancer-main-container">
 				<section className="main">
-					<Toggles centerMassState={[centerMass, setCenterMass]} />
+					<Toggles
+						centerMassState={[centerMass, setCenterMass]}
+						numRowsState={[numRows, setNumRows]}
+					/>
 					<button onClick={onGenerateLineupClicked}>Generate lineup</button>
 					<Boat
 						leftSide={leftSide}
 						rightSide={rightSide}
 						drum={drum}
 						steer={steer}
-						rowSize={rowSize}
+						rowSize={numRows}
 					/>
 				</section>
 				<Roster rosterState={[roster, setRoster]} />
