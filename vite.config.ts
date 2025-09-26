@@ -10,6 +10,9 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
 	plugins: [svgr(), react()],
 	build: {
+		commonjsOptions: {
+			include: [/node_modules/],
+		},
 		rollupOptions: {
 			input: {
 				main: resolve(__dirname, "index.html"),

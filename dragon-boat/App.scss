@@ -48,6 +48,8 @@
 	align-items: center;
 	justify-content: space-between;
 
+	opacity: 1;
+
 	.name {
 		overflow: hidden;
 		white-space: nowrap;
@@ -76,4 +78,8 @@
 .empty {
 	background-color: rgba(0, 0, 0, 0.3);
 	color: var(--light);
+}
+
+.dragging {
+	opacity: 0.2;
 }
