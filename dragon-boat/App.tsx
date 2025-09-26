@@ -50,6 +50,8 @@ export default function App() {
 	const [roster, setRoster] = useState<Paddler[]>([]);
 	const [leftSide, setLeftSide] = useState<Paddler[]>([]);
 	const [rightSide, setRightSide] = useState<Paddler[]>([]);
+	const [drum, setDrum] = useState<Paddler | null>(null);
+	const [steer, setSteer] = useState<Paddler | null>(null);
 
 	useEffect(() => {
 		setRoster(sampleCrew);
@@ -71,6 +73,14 @@ export default function App() {
 						break;
 					case "right":
 						setRightSide((prev) => [...prev, paddler]);
+						setRoster((prev) => prev.filter((p) => p.name !== paddler.name));
+						break;
+					case "drum":
+						setDrum(paddler);
+						setRoster((prev) => prev.filter((p) => p.name !== paddler.name));
+						break;
+					case "steer":
+						setSteer(paddler);
 						setRoster((prev) => prev.filter((p) => p.name !== paddler.name));
 						break;
 					default:
@@ -99,6 +109,7 @@ export default function App() {
 							))}
 							{Array.from({ length: rowSize - leftSide.length }).map((_, i) => (
 								<PaddlerCard
+									details={null}
 									key={"left-" + i}
 									position={i + 1}
 									location="left"
@@ -107,10 +118,14 @@ export default function App() {
 						</div>
 						<div className="center">
 							<div className="drum">
-								<PaddlerCard position={"drum"} location="drum" />
+								<PaddlerCard details={drum} position={"drum"} location="drum" />
 							</div>
 							<div className="steer">
-								<PaddlerCard position={"steer"} location="steer" />
+								<PaddlerCard
+									details={steer}
+									position={"steer"}
+									location="steer"
+								/>
 							</div>
 						</div>
 						<div className="right paddlers">
@@ -125,6 +140,7 @@ export default function App() {
 							{Array.from({ length: rowSize - rightSide.length }).map(
 								(_, i) => (
 									<PaddlerCard
+										details={null}
 										key={"right-" + i}
 										position={i + 1}
 										location="right"
@@ -148,7 +164,7 @@ export default function App() {
 }
 
 interface PaddlerProps {
-	details?: Paddler;
+	details: Paddler | null;
 	position?: number | "drum" | "steer";
 	location?: "left" | "right" | "drum" | "steer";
 }
