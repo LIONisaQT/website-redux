@@ -24,6 +24,12 @@
 				flex-direction: column;
 				justify-content: space-between;
 			}
+
+			.boat-stats {
+				display: flex;
+				flex-direction: column;
+				gap: 4px;
+			}
 		}
 	}
 

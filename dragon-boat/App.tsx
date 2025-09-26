@@ -158,6 +158,30 @@ export default function App() {
 	const sumSideWeight = (side: SideArray): number =>
 		side.reduce((total, paddler) => total + (paddler?.weight ?? 0), 0);
 
+	const getCenterOfMass = (left: SideArray, right: SideArray) => {
+		let weightedSum = 0;
+		let totalWeight = 0;
+
+		for (let i = 0; i < rowSize; i++) {
+			const leftPaddler = left[i];
+			const rightPaddler = right[i];
+
+			if (leftPaddler) {
+				weightedSum += i * leftPaddler.weight;
+				totalWeight += leftPaddler.weight;
+			}
+
+			if (rightPaddler) {
+				weightedSum += i * rightPaddler.weight;
+				totalWeight += rightPaddler.weight;
+			}
+		}
+
+		if (totalWeight === 0) return "null";
+
+		return (weightedSum / totalWeight + 1).toFixed(2);
+	};
+
 	return (
 		<>
 			<h1>Dragon Boat Balancer</h1>
@@ -186,6 +210,10 @@ export default function App() {
 										<span>{sumSideWeight(leftSide)}</span>-
 										<span>{sumSideWeight(rightSide)}</span>
 									</p>
+								</section>
+								<section>
+									<h3>F/B Bal</h3>
+									<p>{getCenterOfMass(leftSide, rightSide)}</p>
 								</section>
 							</div>
 							<div className="steer">
