@@ -123,6 +123,22 @@
 		flex-direction: column;
 		align-items: end;
 		margin-left: 4px;
+
+		.side {
+			font-weight: bold;
+		}
+
+		.left {
+			color: var(--red);
+		}
+
+		.right {
+			color: var(--cyan);
+		}
+
+		.both {
+			color: var(--purple);
+		}
 	}
 
 	.empty-slot {

@@ -479,13 +479,19 @@ function PaddlerCard({ details, position, location }: PaddlerProps) {
 						{details.name}
 					</p>
 					<div className="info">
-						<p>{details.side[0].toUpperCase()}</p>
+						<p className={`${details.side} side`}>
+							{details.side[0].toUpperCase()}
+						</p>
 						<p>{details.weight}</p>
 					</div>
 				</>
 			) : (
 				<div className="empty-slot">
-					<p>Empty</p>
+					<p>
+						{location !== "left" && location !== "right"
+							? location.charAt(0).toUpperCase() + location.slice(1)
+							: "Empty"}
+					</p>
 				</div>
 			)}
 		</div>
