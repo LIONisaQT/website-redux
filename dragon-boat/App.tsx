@@ -321,7 +321,6 @@ export default function App() {
 			<h1>Dragon Boat Balancer</h1>
 			<div className="balancer-main-container">
 				<section className="toggles">
-					<h2>Toggles</h2>
 					<section className="front-back-balance">
 						<h3>Front/back balance</h3>
 						<p>Desired center of mass for boat: {centerMass}</p>
