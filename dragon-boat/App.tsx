@@ -163,40 +163,15 @@ export default function App() {
 				? destinationArray[newPosition]
 				: destinationArray[0];
 
-		// Case 1: seat/drum/steer -> seat/drum/steer
-		if (
-			currentLocation !== "roster" &&
-			newLocation !== "roster" &&
-			currentLocation !== newLocation
-		) {
-			removeMap[currentLocation]?.(paddler, currentPosition ?? 0);
+		removeMap[currentLocation]?.(paddler, currentPosition ?? 0);
 
-			if (existingPaddler) {
-				removeMap[newLocation]?.(existingPaddler, newPosition ?? 0);
-				addMap[currentLocation]?.(existingPaddler, currentPosition ?? 0);
-			}
-
-			addMap[newLocation]?.(paddler, newPosition ?? 0);
-			return;
+		// Dragging from anywhere into roster just adds them to the end lol
+		if (existingPaddler) {
+			removeMap[newLocation]?.(existingPaddler, newPosition ?? 0);
+			addMap[currentLocation]?.(existingPaddler, currentPosition ?? 0);
 		}
 
-		// Case 2: roster -> seat/drum/steer
-		if (currentLocation === "roster" && newLocation !== "roster") {
-			removeMap[currentLocation]?.(paddler, currentPosition);
-
-			if (existingPaddler) {
-				removeMap[newLocation]?.(existingPaddler, newPosition ?? 0);
-				// TODO: Pretty sure it just appends to the roster LOL
-				addMap["roster"]?.(existingPaddler, currentPosition);
-			}
-
-			addMap[newLocation]?.(paddler, newPosition ?? 0);
-			return;
-		}
-
-		// Case 3: fallback or same list -> same list
-		removeMap[currentLocation]?.(paddler, currentPosition);
-		addMap[newLocation]?.(paddler, newPosition);
+		addMap[newLocation]?.(paddler, newPosition ?? 0);
 	};
 
 	const sumSideWeight = (side: SideArray): number =>
