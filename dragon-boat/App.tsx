@@ -53,13 +53,18 @@ export default function App() {
 	const [drum, setDrum] = useState<Paddler | null>(null);
 	const [steer, setSteer] = useState<Paddler | null>(null);
 
+	const [dragging, setDragging] = useState(false);
+	const rosterRef = useRef<HTMLDivElement>(null);
+
 	useEffect(() => {
 		setRoster(sampleCrew);
 	}, []);
 
 	useEffect(() => {
 		return monitorForElements({
+			onDragStart: () => setDragging(true),
 			onDrop({ source, location }) {
+				setDragging(false);
 				const destination = location.current.dropTargets[0];
 				if (!destination) return;
 
@@ -83,11 +88,25 @@ export default function App() {
 						setSteer(paddler);
 						setRoster((prev) => prev.filter((p) => p.name !== paddler.name));
 						break;
+					case "roster":
+						setRoster((prev) => [...prev, paddler]);
+						break;
 					default:
 						console.log("Set in some other location");
 						break;
 				}
 			},
+		});
+	}, []);
+
+	useEffect(() => {
+		if (!rosterRef.current) return;
+
+		const el = rosterRef.current;
+
+		return dropTargetForElements({
+			element: el,
+			getData: () => ({ location: "roster" }),
 		});
 	}, []);
 
@@ -153,6 +172,14 @@ export default function App() {
 				<section className="roster-container">
 					<h2>Reserve</h2>
 					<div className="roster">
+						<div
+							ref={rosterRef}
+							className={`drag-target ${dragging ? "visible" : ""}`}
+						>
+							<p className="drag-text">
+								Drag paddler here to return to roster.
+							</p>
+						</div>
 						{roster.map((paddler, i) => (
 							<PaddlerCard key={`${paddler.name}-${i}`} details={paddler} />
 						))}
