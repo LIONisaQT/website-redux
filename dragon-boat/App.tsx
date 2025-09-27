@@ -57,25 +57,29 @@ export default function App() {
 		Record<PaddlerLocation, (p: Paddler, targetPos: number) => void>
 	>(
 		() => ({
-			left: (p, targetPos) => {
-				if (targetPos === undefined) return;
+			left: (p: Paddler, targetPos: number) => {
 				setLeftSide((prev) => {
 					const copy = [...prev];
 					copy[targetPos] = p;
 					return copy;
 				});
 			},
-			right: (p, targetPos) => {
-				if (targetPos === undefined) return;
+			right: (p: Paddler, targetPos) => {
 				setRightSide((prev) => {
 					const copy = [...prev];
 					copy[targetPos] = p;
 					return copy;
 				});
 			},
-			drum: (p) => setDrum(p),
-			steer: (p) => setSteer(p),
-			roster: (p) => setRoster((prev) => [...prev, p]),
+			drum: (p: Paddler) => setDrum(p),
+			steer: (p: Paddler) => setSteer(p),
+			roster: (p: Paddler, index: number) => {
+				setRoster((prev) => {
+					const newRoster = [...prev];
+					newRoster.splice(index, 0, p);
+					return newRoster;
+				});
+			},
 		}),
 		[setLeftSide, setRightSide, setDrum, setSteer, setRoster]
 	);
@@ -96,40 +100,91 @@ export default function App() {
 	};
 
 	const handleDragEnd = (event: DragEndEvent) => {
-		const { over } = event;
+		const { active, over } = event;
 
-		const paddler = event.active.data.current?.details as Paddler;
-		const currentLocation = event.active.data.current
-			?.location as PaddlerLocation;
-		const currentPosition = event.active.data.current?.position as number;
+		const dragged = active.data.current?.details as Paddler;
+		const currentLocation = active.data.current?.location as PaddlerLocation;
+		const currentPosition = active.data.current?.position ?? 0;
 
 		const destination = over?.data.current;
+		const newLocation = destination?.location as PaddlerLocation | undefined;
+		const newPosition = destination?.position;
 
-		// Return paddler back to roster
+		// Helpers for single-slot positions
+		const getSingleSlot = (loc: PaddlerLocation) =>
+			loc === "drum" ? drum : steer;
+
+		const setSingleSlot = (loc: PaddlerLocation, value: Paddler | null) => {
+			if (loc === "drum") setDrum(value);
+			else if (loc === "steer") setSteer(value);
+		};
+
+		// Dropped outside → return to roster
 		if (!destination) {
-			removeMap[currentLocation]?.(paddler, currentPosition ?? 0);
-			addMap["roster"]?.(paddler, roster.length);
+			if (currentLocation === "roster") return;
+			removeMap[currentLocation]?.(dragged, currentPosition);
+			addMap["roster"]?.(dragged, roster.length);
 			return;
 		}
 
-		const newLocation = destination.location as PaddlerLocation;
-		const newPosition = destination.position as number;
+		// Same location + same position
+		if (currentLocation === newLocation && currentPosition === newPosition)
+			return;
 
-		const destinationArray = getTarget(newLocation);
-		const existingPaddler =
-			newPosition !== undefined && !isNaN(newPosition)
-				? destinationArray[newPosition]
-				: destinationArray[0];
+		const isSourceArray = !["drum", "steer"].includes(currentLocation);
+		const isDestArray = !["drum", "steer"].includes(newLocation!);
 
-		removeMap[currentLocation]?.(paddler, currentPosition ?? 0);
+		const destTarget = getTarget(newLocation!);
 
-		// Dragging from anywhere into roster just adds them to the end lol
-		if (existingPaddler) {
-			removeMap[newLocation]?.(existingPaddler, newPosition ?? 0);
-			addMap[currentLocation]?.(existingPaddler, currentPosition ?? 0);
+		// Read destination paddler BEFORE removing anything
+		let existingDest: Paddler | null = null;
+		let destIndex = 0;
+
+		if (isDestArray) {
+			const arr = destTarget as Paddler[];
+			destIndex = newPosition ?? arr.length;
+			console.log(destIndex);
+			existingDest = arr[destIndex] ?? null;
+		} else {
+			destIndex = 0;
+			existingDest = getSingleSlot(newLocation!);
 		}
 
-		addMap[newLocation]?.(paddler, newPosition ?? 0);
+		// Remove dragged paddler from source
+		if (isSourceArray) {
+			removeMap[currentLocation]?.(dragged, currentPosition);
+		} else {
+			setSingleSlot(currentLocation, null);
+		}
+
+		// Place dragged paddler into destination
+		if (isDestArray) {
+			// Remove existing destination paddler if present
+			if (existingDest) {
+				removeMap[newLocation!]?.(existingDest, destIndex);
+
+				// Put existing destination paddler back into source
+				if (isSourceArray) {
+					addMap[currentLocation]?.(existingDest, currentPosition);
+				} else {
+					setSingleSlot(currentLocation, existingDest);
+				}
+			}
+
+			addMap[newLocation!]?.(dragged, destIndex);
+		} else {
+			// Single-slot destination
+			if (existingDest) {
+				// Restore existing destination paddler to source
+				if (isSourceArray) {
+					addMap[currentLocation]?.(existingDest, currentPosition);
+				} else {
+					setSingleSlot(currentLocation, existingDest);
+				}
+			}
+
+			setSingleSlot(newLocation!, dragged);
+		}
 	};
 
 	const onGenerateLineupClicked = () => {
