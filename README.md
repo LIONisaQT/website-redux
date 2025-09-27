@@ -8,7 +8,7 @@ Not sure why you'd be here, unless you want to steal code 👀.
 
 ## Running locally
 
-Assuming you have [nvm](https://github.com/nvm-sh/nvm) installed. If not, project currently uses Node 22.11.0.
+Assuming you have [nvm](https://github.com/nvm-sh/nvm) installed. If not, project currently uses Node 22.17.0.
 
 ```sh
 nvm use
