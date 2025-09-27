@@ -127,62 +127,42 @@ export default function App() {
 			return;
 		}
 
-		// Same location + same position
+		// Same location + same position → nothing to do
 		if (currentLocation === newLocation && currentPosition === newPosition)
 			return;
 
 		const isSourceArray = !["drum", "steer"].includes(currentLocation);
 		const isDestArray = !["drum", "steer"].includes(newLocation!);
 
-		const destTarget = getTarget(newLocation!);
+		// Read destination before removing anything
+		const existingDest = isDestArray
+			? (getTarget(newLocation!) as Paddler[])[
+					newPosition ?? (getTarget(newLocation!) as Paddler[]).length
+			  ] ?? null
+			: getSingleSlot(newLocation!);
+		const destIndex = isDestArray
+			? newPosition ?? (getTarget(newLocation!) as Paddler[]).length
+			: 0;
 
-		// Read destination paddler BEFORE removing anything
-		let existingDest: Paddler | null = null;
-		let destIndex = 0;
+		// Remove dragged from source
+		if (isSourceArray) removeMap[currentLocation]?.(dragged, currentPosition);
+		else setSingleSlot(currentLocation, null);
 
+		// Place dragged into destination, swap if needed
 		if (isDestArray) {
-			const arr = destTarget as Paddler[];
-			destIndex = newPosition ?? arr.length;
-			console.log(destIndex);
-			existingDest = arr[destIndex] ?? null;
-		} else {
-			destIndex = 0;
-			existingDest = getSingleSlot(newLocation!);
-		}
-
-		// Remove dragged paddler from source
-		if (isSourceArray) {
-			removeMap[currentLocation]?.(dragged, currentPosition);
-		} else {
-			setSingleSlot(currentLocation, null);
-		}
-
-		// Place dragged paddler into destination
-		if (isDestArray) {
-			// Remove existing destination paddler if present
 			if (existingDest) {
 				removeMap[newLocation!]?.(existingDest, destIndex);
-
-				// Put existing destination paddler back into source
-				if (isSourceArray) {
+				if (isSourceArray)
 					addMap[currentLocation]?.(existingDest, currentPosition);
-				} else {
-					setSingleSlot(currentLocation, existingDest);
-				}
+				else setSingleSlot(currentLocation, existingDest);
 			}
-
 			addMap[newLocation!]?.(dragged, destIndex);
 		} else {
-			// Single-slot destination
 			if (existingDest) {
-				// Restore existing destination paddler to source
-				if (isSourceArray) {
+				if (isSourceArray)
 					addMap[currentLocation]?.(existingDest, currentPosition);
-				} else {
-					setSingleSlot(currentLocation, existingDest);
-				}
+				else setSingleSlot(currentLocation, existingDest);
 			}
-
 			setSingleSlot(newLocation!, dragged);
 		}
 	};
