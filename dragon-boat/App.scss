@@ -1,35 +1,5 @@
 @import url("./colors.css");
 
-.balancer-main-container {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-	gap: 36px;
-
-	@media (max-width: 768px) {
-		flex-direction: column;
-		gap: 12px;
-	}
-
-	.main {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 12px;
-
-		.button-group {
-			display: flex;
-			gap: 4px;
-			width: 100%;
-
-			button {
-				flex: 1;
-			}
-		}
-	}
-}
-
 button {
 	height: 36px;
 	border: none;
