@@ -1,5 +1,5 @@
 import "./App.scss";
-import { useEffect, useMemo, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import { DndContext, DragEndEvent, pointerWithin } from "@dnd-kit/core";
 import { Paddler, SideArray, PaddlerLocation } from "./types";
 import { generateLineup } from "./utils/utils";
@@ -25,6 +25,29 @@ export default function App() {
 	useEffect(() => {
 		setRoster(sampleCrew);
 	}, []);
+
+	useEffect(() => {
+		const resizeSide = (setSide: Dispatch<SetStateAction<SideArray>>) => {
+			setSide((prev) => {
+				const copy = [...prev];
+
+				if (numRows > copy.length) {
+					copy.push(...Array(numRows - copy.length).fill(null));
+				} else if (numRows < copy.length) {
+					const removed = copy.slice(numRows).filter(Boolean) as Paddler[];
+					if (removed.length > 0) {
+						setRoster((prevRoster) => [...prevRoster, ...removed]);
+					}
+					copy.length = numRows;
+				}
+
+				return copy;
+			});
+		};
+
+		resizeSide(setLeftSide);
+		resizeSide(setRightSide);
+	}, [numRows, setRoster, setLeftSide, setRightSide]);
 
 	const removeMap = useMemo<
 		Record<PaddlerLocation, (p: Paddler, pos: number) => void>
