@@ -7,6 +7,7 @@ import { generateLineup } from "../../utils/utils";
 import Boat from "../Boat/Boat";
 import Roster from "../Roster/Roster";
 import Toggles from "../Toggles/Toggles";
+import Creator from "../Creator/Creator";
 
 export default function CrewManager() {
 	const [numRows, setNumRows] = useState(10);
@@ -248,7 +249,10 @@ export default function CrewManager() {
 							rowSize={numRows}
 						/>
 					</section>
+					<section className="side">
+					<Creator />
 					<Roster rosterState={[roster, setRoster]} />
+					</section>
 				</div>
 			</DndContext>
 		</div>

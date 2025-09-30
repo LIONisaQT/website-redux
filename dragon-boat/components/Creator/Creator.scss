@@ -1,0 +1,19 @@
+@import url(../../colors.css);
+
+.creator-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+
+    .main {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+
+        #paddler-weight {
+            width: 50px;
+        }
+    }
+}
