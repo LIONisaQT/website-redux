@@ -2,17 +2,17 @@ import "./CrewManager.scss";
 import { DragEndEvent, DndContext, pointerWithin } from "@dnd-kit/core";
 import { useState, useEffect, Dispatch, SetStateAction, useMemo } from "react";
 import { Paddler, SideArray, PaddlerLocation } from "../../types";
-import { sampleCrew } from "../../utils/sample-crew";
 import { generateLineup } from "../../utils/utils";
 import Boat from "../Boat/Boat";
 import Roster from "../Roster/Roster";
 import Toggles from "../Toggles/Toggles";
+import { sampleRoster } from "../../utils/sample-crew";
 
 export default function CrewManager() {
 	const [numRows, setNumRows] = useState(10);
 	const [centerMass, setCenterMass] = useState(5);
 
-	const [roster, setRoster] = useState<Paddler[]>([]);
+	const [paddlers, setPaddlers] = useState<Paddler[]>([]);
 	const [leftSide, setLeftSide] = useState<SideArray>(
 		Array(numRows).fill(null)
 	);
@@ -23,7 +23,7 @@ export default function CrewManager() {
 	const [steer, setSteer] = useState<Paddler | null>(null);
 
 	useEffect(() => {
-		setRoster(sampleCrew);
+		setPaddlers(sampleRoster.paddlers);
 	}, []);
 
 	useEffect(() => {
@@ -36,7 +36,7 @@ export default function CrewManager() {
 				} else if (numRows < copy.length) {
 					const removed = copy.slice(numRows).filter(Boolean) as Paddler[];
 					if (removed.length > 0) {
-						setRoster((prevRoster) => [...prevRoster, ...removed]);
+						setPaddlers((prevRoster) => [...prevRoster, ...removed]);
 					}
 					copy.length = numRows;
 				}
@@ -47,7 +47,7 @@ export default function CrewManager() {
 
 		resizeSide(setLeftSide);
 		resizeSide(setRightSide);
-	}, [numRows, setRoster, setLeftSide, setRightSide]);
+	}, [numRows, setPaddlers, setLeftSide, setRightSide]);
 
 	const removeMap = useMemo<
 		Record<PaddlerLocation, (p: Paddler, pos: number) => void>
@@ -71,9 +71,10 @@ export default function CrewManager() {
 			},
 			drum: () => setDrum(null),
 			steer: () => setSteer(null),
-			roster: (p) => setRoster((prev) => prev.filter((x) => x.name !== p.name)),
+			roster: (p) =>
+				setPaddlers((prev) => prev.filter((x) => x.name !== p.name)),
 		}),
-		[setLeftSide, setRightSide, setDrum, setSteer, setRoster]
+		[setLeftSide, setRightSide, setDrum, setSteer, setPaddlers]
 	);
 
 	const addMap = useMemo<
@@ -97,14 +98,14 @@ export default function CrewManager() {
 			drum: (p: Paddler) => setDrum(p),
 			steer: (p: Paddler) => setSteer(p),
 			roster: (p: Paddler, index: number) => {
-				setRoster((prev) => {
+				setPaddlers((prev) => {
 					const newRoster = [...prev];
 					newRoster.splice(index, 0, p);
 					return newRoster;
 				});
 			},
 		}),
-		[setLeftSide, setRightSide, setDrum, setSteer, setRoster]
+		[setLeftSide, setRightSide, setDrum, setSteer, setPaddlers]
 	);
 
 	const getTarget = (loc: PaddlerLocation) => {
@@ -114,7 +115,7 @@ export default function CrewManager() {
 			case "right":
 				return rightSide;
 			case "roster":
-				return roster;
+				return paddlers;
 			case "drum":
 				return drum ? [drum] : [null];
 			case "steer":
@@ -146,7 +147,7 @@ export default function CrewManager() {
 		if (!destination) {
 			if (currentLocation === "roster") return;
 			removeMap[currentLocation]?.(dragged, currentPosition);
-			addMap["roster"]?.(dragged, roster.length);
+			addMap["roster"]?.(dragged, paddlers.length);
 			return;
 		}
 
@@ -192,7 +193,7 @@ export default function CrewManager() {
 
 	const onGenerateLineupClicked = () => {
 		const available = [
-			...roster,
+			...paddlers,
 			...leftSide.filter((p): p is Paddler => p !== null),
 			...rightSide.filter((p): p is Paddler => p !== null),
 		];
@@ -201,11 +202,11 @@ export default function CrewManager() {
 
 		setLeftSide(lineup.left);
 		setRightSide(lineup.right);
-		setRoster(lineup.remainingRoster);
+		setPaddlers(lineup.remainingRoster);
 	};
 
 	const onRecallClicked = () => {
-		setRoster((prev) => [
+		setPaddlers((prev) => [
 			...prev,
 			...leftSide.filter((p): p is Paddler => p !== null),
 			...rightSide.filter((p): p is Paddler => p !== null),
@@ -248,7 +249,7 @@ export default function CrewManager() {
 							rowSize={numRows}
 						/>
 					</section>
-					<Roster rosterState={[roster, setRoster]} />
+					<Roster rosterState={[paddlers, setPaddlers]} />
 				</div>
 			</DndContext>
 		</div>
