@@ -1,4 +1,4 @@
-import { Paddler } from "../types";
+import { Crew, Paddler, Roster } from "../types";
 
 export const sampleCrew: Paddler[] = [
 	{ name: "Ryan", side: "both", weight: 150 },
@@ -32,3 +32,15 @@ export const sampleCrew: Paddler[] = [
 	{ name: "Chloe", side: "left", weight: 109 },
 	{ name: "Noah", side: "right", weight: 174 },
 ];
+
+export const sampleRoster: Roster = {
+	id: "roster-0",
+	name: "Roster 0",
+	paddlers: sampleCrew,
+};
+
+export const sampleBoat: Crew = {
+	id: "crew-0",
+	name: "Crew 0",
+	roster: sampleRoster,
+};

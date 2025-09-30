@@ -7,3 +7,15 @@ export type Paddler = {
 export type PaddlerLocation = "left" | "right" | "drum" | "steer" | "roster";
 
 export type SideArray = (Paddler | null)[];
+
+export type Roster = {
+	id: string;
+	name: string;
+	paddlers: Paddler[];
+};
+
+export type Crew = {
+	id: string;
+	name: string;
+	roster: Roster;
+};
