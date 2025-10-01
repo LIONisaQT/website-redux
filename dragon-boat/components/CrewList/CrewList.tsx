@@ -11,7 +11,7 @@ import { Crew } from "../../types";
 type CrewTableProps = {
 	data: Crew[];
 	onView?: (crew: Crew) => void;
-	onDelete?: (crew: Crew) => void;
+	onDelete?: (crewId: string) => void;
 	onCreate?: () => void;
 };
 
@@ -39,7 +39,10 @@ export default function CrewList({
 					<button onClick={() => onView?.(row.original)} className="view">
 						View
 					</button>
-					<button onClick={() => onDelete?.(row.original)} className="delete">
+					<button
+						onClick={() => onDelete?.(row.original.id)}
+						className="delete"
+					>
 						Delete
 					</button>
 				</div>

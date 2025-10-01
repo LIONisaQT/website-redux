@@ -1,35 +1,76 @@
 import "./App.scss";
 import CrewList from "./components/CrewList/CrewList";
-import { sampleCrew } from "./utils/sample-crew";
 import CrewManager from "./components/CrewManager/CrewManager";
 import { Crew } from "./types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { deleteField, doc, onSnapshot, updateDoc } from "firebase/firestore";
+import { db } from "./firebaseConfig";
 
 export default function App() {
-	const [crews, setCrews] = useState<Crew[]>([sampleCrew]);
+	const [crews, setCrews] = useState<Crew[]>([]);
 	const [activeCrews, setActiveCrews] = useState<Crew[]>([]);
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+		const docRef = doc(db, "dragon-boat", "crews");
+
+		const unsubscribe = onSnapshot(docRef, (snapshot) => {
+			const data = snapshot.data() as Record<string, Crew> | undefined;
+			if (data) {
+				const crewData: Crew[] = Object.values(data);
+				setCrews(crewData);
+			}
+			setLoading(false);
+		});
+
+		return () => unsubscribe();
+	}, []);
 
 	const onViewClicked = (crew: Crew) => {
 		setActiveCrews((prev) => [...prev, crew]);
 	};
 
-	const onDeleteClicked = (crew: Crew) => {
-		setCrews((prev) => prev.filter((c) => c.id !== crew.id));
+	const onDeleteClicked = async (crewId: string) => {
+		try {
+			const docRef = doc(db, "dragon-boat", "crews");
+			await updateDoc(docRef, {
+				[crewId]: deleteField(),
+			});
+		} catch (err) {
+			console.error("Error deleting crew:", err);
+			alert("Failed to delete crew");
+		}
 	};
 
-	const onCreateClicked = () => {
+	const onCreateClicked = async () => {
 		const newCrew: Crew = {
 			id: crypto.randomUUID(),
 			name: "New crew",
 			roster: [],
 		};
 
-		setCrews((prev) => [...prev, newCrew]);
+		const docRef = doc(db, "dragon-boat", "crews");
+		try {
+			await updateDoc(docRef, {
+				[`${newCrew.id}`]: newCrew,
+			});
+		} catch (err) {
+			console.error("Error adding crew:", err);
+			throw err;
+		}
 	};
 
 	const onCloseClicked = (crew: Crew) => {
 		setActiveCrews((prev) => prev.filter((c) => c.id !== crew.id));
 	};
+
+	if (loading) {
+		return (
+			<div>
+				<h2>Getting data...</h2>
+			</div>
+		);
+	}
 
 	return (
 		<>
