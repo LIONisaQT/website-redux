@@ -1,5 +1,11 @@
 @import url(../../colors.css);
 
+.crew-list {
+	display: flex;
+	flex-direction: column;
+	align-items: start;
+}
+
 .crew-table {
 	width: 100%;
 	text-align: left;
@@ -51,4 +57,9 @@
 			}
 		}
 	}
+}
+
+.create-crew {
+	margin-top: 12px;
+	width: 200px;
 }
