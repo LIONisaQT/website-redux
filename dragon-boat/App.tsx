@@ -3,10 +3,13 @@ import CrewList from "./components/CrewList/CrewList";
 import { sampleCrew } from "./utils/sample-crew";
 import CrewManager from "./components/CrewManager/CrewManager";
 import { Crew } from "./types";
+import { useState } from "react";
 
 export default function App() {
+	const [activeCrews, setActiveCrews] = useState<Crew[]>([]);
+
 	const onViewClicked = (crew: Crew) => {
-		console.log(`View ${crew.name}`);
+		setActiveCrews((prev) => [...prev, crew]);
 	};
 
 	const onDeleteClicked = (crew: Crew) => {
@@ -21,7 +24,11 @@ export default function App() {
 				onView={onViewClicked}
 				onDelete={onDeleteClicked}
 			/>
-			<CrewManager />
+			<section className="active-crews">
+				{activeCrews.map((crew, i) => (
+					<CrewManager key={`${i}-${crew.id}`} crew={crew} />
+				))}
+			</section>
 		</>
 	);
 }

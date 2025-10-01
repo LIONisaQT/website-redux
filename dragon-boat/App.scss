@@ -1,5 +1,11 @@
 @import url("./colors.css");
 
+.active-crews {
+	display: flex;
+	flex-direction: column;
+	gap: 48px;
+}
+
 button {
 	height: 36px;
 	border: none;

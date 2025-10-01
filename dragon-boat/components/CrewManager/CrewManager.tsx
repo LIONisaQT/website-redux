@@ -1,14 +1,17 @@
 import "./CrewManager.scss";
 import { DragEndEvent, DndContext, pointerWithin } from "@dnd-kit/core";
 import { useState, useEffect, Dispatch, SetStateAction, useMemo } from "react";
-import { Paddler, SideArray, PaddlerLocation } from "../../types";
+import { Paddler, SideArray, PaddlerLocation, Crew } from "../../types";
 import { generateLineup } from "../../utils/utils";
 import Boat from "../Boat/Boat";
 import Roster from "../Roster/Roster";
 import Toggles from "../Toggles/Toggles";
-import { sampleRoster } from "../../utils/sample-crew";
 
-export default function CrewManager() {
+interface CrewManagerProps {
+	crew: Crew;
+}
+
+export default function CrewManager({ crew }: CrewManagerProps) {
 	const [numRows, setNumRows] = useState(10);
 	const [centerMass, setCenterMass] = useState(5);
 
@@ -23,8 +26,8 @@ export default function CrewManager() {
 	const [steer, setSteer] = useState<Paddler | null>(null);
 
 	useEffect(() => {
-		setPaddlers(sampleRoster.paddlers);
-	}, []);
+		setPaddlers(crew.roster.paddlers);
+	}, [crew.roster.paddlers]);
 
 	useEffect(() => {
 		const resizeSide = (setSide: Dispatch<SetStateAction<SideArray>>) => {
