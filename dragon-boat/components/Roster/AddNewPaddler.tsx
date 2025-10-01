@@ -12,7 +12,7 @@ export default function AddNewPaddler({
 	onAddNew,
 }: AddNewPaddlerProps) {
 	const [isOpen, setOpen] = openState;
-	const [name, setName] = useState("");
+	const [name, setName] = useState<string>();
 	const [side, setSide] = useState("both");
 	const [weight, setWeight] = useState(100);
 
@@ -27,7 +27,7 @@ export default function AddNewPaddler({
 						id="name"
 						placeholder="Paddler name"
 						value={name}
-						onChange={(e) => setName(e.target.value)}
+						onChange={(e) => setName(e.target.value ?? "Paddler name")}
 					/>
 				</section>
 				<section>

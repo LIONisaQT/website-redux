@@ -25,7 +25,34 @@
 
 		section {
 			display: flex;
-			gap: 4px;
+			gap: 8px;
+			align-items: center;
+			justify-content: space-between;
+		}
+
+		label {
+			font-size: 0.9rem;
+		}
+
+		input {
+			background-color: var(--light);
+			color: var(--darkest);
+			outline: 0;
+			border: 2px solid transparent;
+			border-radius: 24px;
+			padding: 4px 12px;
+			font-size: 1rem;
+			text-align: right;
+		}
+
+		select {
+			color: var(--darkest);
+			background-color: var(--light);
+			outline: 0;
+			border: 0;
+			border-radius: 24px;
+			padding: 4px 12px;
+			font-size: 1rem;
 		}
 	}
 }
