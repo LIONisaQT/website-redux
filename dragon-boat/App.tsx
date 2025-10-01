@@ -6,6 +6,7 @@ import { Crew } from "./types";
 import { useState } from "react";
 
 export default function App() {
+	const [crews, setCrews] = useState<Crew[]>([sampleCrew]);
 	const [activeCrews, setActiveCrews] = useState<Crew[]>([]);
 
 	const onViewClicked = (crew: Crew) => {
@@ -13,7 +14,17 @@ export default function App() {
 	};
 
 	const onDeleteClicked = (crew: Crew) => {
-		console.log(`Delete ${crew.name}`);
+		setCrews((prev) => prev.filter((c) => c.id !== crew.id));
+	};
+
+	const onCreateClicked = () => {
+		const newCrew: Crew = {
+			id: crypto.randomUUID(),
+			name: "New crew",
+			roster: [],
+		};
+
+		setCrews((prev) => [...prev, newCrew]);
 	};
 
 	return (
@@ -21,9 +32,10 @@ export default function App() {
 			<h1 className="title">Dragon Boat Balancer</h1>
 			{activeCrews.length === 0 && (
 				<CrewList
-					data={[sampleCrew, sampleCrew, sampleCrew]}
+					data={crews}
 					onView={onViewClicked}
 					onDelete={onDeleteClicked}
+					onCreate={onCreateClicked}
 				/>
 			)}
 			<section className="active-crews">

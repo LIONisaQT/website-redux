@@ -12,9 +12,15 @@ type CrewTableProps = {
 	data: Crew[];
 	onView?: (crew: Crew) => void;
 	onDelete?: (crew: Crew) => void;
+	onCreate?: () => void;
 };
 
-export default function CrewList({ data, onView, onDelete }: CrewTableProps) {
+export default function CrewList({
+	data,
+	onView,
+	onDelete,
+	onCreate,
+}: CrewTableProps) {
 	const columns: ColumnDef<Crew>[] = [
 		{
 			accessorKey: "name",
@@ -85,7 +91,9 @@ export default function CrewList({ data, onView, onDelete }: CrewTableProps) {
 					))}
 				</tbody>
 			</table>
-			<button className="create-crew">Create a new crew</button>
+			<button className="create-crew" onClick={onCreate}>
+				Create a new crew
+			</button>
 		</div>
 	);
 }
