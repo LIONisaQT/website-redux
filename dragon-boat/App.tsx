@@ -19,11 +19,13 @@ export default function App() {
 	return (
 		<>
 			<h1 className="title">Dragon Boat Balancer</h1>
-			<CrewList
-				data={[sampleCrew, sampleCrew, sampleCrew]}
-				onView={onViewClicked}
-				onDelete={onDeleteClicked}
-			/>
+			{activeCrews.length === 0 && (
+				<CrewList
+					data={[sampleCrew, sampleCrew, sampleCrew]}
+					onView={onViewClicked}
+					onDelete={onDeleteClicked}
+				/>
+			)}
 			<section className="active-crews">
 				{activeCrews.map((crew, i) => (
 					<CrewManager key={`${i}-${crew.id}`} crew={crew} />
