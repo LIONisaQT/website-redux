@@ -1,9 +1,10 @@
+import { Paddler } from "../../types";
 import "./AddNewPaddler.scss";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 interface AddNewPaddlerProps {
 	openState: [boolean, Dispatch<SetStateAction<boolean>>];
-	onAddNew: () => void;
+	onAddNew: (newPaddler: Paddler) => void;
 }
 
 export default function AddNewPaddler({
@@ -11,6 +12,9 @@ export default function AddNewPaddler({
 	onAddNew,
 }: AddNewPaddlerProps) {
 	const [isOpen, setOpen] = openState;
+	const [name, setName] = useState("");
+	const [side, setSide] = useState("both");
+	const [weight, setWeight] = useState(100);
 
 	return (
 		<div className={`new-paddler-container ${isOpen ? "" : "hidden"}`}>
@@ -18,11 +22,21 @@ export default function AddNewPaddler({
 				<h2>New paddler</h2>
 				<section>
 					<label htmlFor="name">Name</label>
-					<input type="text" id="name" placeholder="John Paddler" />
+					<input
+						type="text"
+						id="name"
+						placeholder="Paddler name"
+						value={name}
+						onChange={(e) => setName(e.target.value)}
+					/>
 				</section>
 				<section>
 					<label htmlFor="side-pref">Side preference</label>
-					<select id="side-pref" defaultValue={"Both"}>
+					<select
+						id="side-pref"
+						defaultValue={side}
+						onChange={(e) => setSide(e.target.value)}
+					>
 						<option value="left">Left</option>
 						<option value="right">Right</option>
 						<option value="both">Both</option>
@@ -30,10 +44,17 @@ export default function AddNewPaddler({
 				</section>
 				<section>
 					<label htmlFor="weight">Weight</label>
-					<input type="number" id="weight" placeholder="0"></input>
+					<input
+						type="number"
+						id="weight"
+						placeholder={weight.toString()}
+						onChange={(e) => setWeight(Number(e.target.value))}
+					></input>
 				</section>
 				<section className="button-group">
-					<button onClick={onAddNew}>Add</button>
+					<button onClick={() => onAddNew({ name, side, weight } as Paddler)}>
+						Add
+					</button>
 					<button onClick={() => setOpen(false)}>Cancel</button>
 				</section>
 			</div>

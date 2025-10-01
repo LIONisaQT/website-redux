@@ -38,6 +38,10 @@ export default function CrewManager({
 	}, [crew.roster]);
 
 	useEffect(() => {
+		onEdit?.({ ...crew, roster: paddlers });
+	}, [crew, onEdit, paddlers]);
+
+	useEffect(() => {
 		const resizeSide = (setSide: Dispatch<SetStateAction<SideArray>>) => {
 			setSide((prev) => {
 				const copy = [...prev];

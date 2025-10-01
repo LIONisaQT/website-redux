@@ -15,14 +15,8 @@ export default function Roster({ rosterState }: RosterProps) {
 
 	const addNewClicked = () => setAddModalOpen(true);
 
-	const addNewPaddler = () => {
+	const addNewPaddler = (newPaddler: Paddler) => {
 		setAddModalOpen(false);
-		const newPaddler: Paddler = {
-			name: "John Paddler",
-			side: "both",
-			weight: 169,
-		};
-
 		setRoster((prev) => [...prev, newPaddler]);
 	};
 
