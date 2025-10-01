@@ -60,6 +60,20 @@ export default function App() {
 		}
 	};
 
+	const onEditCrew = async (updatedCrew: Crew) => {
+		const docRef = doc(db, "dragon-boat", "crews");
+
+		try {
+			await updateDoc(docRef, {
+				[updatedCrew.id]: updatedCrew,
+			});
+			console.log(`Crew ${updatedCrew.id} updated successfully`);
+		} catch (err) {
+			console.error("Error editing crew:", err);
+			throw err;
+		}
+	};
+
 	const onCloseClicked = (crew: Crew) => {
 		setActiveCrews((prev) => prev.filter((c) => c.id !== crew.id));
 	};
@@ -90,6 +104,7 @@ export default function App() {
 							key={`${i}-${crew.id}`}
 							crew={crew}
 							onClose={onCloseClicked}
+							onEdit={onEditCrew}
 						/>
 					))}
 					{activeCrews.length > 0 && (

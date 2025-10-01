@@ -10,9 +10,14 @@ import Toggles from "../Toggles/Toggles";
 interface CrewManagerProps {
 	crew: Crew;
 	onClose?: (crew: Crew) => void;
+	onEdit?: (crew: Crew) => void;
 }
 
-export default function CrewManager({ crew, onClose }: CrewManagerProps) {
+export default function CrewManager({
+	crew,
+	onClose,
+	onEdit,
+}: CrewManagerProps) {
 	const [numRows, setNumRows] = useState(10);
 	const [centerMass, setCenterMass] = useState(5);
 
@@ -25,6 +30,8 @@ export default function CrewManager({ crew, onClose }: CrewManagerProps) {
 	);
 	const [drum, setDrum] = useState<Paddler | null>(null);
 	const [steer, setSteer] = useState<Paddler | null>(null);
+
+	const [name, setName] = useState(crew.name);
 
 	useEffect(() => {
 		setPaddlers(crew.roster);
@@ -237,7 +244,17 @@ export default function CrewManager({ crew, onClose }: CrewManagerProps) {
 					✕
 				</button>
 			)}
-			<h1 className="crew-name">{crew.name}</h1>
+			<input
+				className="crew-name"
+				defaultValue={crew.name}
+				onChange={(e) => setName(e.target.value)}
+				onBlur={() => onEdit?.({ ...crew, name: name })}
+				onKeyDown={(e) => {
+					if (e.key === "Enter") {
+						e.currentTarget.blur();
+					}
+				}}
+			/>
 			<DndContext onDragEnd={handleDragEnd} collisionDetection={pointerWithin}>
 				<div className="crew-manager">
 					<section className="main">

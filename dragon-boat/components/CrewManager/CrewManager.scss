@@ -8,7 +8,23 @@
 	position: relative;
 
 	.crew-name {
+		width: 90%;
+		font-size: 2rem;
+		font-weight: bolder;
+		text-align: center;
+		outline: none;
+		border: 2px solid transparent;
+		border-radius: 8px;
+		background-color: transparent;
+		color: var(--light);
 		margin-bottom: 12px;
+		transition: all 0.1s ease-out;
+
+		&:focus {
+			border: 2px solid var(--dark);
+			background-color: var(--light);
+			color: var(--darkest);
+		}
 	}
 
 	.crew-manager {
