@@ -51,7 +51,7 @@ export default function App() {
 								id="crews"
 								onChange={(e) => console.log(e.target.value)}
 							>
-								{[sampleCrew, sampleCrew].map((crew, i) => (
+								{crews.map((crew, i) => (
 									<option key={`${i}-${crew.id}`} value={crew.id}>
 										{crew.name}
 									</option>
