@@ -59,11 +59,13 @@ export default function App() {
 								id="crews"
 								onChange={(e) => console.log(e.target.value)}
 							>
-								{crews.map((crew, i) => (
-									<option key={`${i}-${crew.id}`} value={crew.id}>
-										{crew.name}
-									</option>
-								))}
+								{crews
+									.filter((c) => !activeCrews.includes(c))
+									.map((crew, i) => (
+										<option key={`${i}-${crew.id}`} value={crew.id}>
+											{crew.name}
+										</option>
+									))}
 							</select>
 						</div>
 					)}
