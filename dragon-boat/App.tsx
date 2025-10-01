@@ -46,6 +46,12 @@ export default function App() {
 		const newCrew: Crew = {
 			id: crypto.randomUUID(),
 			name: "New crew",
+			numRows: 10,
+			centerMass: 5,
+			leftSide: Array(10).fill(null),
+			rightSide: Array(10).fill(null),
+			drum: null,
+			steer: null,
 			roster: [],
 		};
 

@@ -18,28 +18,42 @@ export default function CrewManager({
 	onClose,
 	onEdit,
 }: CrewManagerProps) {
-	const [numRows, setNumRows] = useState(10);
-	const [centerMass, setCenterMass] = useState(5);
+	const [numRows, setNumRows] = useState(crew.numRows);
+	const [centerMass, setCenterMass] = useState(crew.centerMass);
 
-	const [paddlers, setPaddlers] = useState<Paddler[]>([]);
-	const [leftSide, setLeftSide] = useState<SideArray>(
-		Array(numRows).fill(null)
-	);
-	const [rightSide, setRightSide] = useState<SideArray>(
-		Array(numRows).fill(null)
-	);
-	const [drum, setDrum] = useState<Paddler | null>(null);
-	const [steer, setSteer] = useState<Paddler | null>(null);
+	const [roster, setRoster] = useState<Paddler[]>(crew.roster);
+	const [leftSide, setLeftSide] = useState<SideArray>(crew.leftSide);
+	const [rightSide, setRightSide] = useState<SideArray>(crew.rightSide);
+	const [drum, setDrum] = useState<Paddler | null>(crew.drum);
+	const [steer, setSteer] = useState<Paddler | null>(crew.steer);
 
 	const [name, setName] = useState(crew.name);
+	const [updatedName, setUpdatedName] = useState(crew.name);
 
 	useEffect(() => {
-		setPaddlers(crew.roster);
-	}, [crew.roster]);
-
-	useEffect(() => {
-		onEdit?.({ ...crew, roster: paddlers });
-	}, [crew, onEdit, paddlers]);
+		onEdit?.({
+			...crew,
+			name: updatedName,
+			numRows,
+			centerMass,
+			leftSide,
+			rightSide,
+			drum,
+			steer,
+			roster,
+		});
+	}, [
+		crew,
+		onEdit,
+		updatedName,
+		numRows,
+		centerMass,
+		leftSide,
+		rightSide,
+		drum,
+		steer,
+		roster,
+	]);
 
 	useEffect(() => {
 		const resizeSide = (setSide: Dispatch<SetStateAction<SideArray>>) => {
@@ -51,7 +65,7 @@ export default function CrewManager({
 				} else if (numRows < copy.length) {
 					const removed = copy.slice(numRows).filter(Boolean) as Paddler[];
 					if (removed.length > 0) {
-						setPaddlers((prevRoster) => [...prevRoster, ...removed]);
+						setRoster((prevRoster) => [...prevRoster, ...removed]);
 					}
 					copy.length = numRows;
 				}
@@ -62,7 +76,7 @@ export default function CrewManager({
 
 		resizeSide(setLeftSide);
 		resizeSide(setRightSide);
-	}, [numRows, setPaddlers, setLeftSide, setRightSide]);
+	}, [numRows, setRoster, setLeftSide, setRightSide]);
 
 	const removeMap = useMemo<
 		Record<PaddlerLocation, (p: Paddler, pos: number) => void>
@@ -86,10 +100,9 @@ export default function CrewManager({
 			},
 			drum: () => setDrum(null),
 			steer: () => setSteer(null),
-			roster: (p) =>
-				setPaddlers((prev) => prev.filter((x) => x.name !== p.name)),
+			roster: (p) => setRoster((prev) => prev.filter((x) => x.name !== p.name)),
 		}),
-		[setLeftSide, setRightSide, setDrum, setSteer, setPaddlers]
+		[setLeftSide, setRightSide, setDrum, setSteer, setRoster]
 	);
 
 	const addMap = useMemo<
@@ -113,14 +126,14 @@ export default function CrewManager({
 			drum: (p: Paddler) => setDrum(p),
 			steer: (p: Paddler) => setSteer(p),
 			roster: (p: Paddler, index: number) => {
-				setPaddlers((prev) => {
+				setRoster((prev) => {
 					const newRoster = [...prev];
 					newRoster.splice(index, 0, p);
 					return newRoster;
 				});
 			},
 		}),
-		[setLeftSide, setRightSide, setDrum, setSteer, setPaddlers]
+		[setLeftSide, setRightSide, setDrum, setSteer, setRoster]
 	);
 
 	const getTarget = (loc: PaddlerLocation) => {
@@ -130,7 +143,7 @@ export default function CrewManager({
 			case "right":
 				return rightSide;
 			case "roster":
-				return paddlers;
+				return roster;
 			case "drum":
 				return drum ? [drum] : [null];
 			case "steer":
@@ -162,7 +175,7 @@ export default function CrewManager({
 		if (!destination) {
 			if (currentLocation === "roster") return;
 			removeMap[currentLocation]?.(dragged, currentPosition);
-			addMap["roster"]?.(dragged, paddlers.length);
+			addMap["roster"]?.(dragged, roster.length);
 			return;
 		}
 
@@ -208,7 +221,7 @@ export default function CrewManager({
 
 	const onGenerateLineupClicked = () => {
 		const available = [
-			...paddlers,
+			...roster,
 			...leftSide.filter((p): p is Paddler => p !== null),
 			...rightSide.filter((p): p is Paddler => p !== null),
 		];
@@ -217,11 +230,11 @@ export default function CrewManager({
 
 		setLeftSide(lineup.left);
 		setRightSide(lineup.right);
-		setPaddlers(lineup.remainingRoster);
+		setRoster(lineup.remainingRoster);
 	};
 
 	const onRecallClicked = () => {
-		setPaddlers((prev) => [
+		setRoster((prev) => [
 			...prev,
 			...leftSide.filter((p): p is Paddler => p !== null),
 			...rightSide.filter((p): p is Paddler => p !== null),
@@ -252,7 +265,7 @@ export default function CrewManager({
 				className="crew-name"
 				defaultValue={crew.name}
 				onChange={(e) => setName(e.target.value)}
-				onBlur={() => onEdit?.({ ...crew, name: name })}
+				onBlur={() => setUpdatedName(name)}
 				onKeyDown={(e) => {
 					if (e.key === "Enter") {
 						e.currentTarget.blur();
@@ -280,7 +293,7 @@ export default function CrewManager({
 							rowSize={numRows}
 						/>
 					</section>
-					<Roster rosterState={[paddlers, setPaddlers]} />
+					<Roster rosterState={[roster, setRoster]} />
 				</div>
 			</DndContext>
 		</div>

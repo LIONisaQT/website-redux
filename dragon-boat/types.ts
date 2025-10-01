@@ -17,5 +17,11 @@ export type Roster = {
 export type Crew = {
 	id: string;
 	name: string;
+	numRows: number;
+	centerMass: number;
+	leftSide: SideArray;
+	rightSide: SideArray;
+	drum: Paddler | null;
+	steer: Paddler | null;
 	roster: Paddler[];
 };
