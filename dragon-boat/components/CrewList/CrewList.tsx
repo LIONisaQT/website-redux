@@ -27,7 +27,12 @@ export default function CrewList({
 			header: "Crew name",
 		},
 		{
-			accessorFn: (crew) => crew.roster.length,
+			accessorFn: (crew) =>
+				crew.roster.length +
+				crew.leftSide.filter((p) => p !== null).length +
+				crew.rightSide.filter((p) => p !== null).length +
+				(crew.drum ? 1 : 0) +
+				(crew.steer ? 1 : 0),
 			id: "numPaddlers",
 			header: "#",
 		},
