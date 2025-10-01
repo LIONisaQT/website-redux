@@ -1,0 +1,36 @@
+@import url(../../colors.css);
+
+.new-paddler-container {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100dvw;
+	height: 100dvh;
+	background-color: rgba(0, 0, 0, 0.8);
+	opacity: 1;
+	transition: all 0.1s ease-out;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	pointer-events: auto;
+
+	.new-paddler-modal {
+		border-radius: 8px;
+		background-color: var(--darker);
+		padding: 24px 48px;
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+
+		section {
+			display: flex;
+			gap: 4px;
+		}
+	}
+}
+
+.hidden {
+	opacity: 0;
+	pointer-events: none;
+}
