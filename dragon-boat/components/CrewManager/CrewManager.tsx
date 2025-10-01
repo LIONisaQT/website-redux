@@ -1,6 +1,13 @@
 import "./CrewManager.scss";
 import { DragEndEvent, DndContext, pointerWithin } from "@dnd-kit/core";
-import { useState, useEffect, Dispatch, SetStateAction, useMemo } from "react";
+import {
+	useState,
+	useEffect,
+	Dispatch,
+	SetStateAction,
+	useMemo,
+	useRef,
+} from "react";
 import { Paddler, SideArray, PaddlerLocation, Crew } from "../../types";
 import { generateLineup } from "../../utils/utils";
 import Boat from "../Boat/Boat";
@@ -18,6 +25,8 @@ export default function CrewManager({
 	onClose,
 	onEdit,
 }: CrewManagerProps) {
+	const isMounted = useRef(false);
+
 	const [numRows, setNumRows] = useState(crew.numRows);
 	const [centerMass, setCenterMass] = useState(crew.centerMass);
 
@@ -31,7 +40,13 @@ export default function CrewManager({
 	const [updatedName, setUpdatedName] = useState(crew.name);
 
 	useEffect(() => {
-		onEdit?.({
+		// Prevent saving on mount
+		if (!isMounted.current) {
+			isMounted.current = true;
+			return;
+		}
+
+		const updatedCrew = {
 			...crew,
 			name: updatedName,
 			numRows,
@@ -41,7 +56,12 @@ export default function CrewManager({
 			drum,
 			steer,
 			roster,
-		});
+		};
+
+		// Prevent saving when nothing has changed
+		if (JSON.stringify(updatedCrew) !== JSON.stringify(crew)) {
+			onEdit?.(updatedCrew);
+		}
 	}, [
 		crew,
 		onEdit,
