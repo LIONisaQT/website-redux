@@ -1,6 +1,6 @@
 import { Paddler } from "../../types";
 import "./AddNewPaddler.scss";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface AddNewPaddlerProps {
 	openState: [boolean, Dispatch<SetStateAction<boolean>>];
@@ -15,6 +15,18 @@ export default function AddNewPaddler({
 	const [name, setName] = useState<string>();
 	const [side, setSide] = useState("both");
 	const [weight, setWeight] = useState(100);
+
+	useEffect(() => {
+		if (isOpen) {
+			document.body.classList.add("modal-open");
+		} else {
+			document.body.classList.remove("modal-open");
+		}
+
+		return () => {
+			document.body.classList.remove("modal-open");
+		};
+	}, [isOpen]);
 
 	return (
 		<div className={`new-paddler-container ${isOpen ? "" : "hidden"}`}>
