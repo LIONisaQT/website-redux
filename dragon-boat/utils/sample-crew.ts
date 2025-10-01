@@ -42,5 +42,5 @@ export const sampleRoster: Roster = {
 export const sampleCrew: Crew = {
 	id: "crew-0",
 	name: "Crew 0",
-	roster: sampleRoster,
+	roster: sampleRoster.paddlers,
 };

@@ -26,8 +26,8 @@ export default function CrewManager({ crew }: CrewManagerProps) {
 	const [steer, setSteer] = useState<Paddler | null>(null);
 
 	useEffect(() => {
-		setPaddlers(crew.roster.paddlers);
-	}, [crew.roster.paddlers]);
+		setPaddlers(crew.roster);
+	}, [crew.roster]);
 
 	useEffect(() => {
 		const resizeSide = (setSide: Dispatch<SetStateAction<SideArray>>) => {

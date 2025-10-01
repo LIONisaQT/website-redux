@@ -21,7 +21,7 @@ export default function CrewList({ data, onView, onDelete }: CrewTableProps) {
 			header: "Crew name",
 		},
 		{
-			accessorFn: (crew) => crew.roster.paddlers.length,
+			accessorFn: (crew) => crew.roster.length,
 			id: "numPaddlers",
 			header: "#",
 		},

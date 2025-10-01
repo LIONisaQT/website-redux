@@ -17,5 +17,5 @@ export type Roster = {
 export type Crew = {
 	id: string;
 	name: string;
-	roster: Roster;
+	roster: Paddler[];
 };
