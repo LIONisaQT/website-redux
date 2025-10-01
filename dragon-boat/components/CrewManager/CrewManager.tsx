@@ -231,6 +231,7 @@ export default function CrewManager({ crew }: CrewManagerProps) {
 
 	return (
 		<div className="crew-manager-container">
+			<h1 className="crew-name">{crew.name}</h1>
 			<DndContext onDragEnd={handleDragEnd} collisionDetection={pointerWithin}>
 				<div className="crew-manager">
 					<section className="main">
