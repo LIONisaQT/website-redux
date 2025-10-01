@@ -18,6 +18,7 @@ export default function AddNewPaddler({
 
 	return (
 		<div className={`new-paddler-container ${isOpen ? "" : "hidden"}`}>
+			<div className="background" onClick={() => setOpen(false)} />
 			<div className="new-paddler-modal">
 				<h2>New paddler</h2>
 				<section>
