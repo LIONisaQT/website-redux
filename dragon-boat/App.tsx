@@ -27,6 +27,10 @@ export default function App() {
 		setCrews((prev) => [...prev, newCrew]);
 	};
 
+	const onCloseClicked = (crew: Crew) => {
+		setActiveCrews((prev) => prev.filter((c) => c.id !== crew.id));
+	};
+
 	return (
 		<>
 			<h1 className="title">Dragon Boat Balancer</h1>
@@ -41,7 +45,11 @@ export default function App() {
 			<section className="active-crews">
 				<>
 					{activeCrews.map((crew, i) => (
-						<CrewManager key={`${i}-${crew.id}`} crew={crew} />
+						<CrewManager
+							key={`${i}-${crew.id}`}
+							crew={crew}
+							onClose={onCloseClicked}
+						/>
 					))}
 					{activeCrews.length > 0 && (
 						<div className="crew-dropdown-container">

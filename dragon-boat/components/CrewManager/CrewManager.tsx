@@ -9,9 +9,10 @@ import Toggles from "../Toggles/Toggles";
 
 interface CrewManagerProps {
 	crew: Crew;
+	onClose?: (crew: Crew) => void;
 }
 
-export default function CrewManager({ crew }: CrewManagerProps) {
+export default function CrewManager({ crew, onClose }: CrewManagerProps) {
 	const [numRows, setNumRows] = useState(10);
 	const [centerMass, setCenterMass] = useState(5);
 
@@ -231,6 +232,11 @@ export default function CrewManager({ crew }: CrewManagerProps) {
 
 	return (
 		<div className="crew-manager-container">
+			{onClose && (
+				<button className="close-button" onClick={() => onClose(crew)}>
+					✕
+				</button>
+			)}
 			<h1 className="crew-name">{crew.name}</h1>
 			<DndContext onDragEnd={handleDragEnd} collisionDetection={pointerWithin}>
 				<div className="crew-manager">

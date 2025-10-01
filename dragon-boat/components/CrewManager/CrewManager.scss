@@ -1,6 +1,12 @@
 @import url(../../colors.css);
 
 .crew-manager-container {
+	background-color: var(--darker);
+	border-radius: 8px;
+	padding: 16px 0;
+	box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+	position: relative;
+
 	.crew-name {
 		margin-bottom: 12px;
 	}
@@ -32,6 +38,22 @@
 					flex: 1;
 				}
 			}
+		}
+	}
+
+	.close-button {
+		position: absolute;
+		top: 12px;
+		right: 14px;
+		width: 24px;
+		height: 24px;
+		border-radius: 50%;
+		background: transparent;
+		color: var(--white);
+		font-size: 1.2rem;
+
+		&:hover {
+			color: var(--red);
 		}
 	}
 }
