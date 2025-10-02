@@ -43,7 +43,10 @@
 			border-radius: 24px;
 			padding: 4px 12px;
 			font-size: 1rem;
-			text-align: right;
+
+			&[type="number"] {
+				text-align: right;
+			}
 		}
 
 		select {
