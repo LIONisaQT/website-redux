@@ -1,4 +1,5 @@
 import { Paddler } from "../../types";
+import { sanitizeNumber, sanitizeText } from "../../utils/utils";
 import "./AddNewPaddler.scss";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
@@ -32,6 +33,9 @@ export default function AddNewPaddler({
 		<div className={`new-paddler-container ${isOpen ? "" : "hidden"}`}>
 			<div className="background" onClick={() => setOpen(false)} />
 			<div className="new-paddler-modal">
+				<button className="close-button" onClick={() => setOpen(false)}>
+					✕
+				</button>
 				<h2>New paddler</h2>
 				<section>
 					<label htmlFor="name">Name</label>
@@ -40,7 +44,7 @@ export default function AddNewPaddler({
 						id="name"
 						placeholder="Paddler name"
 						value={name}
-						onChange={(e) => setName(e.target.value ?? "Paddler name")}
+						onChange={(e) => setName(sanitizeText(e.target.value))}
 					/>
 				</section>
 				<section>
@@ -61,15 +65,51 @@ export default function AddNewPaddler({
 						type="number"
 						id="weight"
 						placeholder={weight.toString()}
-						onChange={(e) => setWeight(Number(e.target.value))}
+						min={1}
+						max={999}
+						onChange={(e) => setWeight(sanitizeNumber(e.target.value, 1, 999))}
+						onKeyDown={(e) => {
+							if (
+								[
+									"Backspace",
+									"Delete",
+									"Tab",
+									"Escape",
+									"Enter",
+									"ArrowLeft",
+									"ArrowRight",
+									"Home",
+									"End",
+								].includes(e.key)
+							) {
+								return;
+							}
+
+							if (!/[0-9]/.test(e.key)) {
+								e.preventDefault();
+							}
+
+							const currentValue = e.currentTarget.value;
+							if (currentValue.length >= 3 && /[0-9]/.test(e.key)) {
+								e.preventDefault();
+							}
+						}}
 					></input>
 				</section>
-				<section className="button-group">
-					<button onClick={() => onAddNew({ name, side, weight } as Paddler)}>
+				<div className="button-group">
+					<button
+						onClick={() =>
+							onAddNew({
+								name,
+								side,
+								weight,
+							} as Paddler)
+						}
+					>
 						Add
 					</button>
 					<button onClick={() => setOpen(false)}>Cancel</button>
-				</section>
+				</div>
 			</div>
 		</div>
 	);
