@@ -13,7 +13,7 @@ export default function AddNewPaddler({
 	onAddNew,
 }: AddNewPaddlerProps) {
 	const [isOpen, setOpen] = openState;
-	const [name, setName] = useState<string>();
+	const [name, setName] = useState<string>("");
 	const [side, setSide] = useState("both");
 	const [weight, setWeight] = useState(100);
 
@@ -105,6 +105,7 @@ export default function AddNewPaddler({
 								weight,
 							} as Paddler)
 						}
+						disabled={name.length === 0}
 					>
 						Add
 					</button>
