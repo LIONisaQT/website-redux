@@ -65,12 +65,22 @@
 		background-color: var(--light);
 		box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
 
+		opacity: 1;
+		scale: 1;
+		transition: scale 0.1s ease-out, top 0.1s ease-out, opacity 0.1s ease-out;
+
 		button {
 			width: 28px;
 			height: 28px;
 			background-color: var(--light);
 			border-radius: 4px;
 		}
+	}
+
+	.hidden {
+		scale: 0.9;
+		opacity: 0;
+		top: 0;
 	}
 }
 
