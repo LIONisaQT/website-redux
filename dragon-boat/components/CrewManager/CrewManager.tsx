@@ -1,5 +1,11 @@
 import "./CrewManager.scss";
-import { DragEndEvent, DndContext, pointerWithin } from "@dnd-kit/core";
+import {
+	DragEndEvent,
+	DndContext,
+	pointerWithin,
+	useSensor,
+	PointerSensor,
+} from "@dnd-kit/core";
 import {
 	useState,
 	useEffect,
@@ -239,6 +245,12 @@ export default function CrewManager({
 		}
 	};
 
+	const pointerSensor = useSensor(PointerSensor, {
+		activationConstraint: {
+			distance: 8,
+		},
+	});
+
 	const onGenerateLineupClicked = () => {
 		const available = [
 			...roster,
@@ -292,7 +304,11 @@ export default function CrewManager({
 					}
 				}}
 			/>
-			<DndContext onDragEnd={handleDragEnd} collisionDetection={pointerWithin}>
+			<DndContext
+				onDragEnd={handleDragEnd}
+				collisionDetection={pointerWithin}
+				sensors={[pointerSensor]}
+			>
 				<div className="crew-manager">
 					<section className="main">
 						<Toggles

@@ -1,6 +1,7 @@
 import "./PaddlerCard.scss";
 import { Paddler, PaddlerLocation } from "../../types";
 import { useDraggable, useDroppable } from "@dnd-kit/core";
+import { useState } from "react";
 
 interface PaddlerProps {
 	details: Paddler | null;
@@ -13,6 +14,8 @@ export default function PaddlerCard({
 	position,
 	location,
 }: PaddlerProps) {
+	const [isPopupOpen, setPopupOpen] = useState(false);
+
 	const {
 		attributes,
 		listeners,
@@ -61,7 +64,7 @@ export default function PaddlerCard({
 			{...attributes}
 		>
 			{details ? (
-				<>
+				<div className="info-card" onClick={() => setPopupOpen(!isPopupOpen)}>
 					<p className="name">
 						{typeof position === "number" &&
 						(location === "left" || location === "right") ? (
@@ -75,7 +78,7 @@ export default function PaddlerCard({
 						</p>
 						<p>{details.weight}</p>
 					</div>
-				</>
+				</div>
 			) : (
 				<div className="empty-slot">
 					<p>
@@ -85,6 +88,10 @@ export default function PaddlerCard({
 					</p>
 				</div>
 			)}
+			<div className={`popup-container ${isPopupOpen ? "" : "hidden"}`}>
+				<button>✍️</button>
+				<button>🗑️</button>
+			</div>
 		</div>
 	);
 }
