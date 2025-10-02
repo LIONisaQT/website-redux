@@ -1,24 +1,27 @@
 import "./Roster.scss";
-import { Dispatch, SetStateAction, useState } from "react";
-import { Paddler } from "../../types";
+import { Dispatch, SetStateAction } from "react";
+import { Paddler, PaddlerLocation } from "../../types";
 import { sortRosterByWeight, sortRosterBySide } from "../../utils/utils";
 import PaddlerCard from "../PaddlerCard/PaddlerCard";
-import AddNewPaddler from "./AddNewPaddler";
 
 interface RosterProps {
 	rosterState: [Paddler[], Dispatch<SetStateAction<Paddler[]>>];
+	addNew: () => void;
+	editPaddler: (paddler: Paddler) => void;
+	deletePaddler: (
+		paddler: Paddler,
+		location: PaddlerLocation,
+		position: number | "drum" | "steer"
+	) => void;
 }
 
-export default function Roster({ rosterState }: RosterProps) {
+export default function Roster({
+	rosterState,
+	addNew,
+	editPaddler,
+	deletePaddler,
+}: RosterProps) {
 	const [roster, setRoster] = rosterState;
-	const [addModalOpen, setAddModalOpen] = useState(false);
-
-	const addNewClicked = () => setAddModalOpen(true);
-
-	const addNewPaddler = (newPaddler: Paddler) => {
-		setAddModalOpen(false);
-		setRoster((prev) => [...prev, newPaddler]);
-	};
 
 	return (
 		<section className="roster-container">
@@ -38,17 +41,15 @@ export default function Roster({ rosterState }: RosterProps) {
 						details={paddler}
 						position={i}
 						location="roster"
+						onEdit={editPaddler}
+						onDelete={deletePaddler}
 					/>
 				))}
 			</div>
 			<section className="button-group">
-				<button onClick={addNewClicked}>Add new paddler</button>
+				<button onClick={addNew}>Add new paddler</button>
 				<button>Import roster from...</button>
 			</section>
-			<AddNewPaddler
-				openState={[addModalOpen, setAddModalOpen]}
-				onAddNew={addNewPaddler}
-			/>
 		</section>
 	);
 }

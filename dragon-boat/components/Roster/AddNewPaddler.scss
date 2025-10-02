@@ -78,8 +78,15 @@
 		}
 
 		.button-group {
-			padding-top: 12px;
+			display: flex;
+			flex-direction: row;
 			gap: 12px;
+			width: 332px;
+			padding-top: 12px;
+
+			button {
+				flex: 1;
+			}
 		}
 
 		.close-button {

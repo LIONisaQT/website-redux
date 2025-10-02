@@ -19,6 +19,7 @@ import { generateLineup } from "../../utils/utils";
 import Boat from "../Boat/Boat";
 import Roster from "../Roster/Roster";
 import Toggles from "../Toggles/Toggles";
+import AddNewPaddler from "../Roster/AddNewPaddler";
 
 interface CrewManagerProps {
 	crew: Crew;
@@ -44,6 +45,8 @@ export default function CrewManager({
 
 	const [name, setName] = useState(crew.name);
 	const [updatedName, setUpdatedName] = useState(crew.name);
+
+	const [addModalOpen, setAddModalOpen] = useState(false);
 
 	useEffect(() => {
 		// Prevent saving on mount
@@ -286,6 +289,29 @@ export default function CrewManager({
 		drum !== null ||
 		steer !== null;
 
+	const onAddNewClicked = () => setAddModalOpen(true);
+
+	const addNewPaddler = (newPaddler: Paddler) => {
+		setAddModalOpen(false);
+		setRoster((prev) => [...prev, newPaddler]);
+	};
+
+	const editPaddler = (paddler: Paddler) => {
+		// setAddModalOpen(true);
+		// setRoster((prev) =>
+		// 	prev.map((p) => (p.name === paddler.name ? paddler : p))
+		// );
+		console.log("edit", paddler);
+	};
+
+	const deletePaddler = (
+		paddler: Paddler,
+		location: PaddlerLocation,
+		position: number | "drum" | "steer"
+	) => {
+		removeMap[location]?.(paddler, position as number);
+	};
+
 	return (
 		<div className="crew-manager-container">
 			{onClose && (
@@ -327,10 +353,21 @@ export default function CrewManager({
 							drum={drum}
 							steer={steer}
 							rowSize={numRows}
+							editPaddler={editPaddler}
+							deletePaddler={deletePaddler}
 						/>
 					</section>
-					<Roster rosterState={[roster, setRoster]} />
+					<Roster
+						rosterState={[roster, setRoster]}
+						addNew={onAddNewClicked}
+						editPaddler={editPaddler}
+						deletePaddler={deletePaddler}
+					/>
 				</div>
+				<AddNewPaddler
+					openState={[addModalOpen, setAddModalOpen]}
+					onAddNew={addNewPaddler}
+				/>
 			</DndContext>
 		</div>
 	);

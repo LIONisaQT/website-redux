@@ -7,20 +7,30 @@ import { useOnClickOutside } from "../../hooks/useOnClickOutside";
 interface PaddlerProps {
 	details: Paddler | null;
 	location: PaddlerLocation;
-	position?: number | "drum" | "steer";
+	position: number | "drum" | "steer";
+	onEdit: (paddler: Paddler) => void;
+	onDelete: (
+		paddler: Paddler,
+		location: PaddlerLocation,
+		position: number | "drum" | "steer"
+	) => void;
 }
 
 export default function PaddlerCard({
 	details,
 	position,
 	location,
+	onEdit,
+	onDelete,
 }: PaddlerProps) {
 	const [isPopupOpen, setPopupOpen] = useState(false);
 	const cardRef = useRef<HTMLDivElement>(null);
+	const popupRef = useRef<HTMLDivElement>(null);
 	useOnClickOutside(
 		cardRef,
 		() => setPopupOpen((prev) => !prev),
-		() => setPopupOpen(false)
+		() => setPopupOpen(false),
+		[popupRef]
 	);
 
 	const {
@@ -95,9 +105,19 @@ export default function PaddlerCard({
 					</p>
 				</div>
 			)}
-			<div className={`popup-container ${isPopupOpen ? "" : "hidden"}`}>
-				<button title="Edit">✍️</button>
-				<button title="Delete">🗑️</button>
+			<div
+				ref={popupRef}
+				className={`popup-container ${isPopupOpen ? "" : "hidden"}`}
+			>
+				<button onClick={() => details && onEdit(details)} title="Edit">
+					✍️
+				</button>
+				<button
+					onClick={() => details && onDelete(details, location, position)}
+					title="Delete"
+				>
+					🗑️
+				</button>
 			</div>
 		</div>
 	);

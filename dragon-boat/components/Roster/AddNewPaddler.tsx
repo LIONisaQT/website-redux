@@ -5,17 +5,19 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface AddNewPaddlerProps {
 	openState: [boolean, Dispatch<SetStateAction<boolean>>];
+	paddler?: Paddler;
 	onAddNew: (newPaddler: Paddler) => void;
 }
 
 export default function AddNewPaddler({
 	openState,
+	paddler,
 	onAddNew,
 }: AddNewPaddlerProps) {
 	const [isOpen, setOpen] = openState;
-	const [name, setName] = useState<string>("");
-	const [side, setSide] = useState("both");
-	const [weight, setWeight] = useState(100);
+	const [name, setName] = useState<string>(paddler ? paddler.name : "");
+	const [side, setSide] = useState(paddler ? paddler.side : "both");
+	const [weight, setWeight] = useState(paddler ? paddler.weight : 100);
 
 	useEffect(() => {
 		if (isOpen) {
@@ -52,7 +54,9 @@ export default function AddNewPaddler({
 					<select
 						id="side-pref"
 						defaultValue={side}
-						onChange={(e) => setSide(e.target.value)}
+						onChange={(e) =>
+							setSide(e.target.value as "left" | "right" | "both")
+						}
 					>
 						<option value="left">Left</option>
 						<option value="right">Right</option>
