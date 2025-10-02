@@ -1,7 +1,8 @@
 import "./PaddlerCard.scss";
 import { Paddler, PaddlerLocation } from "../../types";
 import { useDraggable, useDroppable } from "@dnd-kit/core";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { useOnClickOutside } from "../../hooks/useOnClickOutside";
 
 interface PaddlerProps {
 	details: Paddler | null;
@@ -15,6 +16,12 @@ export default function PaddlerCard({
 	location,
 }: PaddlerProps) {
 	const [isPopupOpen, setPopupOpen] = useState(false);
+	const cardRef = useRef<HTMLDivElement>(null);
+	useOnClickOutside(
+		cardRef,
+		() => setPopupOpen((prev) => !prev),
+		() => setPopupOpen(false)
+	);
 
 	const {
 		attributes,
@@ -64,7 +71,7 @@ export default function PaddlerCard({
 			{...attributes}
 		>
 			{details ? (
-				<div className="info-card" onClick={() => setPopupOpen(!isPopupOpen)}>
+				<div className="info-card" ref={cardRef}>
 					<p className="name">
 						{typeof position === "number" &&
 						(location === "left" || location === "right") ? (
@@ -89,8 +96,8 @@ export default function PaddlerCard({
 				</div>
 			)}
 			<div className={`popup-container ${isPopupOpen ? "" : "hidden"}`}>
-				<button>✍️</button>
-				<button>🗑️</button>
+				<button title="Edit">✍️</button>
+				<button title="Delete">🗑️</button>
 			</div>
 		</div>
 	);
