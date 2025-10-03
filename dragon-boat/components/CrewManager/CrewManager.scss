@@ -1,31 +1,75 @@
 @import url(../../colors.css);
 
-.crew-manager {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-	gap: 36px;
+.crew-manager-container {
+	background-color: var(--darker);
+	border-radius: 8px;
+	padding: 16px 0;
+	box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+	position: relative;
 
-	@media (max-width: 768px) {
-		flex-direction: column;
-		gap: 12px;
+	.crew-name {
+		width: 90%;
+		font-size: 2rem;
+		font-weight: bolder;
+		text-align: center;
+		outline: none;
+		border: 2px solid transparent;
+		border-radius: 8px;
+		background-color: transparent;
+		color: var(--light);
+		margin-bottom: 12px;
+		transition: all 0.1s ease-out;
+
+		&:focus {
+			border: 2px solid var(--dark);
+			background-color: var(--light);
+			color: var(--darkest);
+		}
 	}
 
-	.main {
+	.crew-manager {
 		display: flex;
-		flex-direction: column;
+		flex-direction: row;
 		align-items: center;
-		gap: 12px;
+		justify-content: center;
+		gap: 36px;
 
-		.button-group {
+		@media (max-width: 768px) {
+			flex-direction: column;
+			gap: 12px;
+		}
+
+		.main {
 			display: flex;
-			gap: 4px;
-			width: 100%;
+			flex-direction: column;
+			align-items: center;
+			gap: 12px;
 
-			button {
-				flex: 1;
+			.button-group {
+				display: flex;
+				gap: 4px;
+				width: 100%;
+
+				button {
+					flex: 1;
+				}
 			}
+		}
+	}
+
+	.close-button {
+		position: absolute;
+		top: 12px;
+		right: 14px;
+		width: 24px;
+		height: 24px;
+		border-radius: 50%;
+		background: transparent;
+		color: var(--white);
+		font-size: 1.2rem;
+
+		&:hover {
+			color: var(--red);
 		}
 	}
 }

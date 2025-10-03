@@ -1,30 +1,95 @@
 import "./CrewManager.scss";
-import { DragEndEvent, DndContext, pointerWithin } from "@dnd-kit/core";
-import { useState, useEffect, Dispatch, SetStateAction, useMemo } from "react";
-import { Paddler, SideArray, PaddlerLocation } from "../../types";
-import { sampleCrew } from "../../utils/sample-crew";
+import {
+	DragEndEvent,
+	DndContext,
+	pointerWithin,
+	useSensor,
+	PointerSensor,
+} from "@dnd-kit/core";
+import {
+	useState,
+	useEffect,
+	Dispatch,
+	SetStateAction,
+	useMemo,
+	useRef,
+} from "react";
+import { Paddler, SideArray, PaddlerLocation, Crew } from "../../types";
 import { generateLineup } from "../../utils/utils";
 import Boat from "../Boat/Boat";
 import Roster from "../Roster/Roster";
 import Toggles from "../Toggles/Toggles";
+import AddNewPaddler from "../Roster/AddNewPaddler";
 
-export default function CrewManager() {
-	const [numRows, setNumRows] = useState(10);
-	const [centerMass, setCenterMass] = useState(5);
+const DEBOUNCE_TIMER = 1000;
 
-	const [roster, setRoster] = useState<Paddler[]>([]);
-	const [leftSide, setLeftSide] = useState<SideArray>(
-		Array(numRows).fill(null)
-	);
-	const [rightSide, setRightSide] = useState<SideArray>(
-		Array(numRows).fill(null)
-	);
-	const [drum, setDrum] = useState<Paddler | null>(null);
-	const [steer, setSteer] = useState<Paddler | null>(null);
+interface CrewManagerProps {
+	crew: Crew;
+	onClose?: (crew: Crew) => void;
+	onEdit?: (crew: Crew) => void;
+}
+
+export default function CrewManager({
+	crew,
+	onClose,
+	onEdit,
+}: CrewManagerProps) {
+	const isMounted = useRef(false);
+
+	const [numRows, setNumRows] = useState(crew.numRows);
+	const [centerMass, setCenterMass] = useState(crew.centerMass);
+
+	const [roster, setRoster] = useState<Paddler[]>(crew.roster);
+	const [leftSide, setLeftSide] = useState<SideArray>(crew.leftSide);
+	const [rightSide, setRightSide] = useState<SideArray>(crew.rightSide);
+	const [drum, setDrum] = useState<Paddler | null>(crew.drum);
+	const [steer, setSteer] = useState<Paddler | null>(crew.steer);
+
+	const [name, setName] = useState(crew.name);
+	const [updatedName, setUpdatedName] = useState(crew.name);
+
+	const [addModalOpen, setAddModalOpen] = useState(false);
 
 	useEffect(() => {
-		setRoster(sampleCrew);
-	}, []);
+		// Prevent saving on mount
+		if (!isMounted.current) {
+			isMounted.current = true;
+			return;
+		}
+
+		const updatedCrew = {
+			...crew,
+			name: updatedName,
+			numRows,
+			centerMass,
+			leftSide,
+			rightSide,
+			drum,
+			steer,
+			roster,
+		};
+
+		// Prevent saving when nothing has changed
+		if (JSON.stringify(updatedCrew) !== JSON.stringify(crew)) {
+			// Debounce edit calls
+			const handler = setTimeout(() => {
+				onEdit?.(updatedCrew);
+			}, DEBOUNCE_TIMER);
+
+			return () => clearTimeout(handler);
+		}
+	}, [
+		crew,
+		onEdit,
+		updatedName,
+		numRows,
+		centerMass,
+		leftSide,
+		rightSide,
+		drum,
+		steer,
+		roster,
+	]);
 
 	useEffect(() => {
 		const resizeSide = (setSide: Dispatch<SetStateAction<SideArray>>) => {
@@ -190,6 +255,12 @@ export default function CrewManager() {
 		}
 	};
 
+	const pointerSensor = useSensor(PointerSensor, {
+		activationConstraint: {
+			distance: 8,
+		},
+	});
+
 	const onGenerateLineupClicked = () => {
 		const available = [
 			...roster,
@@ -225,9 +296,52 @@ export default function CrewManager() {
 		drum !== null ||
 		steer !== null;
 
+	const onAddNewClicked = () => setAddModalOpen(true);
+
+	const addNewPaddler = (newPaddler: Paddler) => {
+		setAddModalOpen(false);
+		setRoster((prev) => [...prev, newPaddler]);
+	};
+
+	const editPaddler = (paddler: Paddler) => {
+		// setAddModalOpen(true);
+		// setRoster((prev) =>
+		// 	prev.map((p) => (p.name === paddler.name ? paddler : p))
+		// );
+		console.log("edit", paddler);
+	};
+
+	const deletePaddler = (
+		paddler: Paddler,
+		location: PaddlerLocation,
+		position: number | "drum" | "steer"
+	) => {
+		removeMap[location]?.(paddler, position as number);
+	};
+
 	return (
 		<div className="crew-manager-container">
-			<DndContext onDragEnd={handleDragEnd} collisionDetection={pointerWithin}>
+			{onClose && (
+				<button className="close-button" onClick={() => onClose(crew)}>
+					✕
+				</button>
+			)}
+			<input
+				className="crew-name"
+				defaultValue={crew.name}
+				onChange={(e) => setName(e.target.value)}
+				onBlur={() => setUpdatedName(name)}
+				onKeyDown={(e) => {
+					if (e.key === "Enter") {
+						e.currentTarget.blur();
+					}
+				}}
+			/>
+			<DndContext
+				onDragEnd={handleDragEnd}
+				collisionDetection={pointerWithin}
+				sensors={[pointerSensor]}
+			>
 				<div className="crew-manager">
 					<section className="main">
 						<Toggles
@@ -246,10 +360,21 @@ export default function CrewManager() {
 							drum={drum}
 							steer={steer}
 							rowSize={numRows}
+							editPaddler={editPaddler}
+							deletePaddler={deletePaddler}
 						/>
 					</section>
-					<Roster rosterState={[roster, setRoster]} />
+					<Roster
+						rosterState={[roster, setRoster]}
+						addNew={onAddNewClicked}
+						editPaddler={editPaddler}
+						deletePaddler={deletePaddler}
+					/>
 				</div>
+				<AddNewPaddler
+					openState={[addModalOpen, setAddModalOpen]}
+					onAddNew={addNewPaddler}
+				/>
 			</DndContext>
 		</div>
 	);

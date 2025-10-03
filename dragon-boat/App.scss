@@ -1,10 +1,32 @@
 @import url("./colors.css");
 
+.active-crews {
+	display: flex;
+	flex-direction: column;
+	gap: 48px;
+}
+
+.crew-dropdown-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	gap: 8px;
+}
+
 button {
 	height: 36px;
 	border: none;
 	border-radius: 32px;
 	cursor: pointer;
+	transition: all 0.1s ease-out;
+
+	&:active {
+		transform: scale(0.97);
+	}
+
+	&:hover {
+		filter: brightness(0.9);
+	}
 
 	&:disabled {
 		cursor: not-allowed;

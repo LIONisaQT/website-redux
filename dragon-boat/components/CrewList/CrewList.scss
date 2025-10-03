@@ -1,0 +1,65 @@
+@import url(../../colors.css);
+
+.crew-list {
+	display: flex;
+	flex-direction: column;
+	align-items: start;
+}
+
+.crew-table {
+	width: 100%;
+	text-align: left;
+	border-collapse: collapse;
+	table-layout: fixed;
+
+	th,
+	td {
+		padding: 8px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.table-header {
+		background-color: black;
+		color: var(--light);
+		cursor: pointer;
+	}
+
+	th:nth-child(2),
+	td:nth-child(2) {
+		width: 20px;
+		white-space: nowrap;
+	}
+
+	th:nth-child(3),
+	td:nth-child(3) {
+		width: 124px;
+		white-space: nowrap;
+	}
+
+	.table-row {
+		&:nth-child(even) {
+			background-color: var(--darker);
+		}
+
+		.actions {
+			display: flex;
+			gap: 4px;
+
+			button {
+				width: 60px;
+			}
+
+			.delete {
+				background-color: var(--red);
+				color: var(--light);
+			}
+		}
+	}
+}
+
+.create-crew {
+	margin-top: 12px;
+	width: 200px;
+}

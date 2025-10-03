@@ -119,3 +119,17 @@ export const sortRosterBySide = (roster: Paddler[]): Paddler[] => {
 	};
 	return [...roster].sort((a, b) => sideOrder[a.side] - sideOrder[b.side]);
 };
+
+export const sanitizeText = (text: string): string =>
+	text.replace(/[^a-zA-Z0-9\-'\s]/g, "").replace(/\s+/g, " ");
+
+export function sanitizeNumber(
+	value: string | number,
+	min: number = 0,
+	max: number = 999
+): number {
+	const num = Number(value);
+	if (isNaN(num) || num < min) return min;
+	if (num > max) return max;
+	return num;
+}
