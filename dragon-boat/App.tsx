@@ -2,7 +2,7 @@ import "./App.scss";
 import CrewList from "./components/CrewList/CrewList";
 import CrewManager from "./components/CrewManager/CrewManager";
 import { Crew } from "./types";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { deleteField, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "./firebaseConfig";
 
@@ -66,7 +66,7 @@ export default function App() {
 		}
 	};
 
-	const onEditCrew = async (updatedCrew: Crew) => {
+	const onEditCrew = useCallback(async (updatedCrew: Crew) => {
 		const docRef = doc(db, "dragon-boat", "crews");
 
 		try {
@@ -78,7 +78,7 @@ export default function App() {
 			console.error("Error editing crew:", err);
 			throw err;
 		}
-	};
+	}, []);
 
 	const onCloseClicked = (crew: Crew) => {
 		setActiveCrews((prev) => prev.filter((c) => c.id !== crew.id));

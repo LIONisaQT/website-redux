@@ -21,6 +21,8 @@ import Roster from "../Roster/Roster";
 import Toggles from "../Toggles/Toggles";
 import AddNewPaddler from "../Roster/AddNewPaddler";
 
+const DEBOUNCE_TIMER = 1000;
+
 interface CrewManagerProps {
 	crew: Crew;
 	onClose?: (crew: Crew) => void;
@@ -69,7 +71,12 @@ export default function CrewManager({
 
 		// Prevent saving when nothing has changed
 		if (JSON.stringify(updatedCrew) !== JSON.stringify(crew)) {
-			onEdit?.(updatedCrew);
+			// Debounce edit calls
+			const handler = setTimeout(() => {
+				onEdit?.(updatedCrew);
+			}, DEBOUNCE_TIMER);
+
+			return () => clearTimeout(handler);
 		}
 	}, [
 		crew,
