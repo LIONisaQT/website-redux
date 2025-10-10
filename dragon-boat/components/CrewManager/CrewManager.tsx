@@ -353,8 +353,11 @@ export default function CrewManager({
 		}
 
 		setAddModalOpen(false);
-		setSelectedPaddler(null);
 	};
+
+	useEffect(() => {
+		if (!addModalOpen) setSelectedPaddler(null);
+	}, [addModalOpen]);
 
 	const deletePaddler = (
 		paddler: Paddler,

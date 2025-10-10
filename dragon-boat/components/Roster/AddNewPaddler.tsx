@@ -30,6 +30,9 @@ export default function AddNewPaddler({
 			document.body.classList.add("modal-open");
 		} else {
 			document.body.classList.remove("modal-open");
+			setName("");
+			setSide("both");
+			setWeight(100);
 		}
 
 		return () => {
@@ -44,7 +47,7 @@ export default function AddNewPaddler({
 				<button className="close-button" onClick={() => setOpen(false)}>
 					✕
 				</button>
-				<h2>New paddler</h2>
+				<h2>{paddler ? "Edit paddler" : "Add paddler"}</h2>
 				<section>
 					<label htmlFor="name">Name</label>
 					<input
@@ -125,7 +128,7 @@ export default function AddNewPaddler({
 						}
 						disabled={name.length === 0}
 					>
-						Add
+						{paddler ? "Save" : "Add"}
 					</button>
 					<button onClick={() => setOpen(false)}>Cancel</button>
 				</div>
