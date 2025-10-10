@@ -1,13 +1,14 @@
 import "./Roster.scss";
 import { Dispatch, SetStateAction } from "react";
-import { Paddler, PaddlerLocation } from "../../types";
+import { BoatPaddler, Paddler, PaddlerLocation } from "../../types";
 import { sortRosterByWeight, sortRosterBySide } from "../../utils/utils";
 import PaddlerCard from "../PaddlerCard/PaddlerCard";
 
 interface RosterProps {
 	rosterState: [Paddler[], Dispatch<SetStateAction<Paddler[]>>];
 	addNew: () => void;
-	editPaddler: (paddler: Paddler) => void;
+	clickPaddler: (paddler: BoatPaddler) => void;
+	editPaddler: () => void;
 	deletePaddler: (
 		paddler: Paddler,
 		location: PaddlerLocation,
@@ -18,6 +19,7 @@ interface RosterProps {
 export default function Roster({
 	rosterState,
 	addNew,
+	clickPaddler,
 	editPaddler,
 	deletePaddler,
 }: RosterProps) {
@@ -41,6 +43,7 @@ export default function Roster({
 						details={paddler}
 						position={i}
 						location="roster"
+						onClick={clickPaddler}
 						onEdit={editPaddler}
 						onDelete={deletePaddler}
 					/>

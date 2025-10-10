@@ -1,5 +1,5 @@
 import "./PaddlerCard.scss";
-import { Paddler, PaddlerLocation } from "../../types";
+import { BoatPaddler, Paddler, PaddlerLocation } from "../../types";
 import { useDraggable, useDroppable } from "@dnd-kit/core";
 import { useRef, useState } from "react";
 import { useOnClickOutside } from "../../hooks/useOnClickOutside";
@@ -8,7 +8,8 @@ interface PaddlerProps {
 	details: Paddler | null;
 	location: PaddlerLocation;
 	position: number | "drum" | "steer";
-	onEdit: (paddler: Paddler) => void;
+	onClick: (paddler: BoatPaddler) => void;
+	onEdit: () => void;
 	onDelete: (
 		paddler: Paddler,
 		location: PaddlerLocation,
@@ -20,6 +21,7 @@ export default function PaddlerCard({
 	details,
 	position,
 	location,
+	onClick,
 	onEdit,
 	onDelete,
 }: PaddlerProps) {
@@ -81,7 +83,11 @@ export default function PaddlerCard({
 			{...attributes}
 		>
 			{details ? (
-				<div className="info-card" ref={cardRef}>
+				<div
+					className="info-card"
+					ref={cardRef}
+					onClick={() => onClick({ details, location, position })}
+				>
 					<p className="name">
 						{typeof position === "number" &&
 						(location === "left" || location === "right") ? (
@@ -109,7 +115,7 @@ export default function PaddlerCard({
 				ref={popupRef}
 				className={`popup-container ${isPopupOpen ? "" : "hidden"}`}
 			>
-				<button onClick={() => details && onEdit(details)} title="Edit">
+				<button onClick={() => details && onEdit()} title="Edit">
 					✍️
 				</button>
 				<button

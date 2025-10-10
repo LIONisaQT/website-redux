@@ -1,35 +1,41 @@
-import { Paddler } from "../../types";
+import { BoatPaddler, Paddler } from "../../types";
 import { sanitizeNumber, sanitizeText } from "../../utils/utils";
 import "./AddNewPaddler.scss";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface AddNewPaddlerProps {
 	openState: [boolean, Dispatch<SetStateAction<boolean>>];
-	paddler?: Paddler;
-	onAddNew: (newPaddler: Paddler) => void;
+	paddler: BoatPaddler | null;
+	onSubmit: (paddler: BoatPaddler, isNew: boolean) => void;
 }
 
 export default function AddNewPaddler({
 	openState,
-	paddler,
-	onAddNew,
+	paddler = null,
+	onSubmit,
 }: AddNewPaddlerProps) {
 	const [isOpen, setOpen] = openState;
-	const [name, setName] = useState<string>(paddler ? paddler.name : "");
-	const [side, setSide] = useState(paddler ? paddler.side : "both");
-	const [weight, setWeight] = useState(paddler ? paddler.weight : 100);
+	const [name, setName] = useState<string>("");
+	const [side, setSide] = useState("both");
+	const [weight, setWeight] = useState(100);
 
 	useEffect(() => {
 		if (isOpen) {
 			document.body.classList.add("modal-open");
+			setName(paddler ? paddler.details.name : "");
+			setSide(paddler ? paddler.details.side : "both");
+			setWeight(paddler ? paddler.details.weight : 100);
 		} else {
 			document.body.classList.remove("modal-open");
+			setName("");
+			setSide("both");
+			setWeight(100);
 		}
 
 		return () => {
 			document.body.classList.remove("modal-open");
 		};
-	}, [isOpen]);
+	}, [isOpen, paddler]);
 
 	return (
 		<div className={`new-paddler-container ${isOpen ? "" : "hidden"}`}>
@@ -38,7 +44,7 @@ export default function AddNewPaddler({
 				<button className="close-button" onClick={() => setOpen(false)}>
 					✕
 				</button>
-				<h2>New paddler</h2>
+				<h2>{paddler ? "Edit paddler" : "Add paddler"}</h2>
 				<section>
 					<label htmlFor="name">Name</label>
 					<input
@@ -103,15 +109,23 @@ export default function AddNewPaddler({
 				<div className="button-group">
 					<button
 						onClick={() =>
-							onAddNew({
-								name,
-								side,
-								weight,
-							} as Paddler)
+							onSubmit(
+								{
+									details: {
+										id: paddler ? paddler.details.id : crypto.randomUUID(),
+										name,
+										side,
+										weight,
+									} as Paddler,
+									location: paddler ? paddler.location : "roster",
+									position: paddler ? paddler.position : 0,
+								},
+								!paddler
+							)
 						}
 						disabled={name.length === 0}
 					>
-						Add
+						{paddler ? "Save" : "Add"}
 					</button>
 					<button onClick={() => setOpen(false)}>Cancel</button>
 				</div>

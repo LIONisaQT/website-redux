@@ -14,7 +14,13 @@ import {
 	useMemo,
 	useRef,
 } from "react";
-import { Paddler, SideArray, PaddlerLocation, Crew } from "../../types";
+import {
+	Paddler,
+	SideArray,
+	PaddlerLocation,
+	Crew,
+	BoatPaddler,
+} from "../../types";
 import { generateLineup } from "../../utils/utils";
 import Boat from "../Boat/Boat";
 import Roster from "../Roster/Roster";
@@ -49,6 +55,9 @@ export default function CrewManager({
 	const [updatedName, setUpdatedName] = useState(crew.name);
 
 	const [addModalOpen, setAddModalOpen] = useState(false);
+	const [selectedPaddler, setSelectedPaddler] = useState<BoatPaddler | null>(
+		null
+	);
 
 	useEffect(() => {
 		// Prevent saving on mount
@@ -118,25 +127,33 @@ export default function CrewManager({
 		Record<PaddlerLocation, (p: Paddler, pos: number) => void>
 	>(
 		() => ({
-			left: (_p, pos) => {
-				if (pos === undefined) return;
+			left: (p, pos) => {
 				setLeftSide((prev) => {
 					const copy = [...prev];
-					copy[pos] = null;
+					if (pos !== undefined && copy[pos]?.id === p.id) {
+						copy[pos] = null;
+					} else {
+						const index = copy.findIndex((x) => x?.id === p.id);
+						if (index !== -1) copy[index] = null;
+					}
 					return copy;
 				});
 			},
-			right: (_p, pos) => {
-				if (pos === undefined) return;
+			right: (p, pos) => {
 				setRightSide((prev) => {
 					const copy = [...prev];
-					copy[pos] = null;
+					if (pos !== undefined && copy[pos]?.id === p.id) {
+						copy[pos] = null;
+					} else {
+						const index = copy.findIndex((x) => x?.id === p.id);
+						if (index !== -1) copy[index] = null;
+					}
 					return copy;
 				});
 			},
-			drum: () => setDrum(null),
-			steer: () => setSteer(null),
-			roster: (p) => setRoster((prev) => prev.filter((x) => x.name !== p.name)),
+			drum: (p) => setDrum((prev) => (prev?.id === p.id ? null : prev)),
+			steer: (p) => setSteer((prev) => (prev?.id === p.id ? null : prev)),
+			roster: (p) => setRoster((prev) => prev.filter((x) => x.id !== p.id)),
 		}),
 		[setLeftSide, setRightSide, setDrum, setSteer, setRoster]
 	);
@@ -148,24 +165,45 @@ export default function CrewManager({
 			left: (p: Paddler, targetPos: number) => {
 				setLeftSide((prev) => {
 					const copy = [...prev];
-					copy[targetPos] = p;
+					const existingIndex = copy.findIndex((x) => x?.id === p.id);
+					if (existingIndex !== -1) {
+						copy[existingIndex ?? targetPos] = p;
+					} else {
+						copy[targetPos] = p;
+					}
 					return copy;
 				});
 			},
-			right: (p: Paddler, targetPos) => {
+			right: (p: Paddler, targetPos: number) => {
 				setRightSide((prev) => {
 					const copy = [...prev];
-					copy[targetPos] = p;
+					const existingIndex = copy.findIndex((x) => x?.id === p.id);
+					if (existingIndex !== -1) {
+						copy[existingIndex] = p;
+					} else {
+						copy[targetPos] = p;
+					}
 					return copy;
 				});
 			},
-			drum: (p: Paddler) => setDrum(p),
-			steer: (p: Paddler) => setSteer(p),
+			drum: (p: Paddler) => {
+				setDrum((prev) => (prev?.id === p.id ? p : p));
+			},
+			steer: (p: Paddler) => {
+				setSteer((prev) => (prev?.id === p.id ? p : p));
+			},
 			roster: (p: Paddler, index: number) => {
 				setRoster((prev) => {
-					const newRoster = [...prev];
-					newRoster.splice(index, 0, p);
-					return newRoster;
+					const existingIndex = prev.findIndex((x) => x.id === p.id);
+					if (existingIndex !== -1) {
+						const newRoster = [...prev];
+						newRoster[existingIndex] = p;
+						return newRoster;
+					} else {
+						const newRoster = [...prev];
+						newRoster.splice(index, 0, p);
+						return newRoster;
+					}
 				});
 			},
 		}),
@@ -187,6 +225,16 @@ export default function CrewManager({
 		}
 	};
 
+	// Util method for single slot positions
+	const getSingleSlot = (loc: PaddlerLocation) =>
+		loc === "drum" ? drum : steer;
+
+	// Util method for single slot positions
+	const setSingleSlot = (loc: PaddlerLocation, value: Paddler | null) => {
+		if (loc === "drum") setDrum(value);
+		else if (loc === "steer") setSteer(value);
+	};
+
 	const handleDragEnd = (event: DragEndEvent) => {
 		const { active, over } = event;
 
@@ -197,15 +245,6 @@ export default function CrewManager({
 		const destination = over?.data.current;
 		const newLocation = destination?.location as PaddlerLocation | undefined;
 		const newPosition = destination?.position;
-
-		// Helpers for single-slot positions
-		const getSingleSlot = (loc: PaddlerLocation) =>
-			loc === "drum" ? drum : steer;
-
-		const setSingleSlot = (loc: PaddlerLocation, value: Paddler | null) => {
-			if (loc === "drum") setDrum(value);
-			else if (loc === "steer") setSteer(value);
-		};
 
 		// Dropped outside → return to roster
 		if (!destination) {
@@ -298,18 +337,25 @@ export default function CrewManager({
 
 	const onAddNewClicked = () => setAddModalOpen(true);
 
-	const addNewPaddler = (newPaddler: Paddler) => {
+	const onEditClicked = () => setAddModalOpen(true);
+
+	const onSubmit = (paddler: BoatPaddler, isNew: boolean) => {
+		if (isNew) {
+			setRoster((prev) => [...prev, paddler.details]);
+		} else {
+			if (getSingleSlot(paddler.location)) {
+				setSingleSlot(paddler.location, paddler.details);
+			} else {
+				addMap[paddler.location]?.(paddler.details, paddler.position as number);
+			}
+		}
+
 		setAddModalOpen(false);
-		setRoster((prev) => [...prev, newPaddler]);
 	};
 
-	const editPaddler = (paddler: Paddler) => {
-		// setAddModalOpen(true);
-		// setRoster((prev) =>
-		// 	prev.map((p) => (p.name === paddler.name ? paddler : p))
-		// );
-		console.log("edit", paddler);
-	};
+	useEffect(() => {
+		if (!addModalOpen) setSelectedPaddler(null);
+	}, [addModalOpen]);
 
 	const deletePaddler = (
 		paddler: Paddler,
@@ -360,20 +406,23 @@ export default function CrewManager({
 							drum={drum}
 							steer={steer}
 							rowSize={numRows}
-							editPaddler={editPaddler}
+							clickPaddler={setSelectedPaddler}
+							editPaddler={onEditClicked}
 							deletePaddler={deletePaddler}
 						/>
 					</section>
 					<Roster
 						rosterState={[roster, setRoster]}
 						addNew={onAddNewClicked}
-						editPaddler={editPaddler}
+						clickPaddler={setSelectedPaddler}
+						editPaddler={onEditClicked}
 						deletePaddler={deletePaddler}
 					/>
 				</div>
 				<AddNewPaddler
 					openState={[addModalOpen, setAddModalOpen]}
-					onAddNew={addNewPaddler}
+					paddler={selectedPaddler}
+					onSubmit={onSubmit}
 				/>
 			</DndContext>
 		</div>
