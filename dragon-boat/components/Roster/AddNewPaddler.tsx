@@ -1,4 +1,4 @@
-import { BoatPaddler } from "../../types";
+import { BoatPaddler, Paddler } from "../../types";
 import { sanitizeNumber, sanitizeText } from "../../utils/utils";
 import "./AddNewPaddler.scss";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
@@ -116,7 +116,7 @@ export default function AddNewPaddler({
 										name,
 										side,
 										weight,
-									},
+									} as Paddler,
 									location: paddler ? paddler.location : "roster",
 									position: paddler ? paddler.position : 0,
 								},
