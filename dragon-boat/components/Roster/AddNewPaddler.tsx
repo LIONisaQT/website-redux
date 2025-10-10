@@ -112,6 +112,7 @@ export default function AddNewPaddler({
 							onSubmit(
 								{
 									details: {
+										id: paddler ? paddler.details.id : crypto.randomUUID(),
 										name,
 										side,
 										weight,

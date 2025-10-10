@@ -127,25 +127,33 @@ export default function CrewManager({
 		Record<PaddlerLocation, (p: Paddler, pos: number) => void>
 	>(
 		() => ({
-			left: (_p, pos) => {
-				if (pos === undefined) return;
+			left: (p, pos) => {
 				setLeftSide((prev) => {
 					const copy = [...prev];
-					copy[pos] = null;
+					if (pos !== undefined && copy[pos]?.id === p.id) {
+						copy[pos] = null;
+					} else {
+						const index = copy.findIndex((x) => x?.id === p.id);
+						if (index !== -1) copy[index] = null;
+					}
 					return copy;
 				});
 			},
-			right: (_p, pos) => {
-				if (pos === undefined) return;
+			right: (p, pos) => {
 				setRightSide((prev) => {
 					const copy = [...prev];
-					copy[pos] = null;
+					if (pos !== undefined && copy[pos]?.id === p.id) {
+						copy[pos] = null;
+					} else {
+						const index = copy.findIndex((x) => x?.id === p.id);
+						if (index !== -1) copy[index] = null;
+					}
 					return copy;
 				});
 			},
-			drum: () => setDrum(null),
-			steer: () => setSteer(null),
-			roster: (p) => setRoster((prev) => prev.filter((x) => x.name !== p.name)),
+			drum: (p) => setDrum((prev) => (prev?.id === p.id ? null : prev)),
+			steer: (p) => setSteer((prev) => (prev?.id === p.id ? null : prev)),
+			roster: (p) => setRoster((prev) => prev.filter((x) => x.id !== p.id)),
 		}),
 		[setLeftSide, setRightSide, setDrum, setSteer, setRoster]
 	);
@@ -157,24 +165,47 @@ export default function CrewManager({
 			left: (p: Paddler, targetPos: number) => {
 				setLeftSide((prev) => {
 					const copy = [...prev];
-					copy[targetPos] = p;
+					const existingIndex = copy.findIndex((x) => x?.id === p.id);
+					if (existingIndex !== -1) {
+						copy[existingIndex ?? targetPos] = p;
+					} else {
+						copy[targetPos] = p;
+					}
 					return copy;
 				});
 			},
-			right: (p: Paddler, targetPos) => {
+			right: (p: Paddler, targetPos: number) => {
 				setRightSide((prev) => {
 					const copy = [...prev];
-					copy[targetPos] = p;
+					const existingIndex = copy.findIndex((x) => x?.id === p.id);
+					if (existingIndex !== -1) {
+						copy[existingIndex] = p;
+					} else {
+						copy[targetPos] = p;
+					}
 					return copy;
 				});
 			},
-			drum: (p: Paddler) => setDrum(p),
-			steer: (p: Paddler) => setSteer(p),
+			drum: (p: Paddler) => {
+				setDrum((prev) => (prev?.id === p.id ? p : p));
+			},
+			steer: (p: Paddler) => {
+				setSteer((prev) => (prev?.id === p.id ? p : p));
+			},
 			roster: (p: Paddler, index: number) => {
 				setRoster((prev) => {
-					const newRoster = [...prev];
-					newRoster.splice(index, 0, p);
-					return newRoster;
+					const existingIndex = prev.findIndex((x) => x.id === p.id);
+					if (existingIndex !== -1) {
+						// update existing paddler
+						const newRoster = [...prev];
+						newRoster[existingIndex] = p;
+						return newRoster;
+					} else {
+						// insert new paddler
+						const newRoster = [...prev];
+						newRoster.splice(index, 0, p);
+						return newRoster;
+					}
 				});
 			},
 		}),

@@ -1,4 +1,5 @@
 export type Paddler = {
+	id: string;
 	name: string;
 	side: "left" | "right" | "both";
 	weight: number;
