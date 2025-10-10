@@ -227,6 +227,16 @@ export default function CrewManager({
 		}
 	};
 
+	// Util method for single slot positions
+	const getSingleSlot = (loc: PaddlerLocation) =>
+		loc === "drum" ? drum : steer;
+
+	// Util method for single slot positions
+	const setSingleSlot = (loc: PaddlerLocation, value: Paddler | null) => {
+		if (loc === "drum") setDrum(value);
+		else if (loc === "steer") setSteer(value);
+	};
+
 	const handleDragEnd = (event: DragEndEvent) => {
 		const { active, over } = event;
 
@@ -237,15 +247,6 @@ export default function CrewManager({
 		const destination = over?.data.current;
 		const newLocation = destination?.location as PaddlerLocation | undefined;
 		const newPosition = destination?.position;
-
-		// Helpers for single-slot positions
-		const getSingleSlot = (loc: PaddlerLocation) =>
-			loc === "drum" ? drum : steer;
-
-		const setSingleSlot = (loc: PaddlerLocation, value: Paddler | null) => {
-			if (loc === "drum") setDrum(value);
-			else if (loc === "steer") setSteer(value);
-		};
 
 		// Dropped outside → return to roster
 		if (!destination) {
@@ -344,15 +345,6 @@ export default function CrewManager({
 		if (isNew) {
 			setRoster((prev) => [...prev, paddler.details]);
 		} else {
-			// Helpers for single-slot positions
-			const getSingleSlot = (loc: PaddlerLocation) =>
-				loc === "drum" ? drum : steer;
-
-			const setSingleSlot = (loc: PaddlerLocation, value: Paddler | null) => {
-				if (loc === "drum") setDrum(value);
-				else if (loc === "steer") setSteer(value);
-			};
-
 			if (getSingleSlot(paddler.location)) {
 				setSingleSlot(paddler.location, paddler.details);
 			} else {
