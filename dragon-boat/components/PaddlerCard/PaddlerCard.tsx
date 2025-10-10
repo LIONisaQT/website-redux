@@ -1,7 +1,7 @@
 import "./PaddlerCard.scss";
 import { BoatPaddler, Paddler, PaddlerLocation } from "../../types";
 import { useDraggable, useDroppable } from "@dnd-kit/core";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useOnClickOutside } from "../../hooks/useOnClickOutside";
 
 interface PaddlerProps {
@@ -71,6 +71,10 @@ export default function PaddlerCard({
 		setDraggableNodeRef(node);
 		setDroppableNodeRef(node);
 	};
+
+	useEffect(() => {
+		if (isDragging) setPopupOpen(false);
+	}, [isDragging]);
 
 	return (
 		<div
