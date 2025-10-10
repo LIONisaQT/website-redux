@@ -15,19 +15,16 @@ export default function AddNewPaddler({
 	onSubmit,
 }: AddNewPaddlerProps) {
 	const [isOpen, setOpen] = openState;
-	const [name, setName] = useState<string>(paddler ? paddler.details.name : "");
-	const [side, setSide] = useState(paddler ? paddler.details.side : "both");
-	const [weight, setWeight] = useState(paddler ? paddler.details.weight : 100);
-
-	useEffect(() => {
-		setName(paddler ? paddler.details.name : "");
-		setSide(paddler ? paddler.details.side : "both");
-		setWeight(paddler ? paddler.details.weight : 100);
-	}, [paddler]);
+	const [name, setName] = useState<string>("");
+	const [side, setSide] = useState("both");
+	const [weight, setWeight] = useState(100);
 
 	useEffect(() => {
 		if (isOpen) {
 			document.body.classList.add("modal-open");
+			setName(paddler ? paddler.details.name : "");
+			setSide(paddler ? paddler.details.side : "both");
+			setWeight(paddler ? paddler.details.weight : 100);
 		} else {
 			document.body.classList.remove("modal-open");
 			setName("");
@@ -38,7 +35,7 @@ export default function AddNewPaddler({
 		return () => {
 			document.body.classList.remove("modal-open");
 		};
-	}, [isOpen]);
+	}, [isOpen, paddler]);
 
 	return (
 		<div className={`new-paddler-container ${isOpen ? "" : "hidden"}`}>
