@@ -196,12 +196,10 @@ export default function CrewManager({
 				setRoster((prev) => {
 					const existingIndex = prev.findIndex((x) => x.id === p.id);
 					if (existingIndex !== -1) {
-						// update existing paddler
 						const newRoster = [...prev];
 						newRoster[existingIndex] = p;
 						return newRoster;
 					} else {
-						// insert new paddler
 						const newRoster = [...prev];
 						newRoster.splice(index, 0, p);
 						return newRoster;
