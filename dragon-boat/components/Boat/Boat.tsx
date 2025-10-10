@@ -1,5 +1,5 @@
 import "./Boat.scss";
-import { Paddler, PaddlerLocation, SideArray } from "../../types";
+import { BoatPaddler, Paddler, PaddlerLocation, SideArray } from "../../types";
 import { sumSideWeight, getCenterOfMass } from "../../utils/utils";
 import PaddlerCard from "../PaddlerCard/PaddlerCard";
 
@@ -9,7 +9,8 @@ interface BoatProps {
 	drum: Paddler | null;
 	steer: Paddler | null;
 	rowSize: number;
-	editPaddler: (paddler: Paddler) => void;
+	clickPaddler: (paddler: BoatPaddler) => void;
+	editPaddler: () => void;
 	deletePaddler: (
 		paddler: Paddler,
 		location: PaddlerLocation,
@@ -23,6 +24,7 @@ export default function Boat({
 	drum,
 	steer,
 	rowSize,
+	clickPaddler,
 	editPaddler,
 	deletePaddler,
 }: BoatProps) {
@@ -37,6 +39,7 @@ export default function Boat({
 							details={paddler}
 							position={i}
 							location="left"
+							onClick={clickPaddler}
 							onEdit={editPaddler}
 							onDelete={deletePaddler}
 						/>
@@ -48,6 +51,7 @@ export default function Boat({
 							details={drum}
 							position={"drum"}
 							location="drum"
+							onClick={clickPaddler}
 							onEdit={editPaddler}
 							onDelete={deletePaddler}
 						/>
@@ -70,6 +74,7 @@ export default function Boat({
 							details={steer}
 							position={"steer"}
 							location="steer"
+							onClick={clickPaddler}
 							onEdit={editPaddler}
 							onDelete={deletePaddler}
 						/>
@@ -82,6 +87,7 @@ export default function Boat({
 							details={paddler}
 							position={i}
 							location="right"
+							onClick={clickPaddler}
 							onEdit={editPaddler}
 							onDelete={deletePaddler}
 						/>

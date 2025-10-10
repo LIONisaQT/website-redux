@@ -1,23 +1,29 @@
-import { Paddler } from "../../types";
+import { BoatPaddler } from "../../types";
 import { sanitizeNumber, sanitizeText } from "../../utils/utils";
 import "./AddNewPaddler.scss";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface AddNewPaddlerProps {
 	openState: [boolean, Dispatch<SetStateAction<boolean>>];
-	paddler?: Paddler;
-	onAddNew: (newPaddler: Paddler) => void;
+	paddler: BoatPaddler | null;
+	onSubmit: (paddler: BoatPaddler, isNew: boolean) => void;
 }
 
 export default function AddNewPaddler({
 	openState,
-	paddler,
-	onAddNew,
+	paddler = null,
+	onSubmit,
 }: AddNewPaddlerProps) {
 	const [isOpen, setOpen] = openState;
-	const [name, setName] = useState<string>(paddler ? paddler.name : "");
-	const [side, setSide] = useState(paddler ? paddler.side : "both");
-	const [weight, setWeight] = useState(paddler ? paddler.weight : 100);
+	const [name, setName] = useState<string>(paddler ? paddler.details.name : "");
+	const [side, setSide] = useState(paddler ? paddler.details.side : "both");
+	const [weight, setWeight] = useState(paddler ? paddler.details.weight : 100);
+
+	useEffect(() => {
+		setName(paddler ? paddler.details.name : "");
+		setSide(paddler ? paddler.details.side : "both");
+		setWeight(paddler ? paddler.details.weight : 100);
+	}, [paddler]);
 
 	useEffect(() => {
 		if (isOpen) {
@@ -103,11 +109,18 @@ export default function AddNewPaddler({
 				<div className="button-group">
 					<button
 						onClick={() =>
-							onAddNew({
-								name,
-								side,
-								weight,
-							} as Paddler)
+							onSubmit(
+								{
+									details: {
+										name,
+										side,
+										weight,
+									},
+									location: paddler ? paddler.location : "roster",
+									position: paddler ? paddler.position : 0,
+								},
+								!paddler
+							)
 						}
 						disabled={name.length === 0}
 					>

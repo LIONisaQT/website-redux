@@ -6,6 +6,8 @@ export type Paddler = {
 
 export type PaddlerLocation = "left" | "right" | "drum" | "steer" | "roster";
 
+export type PaddlerPosition = number | "drum" | "steer";
+
 export type SideArray = (Paddler | null)[];
 
 export type Roster = {
@@ -24,4 +26,10 @@ export type Crew = {
 	drum: Paddler | null;
 	steer: Paddler | null;
 	roster: Paddler[];
+};
+
+export type BoatPaddler = {
+	details: Paddler;
+	location: PaddlerLocation;
+	position: PaddlerPosition;
 };

@@ -14,7 +14,13 @@ import {
 	useMemo,
 	useRef,
 } from "react";
-import { Paddler, SideArray, PaddlerLocation, Crew } from "../../types";
+import {
+	Paddler,
+	SideArray,
+	PaddlerLocation,
+	Crew,
+	BoatPaddler,
+} from "../../types";
 import { generateLineup } from "../../utils/utils";
 import Boat from "../Boat/Boat";
 import Roster from "../Roster/Roster";
@@ -49,6 +55,9 @@ export default function CrewManager({
 	const [updatedName, setUpdatedName] = useState(crew.name);
 
 	const [addModalOpen, setAddModalOpen] = useState(false);
+	const [selectedPaddler, setSelectedPaddler] = useState<BoatPaddler | null>(
+		null
+	);
 
 	useEffect(() => {
 		// Prevent saving on mount
@@ -298,17 +307,30 @@ export default function CrewManager({
 
 	const onAddNewClicked = () => setAddModalOpen(true);
 
-	const addNewPaddler = (newPaddler: Paddler) => {
-		setAddModalOpen(false);
-		setRoster((prev) => [...prev, newPaddler]);
-	};
+	const onEditClicked = () => setAddModalOpen(true);
 
-	const editPaddler = (paddler: Paddler) => {
-		// setAddModalOpen(true);
-		// setRoster((prev) =>
-		// 	prev.map((p) => (p.name === paddler.name ? paddler : p))
-		// );
-		console.log("edit", paddler);
+	const onSubmit = (paddler: BoatPaddler, isNew: boolean) => {
+		if (isNew) {
+			setRoster((prev) => [...prev, paddler.details]);
+		} else {
+			// Helpers for single-slot positions
+			const getSingleSlot = (loc: PaddlerLocation) =>
+				loc === "drum" ? drum : steer;
+
+			const setSingleSlot = (loc: PaddlerLocation, value: Paddler | null) => {
+				if (loc === "drum") setDrum(value);
+				else if (loc === "steer") setSteer(value);
+			};
+
+			if (getSingleSlot(paddler.location)) {
+				setSingleSlot(paddler.location, paddler.details);
+			} else {
+				addMap[paddler.location]?.(paddler.details, paddler.position as number);
+			}
+		}
+
+		setAddModalOpen(false);
+		setSelectedPaddler(null);
 	};
 
 	const deletePaddler = (
@@ -360,20 +382,23 @@ export default function CrewManager({
 							drum={drum}
 							steer={steer}
 							rowSize={numRows}
-							editPaddler={editPaddler}
+							clickPaddler={setSelectedPaddler}
+							editPaddler={onEditClicked}
 							deletePaddler={deletePaddler}
 						/>
 					</section>
 					<Roster
 						rosterState={[roster, setRoster]}
 						addNew={onAddNewClicked}
-						editPaddler={editPaddler}
+						clickPaddler={setSelectedPaddler}
+						editPaddler={onEditClicked}
 						deletePaddler={deletePaddler}
 					/>
 				</div>
 				<AddNewPaddler
 					openState={[addModalOpen, setAddModalOpen]}
-					onAddNew={addNewPaddler}
+					paddler={selectedPaddler}
+					onSubmit={onSubmit}
 				/>
 			</DndContext>
 		</div>
