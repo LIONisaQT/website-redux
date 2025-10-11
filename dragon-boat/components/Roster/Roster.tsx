@@ -51,7 +51,7 @@ export default function Roster({
 			</div>
 			<section className="button-group">
 				<button onClick={addNew}>Add new paddler</button>
-				<button>Import roster from...</button>
+				<button>Import from...</button>
 			</section>
 		</section>
 	);
