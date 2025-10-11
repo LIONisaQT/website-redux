@@ -48,7 +48,14 @@ h3 {
 	text-transform: uppercase;
 }
 
+option {
+	font-size: 1rem;
+}
+
 p,
+label,
+input,
+select,
 button {
 	font-size: 1.125rem;
 }
