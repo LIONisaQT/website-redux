@@ -36,6 +36,35 @@ h3 {
 	margin: 0;
 }
 
+body,
+button,
+input,
+select,
+p,
+h1,
+h2,
+h3 {
+	font-family: "Saira Condensed", sans-serif;
+	text-transform: uppercase;
+}
+
+p,
+button {
+	font-size: 1.125rem;
+}
+
+h1 {
+	font-size: 2rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+}
+
 button {
 	cursor: pointer;
 }
