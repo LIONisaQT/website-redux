@@ -103,7 +103,7 @@ export default function PaddlerCard({
 						<p className={`${details.side} side`}>
 							{details.side[0].toUpperCase()}
 						</p>
-						<p>{details.weight}</p>
+						<p className="weight">{details.weight}</p>
 					</div>
 				</div>
 			) : (
