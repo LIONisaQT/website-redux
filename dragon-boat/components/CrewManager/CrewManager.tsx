@@ -335,7 +335,10 @@ export default function CrewManager({
 		drum !== null ||
 		steer !== null;
 
-	const onAddNewClicked = () => setAddModalOpen(true);
+	const onAddNewClicked = () => {
+		setSelectedPaddler(null);
+		setAddModalOpen(true);
+	};
 
 	const onEditClicked = () => setAddModalOpen(true);
 
@@ -417,7 +420,6 @@ export default function CrewManager({
 						clickPaddler={setSelectedPaddler}
 						editPaddler={onEditClicked}
 						deletePaddler={deletePaddler}
-						onClickOutside={() => setSelectedPaddler(null)}
 					/>
 				</div>
 				<AddNewPaddler

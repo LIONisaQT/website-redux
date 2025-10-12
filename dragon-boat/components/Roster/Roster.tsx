@@ -14,7 +14,6 @@ interface RosterProps {
 		location: PaddlerLocation,
 		position: number | "drum" | "steer"
 	) => void;
-	onClickOutside?: () => void;
 }
 
 export default function Roster({
@@ -23,7 +22,6 @@ export default function Roster({
 	clickPaddler,
 	editPaddler,
 	deletePaddler,
-	onClickOutside,
 }: RosterProps) {
 	const [roster, setRoster] = rosterState;
 
@@ -48,7 +46,6 @@ export default function Roster({
 						onClick={clickPaddler}
 						onEdit={editPaddler}
 						onDelete={deletePaddler}
-						onClickOutside={onClickOutside}
 					/>
 				))}
 			</div>
