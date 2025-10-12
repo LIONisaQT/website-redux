@@ -92,12 +92,12 @@ export default function PaddlerCard({
 					ref={cardRef}
 					onClick={() => onClick({ details, location, position })}
 				>
-					<p className="name">
+					<p className="name-container">
 						{typeof position === "number" &&
 						(location === "left" || location === "right") ? (
 							<span>{position + 1}. </span>
 						) : null}
-						{details.name}
+						<span className="name">{details.name}</span>
 					</p>
 					<div className="info">
 						<p className={`${details.side} side`}>

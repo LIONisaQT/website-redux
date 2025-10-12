@@ -16,10 +16,14 @@
 		justify-content: space-between;
 		height: 100%;
 
-		.name {
+		.name-container {
 			overflow: hidden;
 			white-space: nowrap;
 			text-overflow: ellipsis;
+
+			.name {
+				font-weight: bold;
+			}
 		}
 
 		.info {
@@ -87,8 +91,8 @@
 }
 
 .details {
-	background-color: var(--light);
-	color: var(--darkest);
+	background-color: var(--darkest);
+	color: var(--light);
 	cursor: grab;
 	box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
 }
