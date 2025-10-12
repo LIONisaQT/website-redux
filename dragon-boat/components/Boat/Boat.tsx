@@ -16,6 +16,7 @@ interface BoatProps {
 		location: PaddlerLocation,
 		position: number | "drum" | "steer"
 	) => void;
+	onClickOutside?: () => void;
 }
 
 export default function Boat({
@@ -27,6 +28,7 @@ export default function Boat({
 	clickPaddler,
 	editPaddler,
 	deletePaddler,
+	onClickOutside,
 }: BoatProps) {
 	return (
 		<section className="boat-container">
@@ -42,6 +44,7 @@ export default function Boat({
 							onClick={clickPaddler}
 							onEdit={editPaddler}
 							onDelete={deletePaddler}
+							onClickOutside={onClickOutside}
 						/>
 					))}
 				</div>
@@ -54,6 +57,7 @@ export default function Boat({
 							onClick={clickPaddler}
 							onEdit={editPaddler}
 							onDelete={deletePaddler}
+							onClickOutside={onClickOutside}
 						/>
 					</div>
 					<div className="boat-stats">
@@ -77,6 +81,7 @@ export default function Boat({
 							onClick={clickPaddler}
 							onEdit={editPaddler}
 							onDelete={deletePaddler}
+							onClickOutside={onClickOutside}
 						/>
 					</div>
 				</div>
@@ -90,6 +95,7 @@ export default function Boat({
 							onClick={clickPaddler}
 							onEdit={editPaddler}
 							onDelete={deletePaddler}
+							onClickOutside={onClickOutside}
 						/>
 					))}
 				</div>

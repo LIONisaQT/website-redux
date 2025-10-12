@@ -15,6 +15,7 @@ interface PaddlerProps {
 		location: PaddlerLocation,
 		position: number | "drum" | "steer"
 	) => void;
+	onClickOutside?: () => void;
 }
 
 export default function PaddlerCard({
@@ -24,6 +25,7 @@ export default function PaddlerCard({
 	onClick,
 	onEdit,
 	onDelete,
+	onClickOutside,
 }: PaddlerProps) {
 	const [isPopupOpen, setPopupOpen] = useState(false);
 	const cardRef = useRef<HTMLDivElement>(null);
@@ -31,7 +33,10 @@ export default function PaddlerCard({
 	useOnClickOutside(
 		cardRef,
 		() => setPopupOpen((prev) => !prev),
-		() => setPopupOpen(false),
+		() => {
+			setPopupOpen(false);
+			onClickOutside?.();
+		},
 		[popupRef]
 	);
 

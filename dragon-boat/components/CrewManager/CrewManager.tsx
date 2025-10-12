@@ -417,6 +417,7 @@ export default function CrewManager({
 						clickPaddler={setSelectedPaddler}
 						editPaddler={onEditClicked}
 						deletePaddler={deletePaddler}
+						onClickOutside={() => setSelectedPaddler(null)}
 					/>
 				</div>
 				<AddNewPaddler
