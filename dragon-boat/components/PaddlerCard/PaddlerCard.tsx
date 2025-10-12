@@ -15,6 +15,7 @@ interface PaddlerProps {
 		location: PaddlerLocation,
 		position: number | "drum" | "steer"
 	) => void;
+	onClickOutside?: () => void;
 }
 
 export default function PaddlerCard({
@@ -24,6 +25,7 @@ export default function PaddlerCard({
 	onClick,
 	onEdit,
 	onDelete,
+	onClickOutside,
 }: PaddlerProps) {
 	const [isPopupOpen, setPopupOpen] = useState(false);
 	const cardRef = useRef<HTMLDivElement>(null);
@@ -31,7 +33,10 @@ export default function PaddlerCard({
 	useOnClickOutside(
 		cardRef,
 		() => setPopupOpen((prev) => !prev),
-		() => setPopupOpen(false),
+		() => {
+			setPopupOpen(false);
+			onClickOutside?.();
+		},
 		[popupRef]
 	);
 
@@ -92,18 +97,18 @@ export default function PaddlerCard({
 					ref={cardRef}
 					onClick={() => onClick({ details, location, position })}
 				>
-					<p className="name">
+					<p className="name-container">
 						{typeof position === "number" &&
 						(location === "left" || location === "right") ? (
 							<span>{position + 1}. </span>
 						) : null}
-						{details.name}
+						<span className="name">{details.name}</span>
 					</p>
 					<div className="info">
 						<p className={`${details.side} side`}>
 							{details.side[0].toUpperCase()}
 						</p>
-						<p>{details.weight}</p>
+						<p className="weight">{details.weight}</p>
 					</div>
 				</div>
 			) : (

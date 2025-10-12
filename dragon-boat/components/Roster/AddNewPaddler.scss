@@ -17,7 +17,7 @@
 
 	.new-paddler-modal {
 		border-radius: 8px;
-		background-color: var(--darker);
+		background-color: var(--darkest);
 		padding: 24px 48px;
 		display: flex;
 		flex-direction: column;
@@ -42,22 +42,21 @@
 			}
 		}
 
-		label {
-			font-size: 0.9rem;
-		}
-
 		input {
-			background-color: var(--light);
-			color: var(--darkest);
+			background-color: var(--darker);
+			color: var(--light);
 			outline: 0;
 			border: 2px solid transparent;
 			border-radius: 24px;
 			padding: 4px 12px;
-			font-size: 1rem;
 			width: calc(80px - 28px);
 
 			&[type="number"] {
 				text-align: right;
+			}
+
+			&:focus {
+				border: 2px solid var(--light);
 			}
 		}
 
@@ -66,15 +65,25 @@
 		}
 
 		select {
-			color: var(--darkest);
-			background-color: var(--light);
+			color: var(--light);
+			background-color: var(--darker);
 			outline: 0;
 			border: 0;
 			border-radius: 24px;
 			padding: 4px 12px;
-			font-size: 1rem;
-			height: 31px;
+			height: 40.5px;
 			width: 80px;
+		}
+
+		input[type="number"] {
+			-webkit-appearance: textfield;
+			-moz-appearance: textfield;
+			appearance: textfield;
+		}
+
+		input[type=number]::-webkit-inner-spin-button,
+		input[type=number]::-webkit-outer-spin-button {
+			-webkit-appearance: none;
 		}
 
 		.button-group {
@@ -98,7 +107,6 @@
 			border-radius: 50%;
 			background: transparent;
 			color: var(--white);
-			font-size: 1.2rem;
 
 			&:hover {
 				color: var(--red);

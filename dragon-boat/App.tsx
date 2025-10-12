@@ -5,11 +5,13 @@ import { Crew } from "./types";
 import { useCallback, useEffect, useState } from "react";
 import { deleteField, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "./firebaseConfig";
+import useTheme from "./hooks/useTheme";
 
 export default function App() {
 	const [crews, setCrews] = useState<Crew[]>([]);
 	const [activeCrews, setActiveCrews] = useState<Crew[]>([]);
 	const [loading, setLoading] = useState(true);
+	const { toggleTheme, getThemeEmoji } = useTheme();
 
 	useEffect(() => {
 		const docRef = doc(db, "dragon-boat", "crews");
@@ -94,7 +96,12 @@ export default function App() {
 
 	return (
 		<>
-			<h1 className="title">Dragon Boat Balancer</h1>
+			<div className="header">
+				<h1 className="title">Dragon Boat Balancer</h1>
+				<button className="toggle-theme" onClick={toggleTheme}>
+					{getThemeEmoji()}
+				</button>
+			</div>
 			{activeCrews.length === 0 && (
 				<CrewList
 					data={crews}

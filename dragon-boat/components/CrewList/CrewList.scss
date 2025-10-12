@@ -21,7 +21,9 @@
 	}
 
 	.table-header {
-		background-color: black;
+		font-size: 1.75rem;
+		font-weight: 700;
+		font-style: italic;
 		color: var(--light);
 		cursor: pointer;
 	}
@@ -34,13 +36,18 @@
 
 	th:nth-child(3),
 	td:nth-child(3) {
-		width: 124px;
+		width: 164px;
 		white-space: nowrap;
 	}
 
 	.table-row {
-		&:nth-child(even) {
+		&:nth-child(odd) {
 			background-color: var(--darker);
+		}
+
+		td:nth-child(1) {
+			padding-left: 16px;
+			font-size: 1.25rem;
 		}
 
 		.actions {
@@ -48,7 +55,7 @@
 			gap: 4px;
 
 			button {
-				width: 60px;
+				width: 80px;
 			}
 
 			.delete {

@@ -18,6 +18,8 @@
 	-webkit-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+
+	scrollbar-gutter: stable;
 }
 
 body {
@@ -36,10 +38,44 @@ h3 {
 	margin: 0;
 }
 
-button {
-	cursor: pointer;
+body,
+button,
+input,
+select,
+p,
+h1,
+h2,
+h3 {
+	font-family: "Saira Condensed", sans-serif;
+	text-transform: uppercase;
 }
 
-.title {
-	margin-bottom: 12px;
+option {
+	font-size: 1rem;
+}
+
+p,
+label,
+input,
+select,
+button {
+	font-size: 1.125rem;
+}
+
+h1 {
+	font-size: 2rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+}
+
+button {
+	cursor: pointer;
+	background-color: var(--dark);
+	color: var(--light);
 }
