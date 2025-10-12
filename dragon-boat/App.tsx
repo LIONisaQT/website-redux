@@ -10,6 +10,7 @@ export default function App() {
 	const [crews, setCrews] = useState<Crew[]>([]);
 	const [activeCrews, setActiveCrews] = useState<Crew[]>([]);
 	const [loading, setLoading] = useState(true);
+	const [useDark, setDark] = useState(false);
 
 	useEffect(() => {
 		const prefersDark = window.matchMedia(
@@ -21,13 +22,7 @@ export default function App() {
 		const isNight = hour < 6 || hour >= 18; // 6 PM – 6 AM
 
 		// Decide initial theme
-		const useDark = prefersDark || isNight;
-
-		if (useDark) {
-			document.documentElement.classList.remove("light-mode");
-		} else {
-			document.documentElement.classList.add("light-mode");
-		}
+		setDark(prefersDark || isNight);
 
 		const docRef = doc(db, "dragon-boat", "crews");
 
@@ -42,6 +37,14 @@ export default function App() {
 
 		return () => unsubscribe();
 	}, []);
+
+	useEffect(() => {
+		if (useDark) {
+			document.documentElement.classList.remove("light-mode");
+		} else {
+			document.documentElement.classList.add("light-mode");
+		}
+	}, [useDark]);
 
 	const onViewClicked = (crew: Crew) => {
 		setActiveCrews((prev) => [...prev, crew]);
