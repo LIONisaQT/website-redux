@@ -76,6 +76,8 @@ h3 {
 
 button {
 	cursor: pointer;
+	background-color: var(--dark);
+	color: var(--light);
 }
 
 .title {

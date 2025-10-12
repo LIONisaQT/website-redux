@@ -14,7 +14,7 @@
 }
 
 .light-mode {
-	--darkest: hsl(270, 10%, 79%);
+	--darkest: hsl(270, 10%, 89%);
 	--darker: hsl(270, 10%, 84%);
 	--dark: hsl(270, 10%, 79%);
 	--light: hsl(220, 6%, 10%);

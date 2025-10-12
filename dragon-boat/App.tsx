@@ -12,6 +12,23 @@ export default function App() {
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
+		const prefersDark = window.matchMedia(
+			"(prefers-color-scheme: dark)"
+		).matches;
+
+		// Optional: use time-based logic if no system preference
+		const hour = new Date().getHours();
+		const isNight = hour < 6 || hour >= 18; // 6 PM – 6 AM
+
+		// Decide initial theme
+		const useDark = prefersDark || isNight;
+
+		if (useDark) {
+			document.documentElement.classList.remove("light-mode");
+		} else {
+			document.documentElement.classList.add("light-mode");
+		}
+
 		const docRef = doc(db, "dragon-boat", "crews");
 
 		const unsubscribe = onSnapshot(docRef, (snapshot) => {
