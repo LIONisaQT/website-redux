@@ -1,0 +1,66 @@
+import { useEffect, useState } from "react";
+
+type ThemeMode = "auto" | "dark" | "light";
+
+export default function useTheme() {
+	const [themeMode, setThemeMode] = useState<ThemeMode>("auto");
+
+	useEffect(() => {
+		const saved = localStorage.getItem("theme-mode") as ThemeMode | null;
+		if (saved) setThemeMode(saved);
+	}, []);
+
+	function getAutoDarkPreference() {
+		const prefersDark = window.matchMedia(
+			"(prefers-color-scheme: dark)"
+		).matches;
+		const hour = new Date().getHours();
+		const isNight = hour < 6 || hour >= 18;
+		return prefersDark || isNight;
+	}
+
+	function isDarkModeActive() {
+		if (themeMode === "auto") return getAutoDarkPreference();
+		return themeMode === "dark";
+	}
+
+	useEffect(() => {
+		let isDark = false;
+
+		if (themeMode === "auto") {
+			isDark = getAutoDarkPreference();
+		} else {
+			isDark = themeMode === "dark";
+		}
+
+		if (isDark) {
+			document.documentElement.classList.remove("light-mode");
+		} else {
+			document.documentElement.classList.add("light-mode");
+		}
+
+		localStorage.setItem("theme-mode", themeMode);
+	}, [themeMode]);
+
+	function toggleTheme() {
+		setThemeMode((prev) => {
+			if (prev === "auto") return "light";
+			if (prev === "light") return "dark";
+			return "auto";
+		});
+	}
+
+	function getThemeEmoji() {
+		const isDark = isDarkModeActive();
+		if (themeMode === "auto") return "⚙️";
+		return isDark ? "🌙" : "☀️";
+	}
+
+	return {
+		themeMode,
+		setThemeMode,
+		toggleTheme,
+		getThemeEmoji,
+		isDarkModeActive,
+	};
+}

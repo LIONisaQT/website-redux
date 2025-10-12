@@ -5,25 +5,15 @@ import { Crew } from "./types";
 import { useCallback, useEffect, useState } from "react";
 import { deleteField, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "./firebaseConfig";
+import useTheme from "./hooks/useTheme";
 
 export default function App() {
 	const [crews, setCrews] = useState<Crew[]>([]);
 	const [activeCrews, setActiveCrews] = useState<Crew[]>([]);
 	const [loading, setLoading] = useState(true);
-	const [useDark, setDark] = useState(false);
+	const { toggleTheme, getThemeEmoji } = useTheme();
 
 	useEffect(() => {
-		const prefersDark = window.matchMedia(
-			"(prefers-color-scheme: dark)"
-		).matches;
-
-		// Optional: use time-based logic if no system preference
-		const hour = new Date().getHours();
-		const isNight = hour < 6 || hour >= 18; // 6 PM – 6 AM
-
-		// Decide initial theme
-		setDark(prefersDark || isNight);
-
 		const docRef = doc(db, "dragon-boat", "crews");
 
 		const unsubscribe = onSnapshot(docRef, (snapshot) => {
@@ -37,14 +27,6 @@ export default function App() {
 
 		return () => unsubscribe();
 	}, []);
-
-	useEffect(() => {
-		if (useDark) {
-			document.documentElement.classList.remove("light-mode");
-		} else {
-			document.documentElement.classList.add("light-mode");
-		}
-	}, [useDark]);
 
 	const onViewClicked = (crew: Crew) => {
 		setActiveCrews((prev) => [...prev, crew]);
@@ -115,6 +97,7 @@ export default function App() {
 	return (
 		<>
 			<h1 className="title">Dragon Boat Balancer</h1>
+			<button onClick={toggleTheme}>{getThemeEmoji()}</button>
 			{activeCrews.length === 0 && (
 				<CrewList
 					data={crews}
