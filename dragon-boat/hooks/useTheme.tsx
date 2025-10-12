@@ -3,12 +3,9 @@ import { useEffect, useState } from "react";
 type ThemeMode = "auto" | "dark" | "light";
 
 export default function useTheme() {
-	const [themeMode, setThemeMode] = useState<ThemeMode>("auto");
-
-	useEffect(() => {
-		const saved = localStorage.getItem("theme-mode") as ThemeMode | null;
-		if (saved) setThemeMode(saved);
-	}, []);
+	const [themeMode, setThemeMode] = useState<ThemeMode>(
+		() => (localStorage.getItem("theme-mode") as ThemeMode) ?? "auto"
+	);
 
 	function getAutoDarkPreference() {
 		const prefersDark = window.matchMedia(
