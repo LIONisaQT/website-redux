@@ -69,7 +69,7 @@
 		border-radius: 4px;
 
 		background-color: hsl(270, 10%, 89%);
-		box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
 		opacity: 1;
 		scale: 1;
@@ -94,7 +94,7 @@
 	background-color: hsl(270, 10%, 89%);
 	color: hsl(220, 6%, 10%);
 	cursor: grab;
-	box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .empty {
@@ -113,7 +113,6 @@
 .dragged-over {
 	opacity: 0.5;
 	background-color: var(--green);
-	color: var(--darkest);
 }
 
 .return {
