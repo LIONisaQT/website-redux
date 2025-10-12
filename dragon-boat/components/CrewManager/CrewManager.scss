@@ -14,16 +14,16 @@
 		text-align: center;
 		outline: none;
 		border: 2px solid transparent;
-		border-radius: 8px;
+		border-radius: 32px;
 		background-color: transparent;
 		color: var(--light);
 		margin-bottom: 12px;
 		transition: all 0.1s ease-out;
 
 		&:focus {
-			border: 2px solid var(--dark);
-			background-color: var(--light);
-			color: var(--darkest);
+			border: 2px solid var(--light-muted);
+			background-color: var(--darkest);
+			color: var(--light);
 		}
 	}
 
