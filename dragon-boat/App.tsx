@@ -96,8 +96,12 @@ export default function App() {
 
 	return (
 		<>
-			<h1 className="title">Dragon Boat Balancer</h1>
-			<button onClick={toggleTheme}>{getThemeEmoji()}</button>
+			<div className="header">
+				<h1 className="title">Dragon Boat Balancer</h1>
+				<button className="toggle-theme" onClick={toggleTheme}>
+					{getThemeEmoji()}
+				</button>
+			</div>
 			{activeCrews.length === 0 && (
 				<CrewList
 					data={crews}

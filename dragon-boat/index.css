@@ -79,7 +79,3 @@ button {
 	background-color: var(--dark);
 	color: var(--light);
 }
-
-.title {
-	margin-bottom: 12px;
-}

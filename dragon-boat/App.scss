@@ -1,5 +1,18 @@
 @import url("./colors.css");
 
+.header {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+
+	.toggle-theme {
+		width: 32px;
+		height: 32px;
+	}
+}
+
 .active-crews {
 	display: flex;
 	flex-direction: column;
