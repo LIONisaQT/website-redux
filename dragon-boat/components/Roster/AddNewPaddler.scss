@@ -37,8 +37,17 @@
 
 			section {
 				flex-direction: column;
-				align-items: stretch;
 				justify-content: center;
+
+				select {
+					width: 80%;
+					text-align: center;
+				}
+
+				input {
+					width: calc(80% - 28px) !important;
+					text-align: center !important;
+				}
 			}
 		}
 
