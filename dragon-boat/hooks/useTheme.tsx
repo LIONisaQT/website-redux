@@ -57,9 +57,7 @@ export default function useTheme() {
 					height="24"
 					viewBox="0 0 24 24"
 					fill="none"
-					stroke={`${
-						isDarkModeActive() ? "hsl(220, 6%, 90%)" : "hsl(220, 6%, 10%)"
-					}`}
+					stroke="currentColor"
 					stroke-width="2"
 					stroke-linecap="round"
 					stroke-linejoin="round"
@@ -75,7 +73,7 @@ export default function useTheme() {
 				height="24"
 				viewBox="0 0 24 24"
 				fill="none"
-				stroke="hsl(270, 10%, 89%)"
+				stroke="currentColor"
 				stroke-width="2"
 				stroke-linecap="round"
 				stroke-linejoin="round"
@@ -89,7 +87,7 @@ export default function useTheme() {
 				height="24"
 				viewBox="0 0 24 24"
 				fill="none"
-				stroke="hsl(220, 6%, 10%)"
+				stroke="currentColor"
 				stroke-width="2"
 				stroke-linecap="round"
 				stroke-linejoin="round"
