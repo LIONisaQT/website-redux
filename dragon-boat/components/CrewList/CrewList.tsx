@@ -7,13 +7,14 @@ import {
 } from "@tanstack/react-table";
 import "./CrewList.scss";
 import { Crew } from "../../types";
+import { sampleCrew } from "../../utils/sample-crew";
 
 type CrewTableProps = {
 	data: Crew[];
 	onView?: (crew: Crew) => void;
 	onCopy?: (crew: Crew) => void;
 	onDelete?: (crewId: string) => void;
-	onCreate?: () => void;
+	onCreate?: (crew?: Crew) => void;
 };
 
 export default function CrewList({
@@ -154,9 +155,12 @@ export default function CrewList({
 					))}
 				</tbody>
 			</table>
-			<button className="create-crew" onClick={() => onCreate?.()}>
-				Create a new crew
-			</button>
+			<section className="button-group">
+				<button onClick={() => onCreate?.()}>Create a new crew</button>
+				<button onClick={() => onCreate?.(sampleCrew)}>
+					Create sample crew
+				</button>
+			</section>
 		</div>
 	);
 }

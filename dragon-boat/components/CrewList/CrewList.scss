@@ -72,7 +72,13 @@
 	}
 }
 
-.create-crew {
+.button-group {
 	margin-top: 12px;
-	width: 200px;
+	display: flex;
+	flex-direction: row;
+	gap: 8px;
+
+	button {
+		width: 200px;
+	}
 }
