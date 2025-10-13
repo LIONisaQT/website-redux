@@ -36,7 +36,7 @@
 
 	th:nth-child(3),
 	td:nth-child(3) {
-		width: 164px;
+		width: calc(32px * 3 + 4px * 2);
 		white-space: nowrap;
 	}
 
