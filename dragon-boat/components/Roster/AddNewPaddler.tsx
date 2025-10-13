@@ -59,7 +59,7 @@ export default function AddNewPaddler({
 					<label htmlFor="side-pref">Side preference</label>
 					<select
 						id="side-pref"
-						defaultValue={side}
+						value={side}
 						onChange={(e) =>
 							setSide(e.target.value as "left" | "right" | "both")
 						}
@@ -75,6 +75,7 @@ export default function AddNewPaddler({
 						type="number"
 						id="weight"
 						placeholder={weight.toString()}
+						value={weight.toString()}
 						min={1}
 						max={999}
 						onChange={(e) => setWeight(sanitizeNumber(e.target.value, 1, 999))}
