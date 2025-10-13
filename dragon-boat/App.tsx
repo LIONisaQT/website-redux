@@ -11,7 +11,7 @@ export default function App() {
 	const [crews, setCrews] = useState<Crew[]>([]);
 	const [activeCrews, setActiveCrews] = useState<Crew[]>([]);
 	const [loading, setLoading] = useState(true);
-	const { toggleTheme, getThemeEmoji } = useTheme();
+	const { toggleTheme, getThemeSVG } = useTheme();
 
 	useEffect(() => {
 		const docRef = doc(db, "dragon-boat", "crews");
@@ -44,17 +44,17 @@ export default function App() {
 		}
 	};
 
-	const onCreateClicked = async () => {
+	const onCreateClicked = async (crew?: Crew) => {
 		const newCrew: Crew = {
 			id: crypto.randomUUID(),
-			name: "New crew",
-			numRows: 10,
-			centerMass: 5,
-			leftSide: Array(10).fill(null),
-			rightSide: Array(10).fill(null),
-			drum: null,
-			steer: null,
-			roster: [],
+			name: crew ? `Copy of ${crew.name}` : "New crew",
+			numRows: crew?.numRows ?? 10,
+			centerMass: crew?.centerMass ?? 5,
+			leftSide: crew?.leftSide ?? Array(10).fill(null),
+			rightSide: crew?.rightSide ?? Array(10).fill(null),
+			drum: crew?.drum ?? null,
+			steer: crew?.steer ?? null,
+			roster: crew?.roster ?? [],
 		};
 
 		const docRef = doc(db, "dragon-boat", "crews");
@@ -99,13 +99,14 @@ export default function App() {
 			<div className="header">
 				<h1 className="title">Dragon Boat Balancer</h1>
 				<button className="toggle-theme" onClick={toggleTheme}>
-					{getThemeEmoji()}
+					{getThemeSVG()}
 				</button>
 			</div>
 			{activeCrews.length === 0 && (
 				<CrewList
 					data={crews}
 					onView={onViewClicked}
+					onCopy={onCreateClicked}
 					onDelete={onDeleteClicked}
 					onCreate={onCreateClicked}
 				/>

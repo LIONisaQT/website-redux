@@ -58,15 +58,18 @@ export default function Boat({
 					</div>
 					<div className="boat-stats">
 						<section>
-							<h3>L/R Bal</h3>
+							<p>L/R Bal</p>
 							<p>
-								<span>{sumSideWeight(leftSide)}</span>-
-								<span>{sumSideWeight(rightSide)}</span>
+								<span className="value">{sumSideWeight(leftSide)}</span>
+								<span className="value">-</span>
+								<span className="value">{sumSideWeight(rightSide)}</span>
 							</p>
 						</section>
 						<section>
-							<h3>F/B Bal</h3>
-							<p>{getCenterOfMass(leftSide, rightSide, rowSize)}</p>
+							<p>F/B Bal</p>
+							<p className="value">
+								{getCenterOfMass(leftSide, rightSide, rowSize)}
+							</p>
 						</section>
 					</div>
 					<div className="steer">
