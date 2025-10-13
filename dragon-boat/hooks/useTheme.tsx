@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import SettingsSVG from "../assets/svgs/settings.svg";
+import SunSVG from "../assets/svgs/sun.svg";
+import MoonSVG from "../assets/svgs/moon.svg";
 
 type ThemeMode = "auto" | "dark" | "light";
 
@@ -47,17 +50,17 @@ export default function useTheme() {
 		});
 	}
 
-	function getThemeEmoji() {
+	function getThemeSVG() {
 		const isDark = isDarkModeActive();
-		if (themeMode === "auto") return "⚙️";
-		return isDark ? "🌙" : "☀️";
+		if (themeMode === "auto") return SettingsSVG;
+		return isDark ? MoonSVG : SunSVG;
 	}
 
 	return {
 		themeMode,
 		setThemeMode,
 		toggleTheme,
-		getThemeEmoji,
+		getThemeSVG,
 		isDarkModeActive,
 	};
 }

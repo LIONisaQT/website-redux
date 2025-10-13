@@ -11,7 +11,7 @@ export default function App() {
 	const [crews, setCrews] = useState<Crew[]>([]);
 	const [activeCrews, setActiveCrews] = useState<Crew[]>([]);
 	const [loading, setLoading] = useState(true);
-	const { toggleTheme, getThemeEmoji } = useTheme();
+	const { toggleTheme, getThemeSVG } = useTheme();
 
 	useEffect(() => {
 		const docRef = doc(db, "dragon-boat", "crews");
@@ -99,7 +99,7 @@ export default function App() {
 			<div className="header">
 				<h1 className="title">Dragon Boat Balancer</h1>
 				<button className="toggle-theme" onClick={toggleTheme}>
-					{getThemeEmoji()}
+					<img src={getThemeSVG()} />
 				</button>
 			</div>
 			{activeCrews.length === 0 && (
