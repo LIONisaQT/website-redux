@@ -78,4 +78,7 @@ button {
 	cursor: pointer;
 	background-color: var(--dark);
 	color: var(--light);
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }

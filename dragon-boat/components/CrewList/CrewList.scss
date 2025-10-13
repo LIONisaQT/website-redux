@@ -55,7 +55,13 @@
 			gap: 4px;
 
 			button {
-				width: 80px;
+				width: 32px;
+				height: 32px;
+
+				svg {
+					width: 20px;
+					height: 20px;
+				}
 			}
 
 			.delete {
