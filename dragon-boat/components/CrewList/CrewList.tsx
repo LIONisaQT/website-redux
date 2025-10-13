@@ -11,6 +11,7 @@ import { Crew } from "../../types";
 type CrewTableProps = {
 	data: Crew[];
 	onView?: (crew: Crew) => void;
+	onCopy?: (crew: Crew) => void;
 	onDelete?: (crewId: string) => void;
 	onCreate?: () => void;
 };
@@ -18,6 +19,7 @@ type CrewTableProps = {
 export default function CrewList({
 	data,
 	onView,
+	onCopy,
 	onDelete,
 	onCreate,
 }: CrewTableProps) {
@@ -41,7 +43,11 @@ export default function CrewList({
 			header: "Actions",
 			cell: ({ row }) => (
 				<div className="actions">
-					<button onClick={() => onView?.(row.original)} className="view">
+					<button
+						onClick={() => onView?.(row.original)}
+						title="View"
+						className="view"
+					>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="24"
@@ -57,7 +63,11 @@ export default function CrewList({
 							<circle cx="12" cy="12" r="3"></circle>
 						</svg>
 					</button>
-					<button onClick={() => onView?.(row.original)} className="view">
+					<button
+						onClick={() => onCopy?.(row.original)}
+						title="Copy"
+						className="copy"
+					>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="24"
@@ -75,6 +85,7 @@ export default function CrewList({
 					</button>
 					<button
 						onClick={() => onDelete?.(row.original.id)}
+						title="Delete"
 						className="delete"
 					>
 						<svg

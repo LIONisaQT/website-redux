@@ -44,17 +44,17 @@ export default function App() {
 		}
 	};
 
-	const onCreateClicked = async () => {
+	const onCreateClicked = async (crew?: Crew) => {
 		const newCrew: Crew = {
 			id: crypto.randomUUID(),
-			name: "New crew",
-			numRows: 10,
-			centerMass: 5,
-			leftSide: Array(10).fill(null),
-			rightSide: Array(10).fill(null),
-			drum: null,
-			steer: null,
-			roster: [],
+			name: crew ? `Copy of ${crew.name}` : "New crew",
+			numRows: crew ? crew.numRows : 10,
+			centerMass: crew ? crew.centerMass : 5,
+			leftSide: crew ? crew.leftSide : Array(10).fill(null),
+			rightSide: crew ? crew.rightSide : Array(10).fill(null),
+			drum: crew ? crew.drum : null,
+			steer: crew ? crew.steer : null,
+			roster: crew ? crew.roster : [],
 		};
 
 		const docRef = doc(db, "dragon-boat", "crews");
@@ -106,6 +106,7 @@ export default function App() {
 				<CrewList
 					data={crews}
 					onView={onViewClicked}
+					onCopy={onCreateClicked}
 					onDelete={onDeleteClicked}
 					onCreate={onCreateClicked}
 				/>
