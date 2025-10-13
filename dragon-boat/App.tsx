@@ -99,7 +99,7 @@ export default function App() {
 			<div className="header">
 				<h1 className="title">Dragon Boat Balancer</h1>
 				<button className="toggle-theme" onClick={toggleTheme}>
-					<img src={getThemeSVG()} />
+					{getThemeSVG()}
 				</button>
 			</div>
 			{activeCrews.length === 0 && (
