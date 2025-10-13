@@ -156,10 +156,8 @@ export default function CrewList({
 				</tbody>
 			</table>
 			<section className="button-group">
-				<button onClick={() => onCreate?.()}>Create a new crew</button>
-				<button onClick={() => onCreate?.(sampleCrew)}>
-					Create sample crew
-				</button>
+				<button onClick={() => onCreate?.()}>New empty crew</button>
+				<button onClick={() => onCreate?.(sampleCrew)}>New sample crew</button>
 			</section>
 		</div>
 	);
