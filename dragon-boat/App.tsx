@@ -48,13 +48,13 @@ export default function App() {
 		const newCrew: Crew = {
 			id: crypto.randomUUID(),
 			name: crew ? `Copy of ${crew.name}` : "New crew",
-			numRows: crew ? crew.numRows : 10,
-			centerMass: crew ? crew.centerMass : 5,
-			leftSide: crew ? crew.leftSide : Array(10).fill(null),
-			rightSide: crew ? crew.rightSide : Array(10).fill(null),
-			drum: crew ? crew.drum : null,
-			steer: crew ? crew.steer : null,
-			roster: crew ? crew.roster : [],
+			numRows: crew?.numRows ?? 10,
+			centerMass: crew?.centerMass ?? 5,
+			leftSide: crew?.leftSide ?? Array(10).fill(null),
+			rightSide: crew?.rightSide ?? Array(10).fill(null),
+			drum: crew?.drum ?? null,
+			steer: crew?.steer ?? null,
+			roster: crew?.roster ?? [],
 		};
 
 		const docRef = doc(db, "dragon-boat", "crews");

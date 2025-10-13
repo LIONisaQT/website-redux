@@ -154,7 +154,7 @@ export default function CrewList({
 					))}
 				</tbody>
 			</table>
-			<button className="create-crew" onClick={onCreate}>
+			<button className="create-crew" onClick={() => onCreate?.()}>
 				Create a new crew
 			</button>
 		</div>
