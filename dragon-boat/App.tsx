@@ -3,7 +3,14 @@ import CrewList from "./components/CrewList/CrewList";
 import CrewManager from "./components/CrewManager/CrewManager";
 import { Crew } from "./types";
 import { useCallback, useEffect, useState } from "react";
-import { deleteField, doc, onSnapshot, updateDoc } from "firebase/firestore";
+import {
+	collection,
+	deleteDoc,
+	doc,
+	onSnapshot,
+	setDoc,
+	updateDoc,
+} from "firebase/firestore";
 import { db } from "./firebaseConfig";
 import useTheme from "./hooks/useTheme";
 
@@ -14,14 +21,14 @@ export default function App() {
 	const { toggleTheme, getThemeSVG } = useTheme();
 
 	useEffect(() => {
-		const docRef = doc(db, "dragon-boat", "crews");
+		const crewsRef = collection(db, "crews");
 
-		const unsubscribe = onSnapshot(docRef, (snapshot) => {
-			const data = snapshot.data() as Record<string, Crew> | undefined;
-			if (data) {
-				const crewData: Crew[] = Object.values(data);
-				setCrews(crewData);
-			}
+		const unsubscribe = onSnapshot(crewsRef, (snapshot) => {
+			const crewData: Crew[] = snapshot.docs.map((doc) => ({
+				id: doc.id,
+				...doc.data(),
+			})) as Crew[];
+			setCrews(crewData);
 			setLoading(false);
 		});
 
@@ -34,10 +41,8 @@ export default function App() {
 
 	const onDeleteClicked = async (crewId: string) => {
 		try {
-			const docRef = doc(db, "dragon-boat", "crews");
-			await updateDoc(docRef, {
-				[crewId]: deleteField(),
-			});
+			const crewRef = doc(db, "crews", crewId);
+			await deleteDoc(crewRef);
 		} catch (err) {
 			console.error("Error deleting crew:", err);
 			alert("Failed to delete crew");
@@ -57,11 +62,9 @@ export default function App() {
 			roster: crew?.roster ?? [],
 		};
 
-		const docRef = doc(db, "dragon-boat", "crews");
 		try {
-			await updateDoc(docRef, {
-				[`${newCrew.id}`]: newCrew,
-			});
+			// addDoc() automatically generates an ID if you omit one
+			await setDoc(doc(db, "crews", newCrew.id), newCrew);
 		} catch (err) {
 			console.error("Error adding crew:", err);
 			throw err;
@@ -69,12 +72,9 @@ export default function App() {
 	};
 
 	const onEditCrew = useCallback(async (updatedCrew: Crew) => {
-		const docRef = doc(db, "dragon-boat", "crews");
-
 		try {
-			await updateDoc(docRef, {
-				[updatedCrew.id]: updatedCrew,
-			});
+			const crewRef = doc(db, "crews", updatedCrew.id);
+			await updateDoc(crewRef, updatedCrew);
 			console.log(`Crew ${updatedCrew.id} updated successfully`);
 		} catch (err) {
 			console.error("Error editing crew:", err);
