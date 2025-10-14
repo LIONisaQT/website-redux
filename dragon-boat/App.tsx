@@ -29,6 +29,21 @@ export default function App() {
 	});
 
 	useEffect(() => {
+		const saved = localStorage.getItem("seenCrewIds");
+		if (saved) {
+			try {
+				const ids: string[] = JSON.parse(saved);
+				setSeenCrewIds(ids);
+			} catch (err) {
+				console.error("Failed to parse seenCrewIds from localStorage:", err);
+				setSeenCrewIds([]);
+			}
+		}
+	}, []);
+
+	useEffect(() => {
+		localStorage.setItem("seenCrewIds", JSON.stringify(seenCrewIds));
+
 		if (seenCrewIds.length === 0) {
 			setCrews([]);
 			setLoading(false);
@@ -37,6 +52,9 @@ export default function App() {
 
 		setLoading(true);
 
+		localStorage.setItem("seenCrewIds", JSON.stringify(seenCrewIds));
+
+		// Split into batches of 10 for Firestore "in" query limitation
 		const batches: string[][] = [];
 		for (let i = 0; i < seenCrewIds.length; i += 10) {
 			batches.push(seenCrewIds.slice(i, i + 10));
@@ -74,6 +92,7 @@ export default function App() {
 		try {
 			const crewRef = doc(db, "crews", crewId);
 			await deleteDoc(crewRef);
+			setSeenCrewIds((prev) => prev.filter((id) => id !== crewId));
 		} catch (err) {
 			console.error("Error deleting crew:", err);
 			alert("Failed to delete crew");
@@ -81,8 +100,10 @@ export default function App() {
 	};
 
 	const onCreateClicked = async (crew?: Crew) => {
+		const newId = crypto.randomUUID();
+
 		const newCrew: Crew = {
-			id: crypto.randomUUID(),
+			id: newId,
 			name: crew ? `Copy of ${crew.name}` : "New crew",
 			numRows: crew?.numRows ?? 10,
 			centerMass: crew?.centerMass ?? 5,
@@ -96,6 +117,11 @@ export default function App() {
 		try {
 			// addDoc() automatically generates an ID if you omit one
 			await setDoc(doc(db, "crews", newCrew.id), newCrew);
+
+			if (!seenCrewIds.includes(newCrew.id)) {
+				const updatedIds = [...seenCrewIds, newCrew.id];
+				setSeenCrewIds(updatedIds);
+			}
 		} catch (err) {
 			console.error("Error adding crew:", err);
 			throw err;
