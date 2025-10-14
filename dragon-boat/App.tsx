@@ -7,9 +7,12 @@ import {
 	collection,
 	deleteDoc,
 	doc,
+	documentId,
 	onSnapshot,
+	query,
 	setDoc,
 	updateDoc,
+	where,
 } from "firebase/firestore";
 import { db } from "./firebaseConfig";
 import useTheme from "./hooks/useTheme";
@@ -20,20 +23,48 @@ export default function App() {
 	const [loading, setLoading] = useState(true);
 	const { toggleTheme, getThemeSVG } = useTheme();
 
-	useEffect(() => {
-		const crewsRef = collection(db, "crews");
+	const [seenCrewIds, setSeenCrewIds] = useState<string[]>(() => {
+		const saved = localStorage.getItem("seenCrewIds");
+		return saved ? JSON.parse(saved) : [];
+	});
 
-		const unsubscribe = onSnapshot(crewsRef, (snapshot) => {
-			const crewData: Crew[] = snapshot.docs.map((doc) => ({
-				id: doc.id,
-				...doc.data(),
-			})) as Crew[];
-			setCrews(crewData);
+	useEffect(() => {
+		if (seenCrewIds.length === 0) {
+			setCrews([]);
 			setLoading(false);
+			return;
+		}
+
+		setLoading(true);
+
+		const batches: string[][] = [];
+		for (let i = 0; i < seenCrewIds.length; i += 10) {
+			batches.push(seenCrewIds.slice(i, i + 10));
+		}
+
+		const unsubscribes: (() => void)[] = [];
+
+		batches.forEach((batch) => {
+			const crewsRef = collection(db, "crews");
+			const q = query(crewsRef, where(documentId(), "in", batch));
+
+			const unsubscribe = onSnapshot(q, (snapshot) => {
+				setCrews((prev) => {
+					const existing = prev.filter((c) => !batch.includes(c.id));
+					const batchData = snapshot.docs.map((doc) => ({
+						id: doc.id,
+						...doc.data(),
+					})) as Crew[];
+					return [...existing, ...batchData];
+				});
+				setLoading(false);
+			});
+
+			unsubscribes.push(unsubscribe);
 		});
 
-		return () => unsubscribe();
-	}, []);
+		return () => unsubscribes.forEach((unsub) => unsub());
+	}, [seenCrewIds]);
 
 	const onViewClicked = (crew: Crew) => {
 		setActiveCrews((prev) => [...prev, crew]);
