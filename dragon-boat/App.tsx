@@ -51,14 +51,15 @@ export default function App() {
 	}, []);
 
 	useEffect(() => {
-		// Remove duplicates before saving or using
 		const uniqueIds = [...new Set(seenCrewIds)];
 		if (uniqueIds.length !== seenCrewIds.length) {
 			setSeenCrewIds(uniqueIds);
-			return; // prevent re-render loop
+			return;
 		}
 
-		if (seenCrewIds.length === 0) {
+		localStorage.setItem("seenCrewIds", JSON.stringify(uniqueIds));
+
+		if (uniqueIds.length === 0) {
 			setCrews([]);
 			setLoading(false);
 			return;
@@ -66,10 +67,9 @@ export default function App() {
 
 		setLoading(true);
 
-		// Split into batches of 10 for Firestore "in" query limitation
 		const batches: string[][] = [];
-		for (let i = 0; i < seenCrewIds.length; i += 10) {
-			batches.push(seenCrewIds.slice(i, i + 10));
+		for (let i = 0; i < uniqueIds.length; i += 10) {
+			batches.push(uniqueIds.slice(i, i + 10));
 		}
 
 		const unsubscribes: (() => void)[] = [];
@@ -78,17 +78,37 @@ export default function App() {
 			const crewsRef = collection(db, "crews");
 			const q = query(crewsRef, where(documentId(), "in", batch));
 
-			const unsubscribe = onSnapshot(q, (snapshot) => {
-				setCrews((prev) => {
-					const existing = prev.filter((c) => !batch.includes(c.id));
-					const batchData = snapshot.docs.map((doc) => ({
-						id: doc.id,
-						...doc.data(),
-					})) as Crew[];
-					return [...existing, ...batchData];
-				});
-				setLoading(false);
-			});
+			const unsubscribe = onSnapshot(
+				q,
+				(snapshot) => {
+					const foundIds = snapshot.docs.map((doc) => doc.id);
+					const missingIds = batch.filter((id) => !foundIds.includes(id));
+
+					// Only remove missing IDs if the snapshot was successful
+					if (missingIds.length > 0) {
+						setSeenCrewIds((prev) => {
+							const filtered = prev.filter((id) => !missingIds.includes(id));
+							localStorage.setItem("seenCrewIds", JSON.stringify(filtered));
+							return filtered;
+						});
+					}
+
+					setCrews((prev) => {
+						const existing = prev.filter((c) => !batch.includes(c.id));
+						const batchData = snapshot.docs.map((doc) => ({
+							id: doc.id,
+							...doc.data(),
+						})) as Crew[];
+						return [...existing, ...batchData];
+					});
+					setLoading(false);
+				},
+				(err) => {
+					console.error("Firestore snapshot failed:", err);
+					// Do NOT remove any IDs on error
+					setLoading(false);
+				}
+			);
 
 			unsubscribes.push(unsubscribe);
 		});
