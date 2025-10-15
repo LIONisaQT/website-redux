@@ -25,7 +25,15 @@ export default function App() {
 
 	const [seenCrewIds, setSeenCrewIds] = useState<string[]>(() => {
 		const saved = localStorage.getItem("seenCrewIds");
-		return saved ? JSON.parse(saved) : [];
+		if (!saved) return [];
+		try {
+			const parsed = JSON.parse(saved);
+			// Deduplicate immediately on load
+			return Array.isArray(parsed) ? [...new Set(parsed)] : [];
+		} catch {
+			console.error("Failed to parse seenCrewIds from localStorage");
+			return [];
+		}
 	});
 
 	useEffect(() => {
@@ -33,7 +41,8 @@ export default function App() {
 		if (saved) {
 			try {
 				const ids: string[] = JSON.parse(saved);
-				setSeenCrewIds(ids);
+				// Remove duplicates before setting
+				setSeenCrewIds([...new Set(ids)]);
 			} catch (err) {
 				console.error("Failed to parse seenCrewIds from localStorage:", err);
 				setSeenCrewIds([]);
@@ -42,7 +51,12 @@ export default function App() {
 	}, []);
 
 	useEffect(() => {
-		localStorage.setItem("seenCrewIds", JSON.stringify(seenCrewIds));
+		// Remove duplicates before saving or using
+		const uniqueIds = [...new Set(seenCrewIds)];
+		if (uniqueIds.length !== seenCrewIds.length) {
+			setSeenCrewIds(uniqueIds);
+			return; // prevent re-render loop
+		}
 
 		if (seenCrewIds.length === 0) {
 			setCrews([]);
@@ -51,8 +65,6 @@ export default function App() {
 		}
 
 		setLoading(true);
-
-		localStorage.setItem("seenCrewIds", JSON.stringify(seenCrewIds));
 
 		// Split into batches of 10 for Firestore "in" query limitation
 		const batches: string[][] = [];
