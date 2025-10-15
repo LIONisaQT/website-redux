@@ -46,6 +46,15 @@ export default function CrewList({
 		{
 			accessorKey: "name",
 			header: "Crew name",
+			cell: ({ row }) => (
+				<button
+					onClick={() => onView?.(row.original)}
+					className="crew-name-button"
+					title={`View ${row.original.name}`}
+				>
+					{row.original.name}
+				</button>
+			),
 		},
 		{
 			accessorFn: (crew) =>
