@@ -368,6 +368,14 @@ export default function CrewManager({
 		removeMap[location]?.(paddler, position as number);
 	};
 
+	const copyCrewIdToClipboard = async (crewId: string) => {
+		try {
+			await navigator.clipboard.writeText(crewId);
+		} catch (err) {
+			console.error("Failed to copy crew ID:", crewId, err);
+		}
+	};
+
 	return (
 		<div className="crew-manager-container">
 			{onClose && (
@@ -375,17 +383,25 @@ export default function CrewManager({
 					✕
 				</button>
 			)}
-			<input
-				className="crew-name"
-				defaultValue={crew.name}
-				onChange={(e) => setName(e.target.value)}
-				onBlur={() => setUpdatedName(name)}
-				onKeyDown={(e) => {
-					if (e.key === "Enter") {
-						e.currentTarget.blur();
-					}
-				}}
-			/>
+			<section className="crew-info-header">
+				<input
+					className="crew-name"
+					defaultValue={crew.name}
+					onChange={(e) => setName(e.target.value)}
+					onBlur={() => setUpdatedName(name)}
+					onKeyDown={(e) => {
+						if (e.key === "Enter") {
+							e.currentTarget.blur();
+						}
+					}}
+				/>
+				<button
+					className="crew-id"
+					onClick={() => copyCrewIdToClipboard(crew.id)}
+				>
+					{crew.id}
+				</button>
+			</section>
 			<DndContext
 				onDragEnd={handleDragEnd}
 				collisionDetection={pointerWithin}

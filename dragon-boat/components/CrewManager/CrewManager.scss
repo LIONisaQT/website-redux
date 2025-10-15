@@ -7,8 +7,16 @@
 	box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
 	position: relative;
 
+	.crew-info-header {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin-bottom: 12px;
+	}
+
 	.crew-name {
-		width: 90%;
+		width: 80%;
+		height: 2.125rem;
 		font-size: 2rem;
 		font-weight: bolder;
 		text-align: center;
@@ -17,7 +25,6 @@
 		border-radius: 32px;
 		background-color: transparent;
 		color: var(--light);
-		margin-bottom: 12px;
 		transition: all 0.1s ease-out;
 
 		&:focus {
@@ -25,6 +32,11 @@
 			background-color: var(--darkest);
 			color: var(--light);
 		}
+	}
+
+	.crew-id {
+		padding: 2px 16px;
+		color: var(--light-muted);
 	}
 
 	.crew-manager {
@@ -70,6 +82,11 @@
 
 		&:hover {
 			color: var(--red);
+		}
+
+		@media (max-width: 768px) {
+			top: 6px;
+			right: 8px;
 		}
 	}
 }
