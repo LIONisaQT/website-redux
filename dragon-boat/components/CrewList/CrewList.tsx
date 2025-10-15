@@ -60,7 +60,7 @@ export default function CrewList({
 					className="crew-name-button"
 					title={`View ${row.original.name}`}
 				>
-					{row.original.name}
+					<p>{row.original.name}</p>
 				</button>
 			),
 		},
