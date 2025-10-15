@@ -73,6 +73,7 @@ export default function CrewList({
 				(crew.steer ? 1 : 0),
 			id: "numPaddlers",
 			header: "#",
+			enableSorting: false,
 		},
 		{
 			id: "actions",
