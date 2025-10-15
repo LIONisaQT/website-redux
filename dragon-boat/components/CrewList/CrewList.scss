@@ -88,4 +88,27 @@
 	button {
 		width: 160px;
 	}
+
+	.id-input-container {
+		display: flex;
+		flex-direction: row;
+		gap: 4px;
+
+		input {
+			padding-left: 12px;
+			outline: none;
+			border: 2px solid transparent;
+			border-radius: 32px;
+			background-color: var(--darker);
+			color: var(--light);
+
+			&:focus {
+				border: 2px solid var(--light-muted);
+			}
+		}
+
+		button {
+			width: 36px;
+		}
+	}
 }

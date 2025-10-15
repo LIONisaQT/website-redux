@@ -219,7 +219,7 @@ export default function CrewList({
 							}
 						}}
 					/>
-					<button onClick={submitCrewId}>+</button>
+					<button onClick={submitCrewId}>﹢</button>
 				</div>
 			</section>
 		</div>
