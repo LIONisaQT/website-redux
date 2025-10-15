@@ -162,6 +162,7 @@ export default function App() {
 			{activeCrews.length === 0 && (
 				<CrewList
 					data={crews}
+					setCrewIds={setSeenCrewIds}
 					onView={onViewClicked}
 					onCopy={onCreateClicked}
 					onDelete={onDeleteClicked}

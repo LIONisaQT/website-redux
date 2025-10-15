@@ -8,9 +8,11 @@ import {
 import "./CrewList.scss";
 import { Crew } from "../../types";
 import { sampleCrew } from "../../utils/sample-crew";
+import { Dispatch, SetStateAction, useState } from "react";
 
 type CrewTableProps = {
 	data: Crew[];
+	setCrewIds: Dispatch<SetStateAction<string[]>>;
 	onView?: (crew: Crew) => void;
 	onCopy?: (crew: Crew) => void;
 	onDelete?: (crewId: string) => void;
@@ -19,11 +21,27 @@ type CrewTableProps = {
 
 export default function CrewList({
 	data,
+	setCrewIds,
 	onView,
 	onCopy,
 	onDelete,
 	onCreate,
 }: CrewTableProps) {
+	const [crewId, setCrewId] = useState("");
+
+	const submitCrewId = () => {
+		// Basic UUID v4 validation
+		const uuidV4Regex =
+			/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+		if (!uuidV4Regex.test(crewId)) {
+			alert(`Invalid crew ID format: ${crewId}`);
+			return;
+		}
+
+		setCrewIds((prev) => [...prev, crewId]);
+	};
+
 	const columns: ColumnDef<Crew>[] = [
 		{
 			accessorKey: "name",
@@ -190,6 +208,19 @@ export default function CrewList({
 			<section className="button-group">
 				<button onClick={() => onCreate?.()}>New empty crew</button>
 				<button onClick={() => onCreate?.(sampleCrew)}>New sample crew</button>
+				<div className="id-input-container">
+					<input
+						type="text"
+						placeholder="Crew ID"
+						onChange={(e) => setCrewId(e.target.value)}
+						onKeyDown={(e) => {
+							if (e.key === "Enter") {
+								submitCrewId();
+							}
+						}}
+					/>
+					<button onClick={submitCrewId}>+</button>
+				</div>
 			</section>
 		</div>
 	);
