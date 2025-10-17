@@ -77,8 +77,8 @@ export default function AddNewPaddler({
           <input
             type="number"
             id="power"
-            placeholder={power.toString()}
-            value={power.toString()}
+            placeholder={String(power)}
+            value={power}
             min={1}
             max={999}
             onChange={(e) => setPower(sanitizeNumber(e.target.value, 1, 999))}
@@ -115,8 +115,8 @@ export default function AddNewPaddler({
           <input
             type="number"
             id="weight"
-            placeholder={weight.toString()}
-            value={weight.toString()}
+            placeholder={String(weight)}
+            value={weight}
             min={1}
             max={999}
             onChange={(e) => setWeight(sanitizeNumber(e.target.value, 1, 999))}
