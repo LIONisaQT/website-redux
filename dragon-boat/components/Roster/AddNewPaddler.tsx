@@ -4,133 +4,175 @@ import "./AddNewPaddler.scss";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface AddNewPaddlerProps {
-	openState: [boolean, Dispatch<SetStateAction<boolean>>];
-	paddler: BoatPaddler | null;
-	onSubmit: (paddler: BoatPaddler, isNew: boolean) => void;
+  openState: [boolean, Dispatch<SetStateAction<boolean>>];
+  paddler: BoatPaddler | null;
+  onSubmit: (paddler: BoatPaddler, isNew: boolean) => void;
 }
 
 export default function AddNewPaddler({
-	openState,
-	paddler = null,
-	onSubmit,
+  openState,
+  paddler = null,
+  onSubmit,
 }: AddNewPaddlerProps) {
-	const [isOpen, setOpen] = openState;
-	const [name, setName] = useState<string>("");
-	const [side, setSide] = useState("both");
-	const [weight, setWeight] = useState(100);
+  const [isOpen, setOpen] = openState;
+  const [name, setName] = useState<string>("");
+  const [side, setSide] = useState("both");
+  const [weight, setWeight] = useState(100);
+  const [power, setPower] = useState(100);
 
-	useEffect(() => {
-		if (isOpen) {
-			document.body.classList.add("modal-open");
-			setName(paddler ? paddler.details.name : "");
-			setSide(paddler ? paddler.details.side : "both");
-			setWeight(paddler ? paddler.details.weight : 100);
-		} else {
-			document.body.classList.remove("modal-open");
-			setName("");
-			setSide("both");
-			setWeight(100);
-		}
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add("modal-open");
+      setName(paddler ? paddler.details.name : "");
+      setSide(paddler ? paddler.details.side : "both");
+      setWeight(paddler ? paddler.details.weight : 100);
+      setPower(paddler ? paddler.details.power : 100);
+    } else {
+      document.body.classList.remove("modal-open");
+      setName("");
+      setSide("both");
+      setWeight(100);
+      setPower(100);
+    }
 
-		return () => {
-			document.body.classList.remove("modal-open");
-		};
-	}, [isOpen, paddler]);
+    return () => {
+      document.body.classList.remove("modal-open");
+    };
+  }, [isOpen, paddler]);
 
-	return (
-		<div className={`new-paddler-container ${isOpen ? "" : "hidden"}`}>
-			<div className="background" onClick={() => setOpen(false)} />
-			<div className="new-paddler-modal">
-				<button className="close-button" onClick={() => setOpen(false)}>
-					✕
-				</button>
-				<h2>{paddler ? "Edit paddler" : "Add paddler"}</h2>
-				<section>
-					<label htmlFor="name">Name</label>
-					<input
-						type="text"
-						id="name"
-						placeholder="Paddler name"
-						value={name}
-						onChange={(e) => setName(sanitizeText(e.target.value))}
-					/>
-				</section>
-				<section>
-					<label htmlFor="side-pref">Side preference</label>
-					<select
-						id="side-pref"
-						value={side}
-						onChange={(e) =>
-							setSide(e.target.value as "left" | "right" | "both")
-						}
-					>
-						<option value="left">Left</option>
-						<option value="right">Right</option>
-						<option value="both">Both</option>
-					</select>
-				</section>
-				<section>
-					<label htmlFor="weight">Weight</label>
-					<input
-						type="number"
-						id="weight"
-						placeholder={weight.toString()}
-						value={weight.toString()}
-						min={1}
-						max={999}
-						onChange={(e) => setWeight(sanitizeNumber(e.target.value, 1, 999))}
-						onKeyDown={(e) => {
-							if (
-								[
-									"Backspace",
-									"Delete",
-									"Tab",
-									"Escape",
-									"Enter",
-									"ArrowLeft",
-									"ArrowRight",
-									"Home",
-									"End",
-								].includes(e.key)
-							) {
-								return;
-							}
+  return (
+    <div className={`new-paddler-container ${isOpen ? "" : "hidden"}`}>
+      <div className="background" onClick={() => setOpen(false)} />
+      <div className="new-paddler-modal">
+        <button className="close-button" onClick={() => setOpen(false)}>
+          ✕
+        </button>
+        <h2>{paddler ? "Edit paddler" : "Add paddler"}</h2>
+        <section>
+          <label htmlFor="name">Name</label>
+          <input
+            type="text"
+            id="name"
+            placeholder="Paddler name"
+            value={name}
+            onChange={(e) => setName(sanitizeText(e.target.value))}
+          />
+        </section>
+        <section>
+          <label htmlFor="side-pref">Side preference</label>
+          <select
+            id="side-pref"
+            value={side}
+            onChange={(e) =>
+              setSide(e.target.value as "left" | "right" | "both")
+            }
+          >
+            <option value="left">Left</option>
+            <option value="right">Right</option>
+            <option value="both">Both</option>
+          </select>
+        </section>
+        <section>
+          <label htmlFor="power">Power</label>
+          <input
+            type="number"
+            id="power"
+            placeholder={power.toString()}
+            value={power.toString()}
+            min={1}
+            max={999}
+            onChange={(e) => setPower(sanitizeNumber(e.target.value, 1, 999))}
+            onKeyDown={(e) => {
+              if (
+                [
+                  "Backspace",
+                  "Delete",
+                  "Tab",
+                  "Escape",
+                  "Enter",
+                  "ArrowLeft",
+                  "ArrowRight",
+                  "Home",
+                  "End",
+                ].includes(e.key)
+              ) {
+                return;
+              }
 
-							if (!/[0-9]/.test(e.key)) {
-								e.preventDefault();
-							}
+              if (!/[0-9]/.test(e.key)) {
+                e.preventDefault();
+              }
 
-							const currentValue = e.currentTarget.value;
-							if (currentValue.length >= 3 && /[0-9]/.test(e.key)) {
-								e.preventDefault();
-							}
-						}}
-					></input>
-				</section>
-				<div className="button-group">
-					<button
-						onClick={() =>
-							onSubmit(
-								{
-									details: {
-										id: paddler ? paddler.details.id : crypto.randomUUID(),
-										name,
-										side,
-										weight,
-									} as Paddler,
-									location: paddler ? paddler.location : "roster",
-									position: paddler ? paddler.position : 0,
-								},
-								!paddler
-							)
-						}
-						disabled={name.length === 0}
-					>
-						{paddler ? "Save" : "Add"}
-					</button>
-					<button onClick={() => setOpen(false)}>Cancel</button>
-				</div>
-			</div>
-		</div>
-	);
+              const currentValue = e.currentTarget.value;
+              if (currentValue.length >= 3 && /[0-9]/.test(e.key)) {
+                e.preventDefault();
+              }
+            }}
+          ></input>
+        </section>
+        <section>
+          <label htmlFor="weight">Weight</label>
+          <input
+            type="number"
+            id="weight"
+            placeholder={weight.toString()}
+            value={weight.toString()}
+            min={1}
+            max={999}
+            onChange={(e) => setWeight(sanitizeNumber(e.target.value, 1, 999))}
+            onKeyDown={(e) => {
+              if (
+                [
+                  "Backspace",
+                  "Delete",
+                  "Tab",
+                  "Escape",
+                  "Enter",
+                  "ArrowLeft",
+                  "ArrowRight",
+                  "Home",
+                  "End",
+                ].includes(e.key)
+              ) {
+                return;
+              }
+
+              if (!/[0-9]/.test(e.key)) {
+                e.preventDefault();
+              }
+
+              const currentValue = e.currentTarget.value;
+              if (currentValue.length >= 3 && /[0-9]/.test(e.key)) {
+                e.preventDefault();
+              }
+            }}
+          ></input>
+        </section>
+        <div className="button-group">
+          <button
+            onClick={() =>
+              onSubmit(
+                {
+                  details: {
+                    id: paddler ? paddler.details.id : crypto.randomUUID(),
+                    name,
+                    side,
+                    weight,
+                    power,
+                  } as Paddler,
+                  location: paddler ? paddler.location : "roster",
+                  position: paddler ? paddler.position : 0,
+                },
+                !paddler
+              )
+            }
+            disabled={name.length === 0}
+          >
+            {paddler ? "Save" : "Add"}
+          </button>
+          <button onClick={() => setOpen(false)}>Cancel</button>
+        </div>
+      </div>
+    </div>
+  );
 }
