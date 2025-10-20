@@ -19,6 +19,7 @@ export default function AddNewPaddler({
   const [side, setSide] = useState("both");
   const [weight, setWeight] = useState(100);
   const [power, setPower] = useState(100);
+  const [height, setHeight] = useState(5.9);
 
   useEffect(() => {
     if (isOpen) {
@@ -27,12 +28,14 @@ export default function AddNewPaddler({
       setSide(paddler ? paddler.details.side : "both");
       setWeight(paddler ? paddler.details.weight : 100);
       setPower(paddler ? paddler.details.power : 100);
+      setHeight(paddler ? paddler.details.height : 5.9)
     } else {
       document.body.classList.remove("modal-open");
       setName("");
       setSide("both");
       setWeight(100);
       setPower(100);
+      setHeight(5.9);
     }
 
     return () => {
@@ -148,6 +151,44 @@ export default function AddNewPaddler({
             }}
           ></input>
         </section>
+        <section>
+          <label htmlFor="height">Height</label>
+          <input
+            type="number"
+            id="height"
+            placeholder={String(height)}
+            value={height}
+            min={0}
+            max={7}
+            onChange={(e) => setHeight(sanitizeNumber(e.target.value, 1, 999))}
+            onKeyDown={(e) => {
+              if (
+                [
+                  "Backspace",
+                  "Delete",
+                  "Tab",
+                  "Escape",
+                  "Enter",
+                  "ArrowLeft",
+                  "ArrowRight",
+                  "Home",
+                  "End",
+                ].includes(e.key)
+              ) {
+                return;
+              }
+
+              if (!/[0-9]/.test(e.key)) {
+                e.preventDefault();
+              }
+
+              const currentValue = e.currentTarget.value;
+              if (currentValue.length >= 3 && /[0-9]/.test(e.key)) {
+                e.preventDefault();
+              }
+            }}
+          ></input>
+        </section>
         <div className="button-group">
           <button
             onClick={() =>
@@ -159,6 +200,7 @@ export default function AddNewPaddler({
                     side,
                     weight,
                     power,
+                    height,
                   } as Paddler,
                   location: paddler ? paddler.location : "roster",
                   position: paddler ? paddler.position : 0,

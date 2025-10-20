@@ -105,6 +105,7 @@ export default function PaddlerCard({
             </p>
             <p className="weight">{details.weight}</p>
             <p className="power">{details.power}</p>
+            <p className="height">{details.height}</p>
           </div>
         </div>
       ) : (

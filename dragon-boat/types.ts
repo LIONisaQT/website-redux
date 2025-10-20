@@ -4,6 +4,7 @@ export type Paddler = {
 	side: "left" | "right" | "both";
 	power: number;
 	weight: number;
+	height: number;
 };
 
 export type PaddlerLocation = "left" | "right" | "drum" | "steer" | "roster";
