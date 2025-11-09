@@ -6,7 +6,7 @@ export const sumSideWeight = (side: SideArray): number =>
 export const getCenterOfMass = (
   left: SideArray,
   right: SideArray,
-  rowSize: number
+  rowSize: number,
 ): number => {
   let weightedSum = 0;
   let totalWeight = 0;
@@ -34,7 +34,7 @@ export const getCenterOfMass = (
 function getSectionMultiplier(
   paddlerRow: number,
   targetRow: number,
-  numRows: number
+  numRows: number,
 ): number {
   const rowsPerSection = numRows / 3;
 
@@ -66,7 +66,7 @@ export const generateScore = (
   targetRow: number,
   numRows: number,
   left: SideArray,
-  right: SideArray
+  right: SideArray,
 ): number => {
   const powerMultiplier = 2;
   const balanceMultiplier = 1.5;
@@ -98,7 +98,7 @@ export const generateScore = (
   const sectionMultiplier = getSectionMultiplier(
     paddlerRow,
     targetRow,
-    numRows
+    numRows,
   );
   const weightedPower = effectivePower * sectionMultiplier;
 
@@ -157,7 +157,7 @@ export const generateScore = (
 export const generateLineup = (
   roster: Paddler[],
   targetRow: number,
-  numRows: number
+  numRows: number,
 ): { left: SideArray; right: SideArray; remainingRoster: Paddler[] } => {
   console.log(`[generateLineup] Starting lineup generation:`, {
     rosterSize: roster.length,
@@ -175,7 +175,7 @@ export const generateLineup = (
 
   for (const paddler of sortedPaddlers) {
     console.log(
-      `\n[generateLineup] Evaluating paddler: ${paddler.name} (weight: ${paddler.weight}, power: ${paddler.power}, side: ${paddler.side})`
+      `\n[generateLineup] Evaluating paddler: ${paddler.name} (weight: ${paddler.weight}, power: ${paddler.power}, side: ${paddler.side})`,
     );
 
     const candidatePositions: Array<{
@@ -193,7 +193,7 @@ export const generateLineup = (
           targetRow,
           numRows,
           tempLeft,
-          right
+          right,
         );
         candidatePositions.push({ side: "left", index: i, score });
       }
@@ -206,7 +206,7 @@ export const generateLineup = (
           targetRow,
           numRows,
           left,
-          tempRight
+          tempRight,
         );
         candidatePositions.push({ side: "right", index: i, score });
       }
@@ -215,7 +215,7 @@ export const generateLineup = (
     // There are no more spots left on the boat.
     if (candidatePositions.length === 0) {
       console.log(
-        `[generateLineup] No available positions for ${paddler.name}`
+        `[generateLineup] No available positions for ${paddler.name}`,
       );
       continue;
     }
@@ -228,12 +228,12 @@ export const generateLineup = (
       `[generateLineup] Candidate positions for ${paddler.name}:`,
       candidatePositions
         .map((p) => `${p.side}[${p.index}]: ${p.score.toFixed(2)}`)
-        .join(", ")
+        .join(", "),
     );
     console.log(
       `[generateLineup] Selected position: ${best.side}[${
         best.index
-      }] with score ${best.score.toFixed(2)}`
+      }] with score ${best.score.toFixed(2)}`,
     );
 
     if (best.side === "left") left[best.index] = paddler;
@@ -278,7 +278,7 @@ export const sanitizeText = (text: string): string =>
 export function sanitizeNumber(
   value: string | number,
   min: number = 0,
-  max: number = 999
+  max: number = 999,
 ): number {
   const num = Number(value);
   if (isNaN(num) || num < min) return min;

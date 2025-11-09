@@ -28,7 +28,7 @@ export default function AddNewPaddler({
       setSide(paddler ? paddler.details.side : "both");
       setWeight(paddler ? paddler.details.weight : 100);
       setPower(paddler ? paddler.details.power : 100);
-      setHeight(paddler ? paddler.details.height : 5.9)
+      setHeight(paddler ? paddler.details.height : 5.9);
     } else {
       document.body.classList.remove("modal-open");
       setName("");
@@ -205,7 +205,7 @@ export default function AddNewPaddler({
                   location: paddler ? paddler.location : "roster",
                   position: paddler ? paddler.position : 0,
                 },
-                !paddler
+                !paddler,
               )
             }
             disabled={name.length === 0}
