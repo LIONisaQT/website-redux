@@ -2,7 +2,9 @@ export type Paddler = {
 	id: string;
 	name: string;
 	side: "left" | "right" | "both";
+	power: number;
 	weight: number;
+	height: number;
 };
 
 export type PaddlerLocation = "left" | "right" | "drum" | "steer" | "roster";
