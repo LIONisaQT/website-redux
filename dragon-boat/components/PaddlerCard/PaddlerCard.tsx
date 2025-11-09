@@ -13,7 +13,7 @@ interface PaddlerProps {
   onDelete: (
     paddler: Paddler,
     location: PaddlerLocation,
-    position: number | "drum" | "steer"
+    position: number | "drum" | "steer",
   ) => void;
 }
 
@@ -32,7 +32,7 @@ export default function PaddlerCard({
     cardRef,
     () => setPopupOpen((prev) => !prev),
     () => setPopupOpen(false),
-    [popupRef]
+    [popupRef],
   );
 
   const {
