@@ -30,3 +30,4 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_RYAN_SHEE }}
           projectId: ryan-shee
           target: preview
+          channelId: live
