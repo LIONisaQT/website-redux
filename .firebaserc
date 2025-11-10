@@ -1,5 +1,17 @@
 {
   "projects": {
     "default": "ryan-shee"
+  },
+  "targets": {
+    "ryan-shee": {
+      "hosting": {
+        "production": [
+          "ryan-shee"
+        ],
+        "preview": [
+          "ryan-preview"
+        ]
+      }
+    }
   }
 }
