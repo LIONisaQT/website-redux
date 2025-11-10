@@ -25,7 +25,7 @@ jobs:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_RYAN_SHEE }}
           projectId: ryan-shee
-          channelId: preview
+          channelId: live
           expires: 7d
 
       - name: Post or update PR comment with preview URL
