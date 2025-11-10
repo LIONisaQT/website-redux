@@ -5,10 +5,10 @@
   "targets": {
     "ryan-shee": {
       "hosting": {
-        "ryan-shee": [
+        "production": [
           "ryan-shee"
         ],
-        "ryan-preview": [
+        "preview": [
           "ryan-preview"
         ]
       }

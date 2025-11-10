@@ -2,7 +2,6 @@
   "hosting": [
     {
       "target": "production",
-      "site": "ryan-shee",
       "public": "dist",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "cleanUrls": true,
@@ -10,7 +9,6 @@
     },
     {
       "target": "preview",
-      "site": "ryan-preview",
       "public": "dist",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "cleanUrls": true,
