@@ -61,7 +61,7 @@ jobs:
               actions: [
                 {
                   label: "Redeploy Preview",
-                  description: "Manually trigger a redeploy to preview.ryanshee.com",
+                  description: "Redeploy preview site",
                   identifier: "redeploy-preview"
                 }
               ]
