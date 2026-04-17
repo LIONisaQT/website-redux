@@ -15,7 +15,6 @@ jobs:
 
       - name: Install dependencies and build
         run: |
-          npm run sm-update
           npm ci
           npm run build
 
