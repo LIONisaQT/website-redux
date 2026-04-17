@@ -8,24 +8,16 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // https://vite.dev/config/
 export default defineConfig({
-	plugins: [svgr(), react()],
-	optimizeDeps: {
-		include: ["@dnd-kit/core", "@dnd-kit/sortable", "@dnd-kit/modifiers"],
-	},
-	build: {
-		commonjsOptions: {
-			include: [/node_modules/],
-		},
-		rollupOptions: {
-			input: {
-				main: resolve(__dirname, "index.html"),
-				startpage: resolve(__dirname, "startpage/index.html"),
-				solitaire: resolve(__dirname, "solitaire/index.html"),
-				"number-rogue": resolve(__dirname, "number-rogue/index.html"),
-				"food-now": resolve(__dirname, "food-now/index.html"),
-				"fire-emblem": resolve(__dirname, "fire-emblem/index.html"),
-				"dragon-boat": resolve(__dirname, "dragon-boat/index.html"),
-			},
-		},
-	},
+  plugins: [svgr(), react()],
+  build: {
+    commonjsOptions: {
+      include: [/node_modules/],
+    },
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, "index.html"),
+        startpage: resolve(__dirname, "startpage/index.html"),
+      },
+    },
+  },
 });
