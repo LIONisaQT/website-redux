@@ -5,14 +5,40 @@
       "public": "dist",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "cleanUrls": true,
-      "trailingSlash": false
+      "trailingSlash": false,
+      "redirects": [
+        { "source": "/solitaire", "destination": "https://solitaire.ryanshee.com", "type": 301 },
+        { "source": "/solitaire/**", "destination": "https://solitaire.ryanshee.com", "type": 301 },
+        { "source": "/dragon-boat", "destination": "https://dragon-boat.ryanshee.com", "type": 301 },
+        { "source": "/dragon-boat/**", "destination": "https://dragon-boat.ryanshee.com", "type": 301 },
+        { "source": "/food-now", "destination": "https://food-now.ryanshee.com", "type": 301 },
+        { "source": "/food-now/**", "destination": "https://food-now.ryanshee.com", "type": 301 },
+        { "source": "/number-rogue", "destination": "https://number-rogue.ryanshee.com", "type": 301 },
+        { "source": "/number-rogue/**", "destination": "https://number-rogue.ryanshee.com", "type": 301 }
+      ],
+      "rewrites": [
+        { "source": "**", "destination": "/index.html" }
+      ]
     },
     {
       "target": "preview",
       "public": "dist",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "cleanUrls": true,
-      "trailingSlash": false
+      "trailingSlash": false,
+      "redirects": [
+        { "source": "/solitaire", "destination": "https://solitaire.ryanshee.com", "type": 301 },
+        { "source": "/solitaire/**", "destination": "https://solitaire.ryanshee.com", "type": 301 },
+        { "source": "/dragon-boat", "destination": "https://dragon-boat.ryanshee.com", "type": 301 },
+        { "source": "/dragon-boat/**", "destination": "https://dragon-boat.ryanshee.com", "type": 301 },
+        { "source": "/food-now", "destination": "https://food-now.ryanshee.com", "type": 301 },
+        { "source": "/food-now/**", "destination": "https://food-now.ryanshee.com", "type": 301 },
+        { "source": "/number-rogue", "destination": "https://number-rogue.ryanshee.com", "type": 301 },
+        { "source": "/number-rogue/**", "destination": "https://number-rogue.ryanshee.com", "type": 301 }
+      ],
+      "rewrites": [
+        { "source": "**", "destination": "/index.html" }
+      ]
     }
   ]
 }
